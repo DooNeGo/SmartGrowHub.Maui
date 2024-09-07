@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartGrowHub.Maui.Features.Start.View.StartPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Start.ViewModel"
+    Padding="0"
+    x:DataType="viewModel:StartPageModel"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView Padding="35">
+        <Grid RowDefinitions="*,*,*" RowSpacing="40">
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="35"
+                VerticalOptions="End">
+                <Image HeightRequest="110" Source="appicon_foreground" />
+                <Image HeightRequest="110" Source="start_app_text.png" />
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                Spacing="15"
+                VerticalOptions="Center">
+                <Button
+                    Background="{OnPlatform Android={StaticResource PrimaryLinearGradientBrush}}"
+                    BackgroundColor="{OnPlatform iOS={StaticResource Primary}}"
+                    Command="{Binding GoToLogInPageCommand}"
+                    CornerRadius="14"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HeightRequest="50"
+                    Text="{x:Static localization:Resources.LogIn}" />
+
+                <customControls:TextButton
+                    Command="{Binding GoToRegisterPageCommand}"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="{x:Static localization:Resources.CreateAnAccount}"
+                    TextColor="{StaticResource Primary}" />
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

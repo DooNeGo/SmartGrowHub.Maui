@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Droid", "SmartGrowHub.Maui\SmartGrowHub.Maui.Droid\SmartGrowHub.Maui.Droid.csproj", "{F313B941-5D65-4081-BCC2-219253E8E793}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.iOS", "SmartGrowHub.Maui\SmartGrowHub.Maui.iOS\SmartGrowHub.Maui.iOS.csproj", "{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui", "SmartGrowHub.Maui\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj", "{D620AEC7-E113-4852-986F-0530A0E7AFFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01587DDB-6928-447C-8AE7-F4D7D89BF065}
+	EndGlobalSection
+EndGlobal

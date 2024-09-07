@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border
+    x:Class="SmartGrowHub.Maui.Features.Register.View.RoundImageButton"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Padding="13"
+    BackgroundColor="White"
+    HeightRequest="50"
+    StrokeShape="RoundRectangle 25"
+    WidthRequest="50">
+    <Image x:Name="Image" />
+    <Border.Shadow>
+        <Shadow
+            Brush="Black"
+            Opacity="0.15"
+            Offset="0,3" />
+    </Border.Shadow>
+</Border>

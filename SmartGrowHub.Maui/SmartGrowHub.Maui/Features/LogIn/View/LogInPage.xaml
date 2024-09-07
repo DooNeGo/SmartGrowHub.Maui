@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartGrowHub.Maui.Features.LogIn.View.LogInPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    x:DataType="viewModel:LogInPageModel"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView Padding="30">
+        <Grid RowDefinitions="*,*,*" RowSpacing="40">
+            <VerticalStackLayout
+                Spacing="8"
+                VerticalOptions="End">
+                <Label Style="{StaticResource Headline}" Text="{x:Static localization:Resources.WelcomeBack}" />
+                <Label Style="{StaticResource Caption}" Text="{x:Static localization:Resources.LogInToYourAccount}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="1" VerticalOptions="Start">
+                <customControls:CustomEntry
+                    IconSource="user_icon.png"
+                    Placeholder="{x:Static localization:Resources.UserName}"
+                    Text="{Binding UserName}" />
+
+                <customControls:CustomEntry
+                    Margin="0,23,0,0"
+                    IconSource="lock_icon.png"
+                    IsPassword="True"
+                    Placeholder="{x:Static localization:Resources.Password}"
+                    Text="{Binding Password}" />
+
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <CheckBox />
+
+                    <Label
+                        Grid.Column="1"
+                        FontFamily="Inter18Medium"
+                        FontSize="14"
+                        Text="{x:Static localization:Resources.RememberMe}"
+                        TextColor="#827F7F"
+                        VerticalOptions="Center" />
+
+                    <customControls:TextButton
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="{x:Static localization:Resources.ForgotThePassword}"
+                        TextColor="{StaticResource Primary}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout
+                Grid.Row="2"
+                Spacing="8"
+                VerticalOptions="Center">
+                <customControls:TextButton Command="{Binding GoToRegisterPageCommand}" HorizontalOptions="Center">
+                    <customControls:TextButton.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span
+                                    FontFamily="Inter18Medium"
+                                    FontSize="14"
+                                    Text="{x:Static localization:Resources.DontHaveAccount}"
+                                    TextColor="#AFACAC" />
+                                <Span
+                                    FontFamily="Inter18Medium"
+                                    FontSize="14"
+                                    Text=" " />
+                                <Span
+                                    FontFamily="Inter18Medium"
+                                    FontSize="14"
+                                    Text="{x:Static localization:Resources.SignUp}"
+                                    TextColor="{StaticResource Primary}"
+                                    TextDecorations="Underline" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </customControls:TextButton.FormattedText>
+                </customControls:TextButton>
+
+                <Button
+                    Background="{OnPlatform Android={StaticResource PrimaryLinearGradientBrush}}"
+                    BackgroundColor="{OnPlatform iOS={StaticResource Primary}}"
+                    CornerRadius="24"
+                    FontFamily="Inter18SemiBold"
+                    FontSize="18"
+                    HeightRequest="50"
+                    Text="{x:Static localization:Resources.LogIn}"
+                    WidthRequest="200" />
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

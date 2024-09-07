@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SmartGrowHub.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:logIn="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
+    xmlns:start="clr-namespace:SmartGrowHub.Maui.Features.Start.View"
+    Title="Smart Grow Hub"
+    FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False">
+
+    <ShellContent ContentTemplate="{DataTemplate start:StartPage}" />
+
+    <TabBar FlyoutDisplayOptions="AsMultipleItems" Route="MainTabBar">
+        <ShellContent Title="Log in" ContentTemplate="{DataTemplate logIn:LogInPage}" />
+    </TabBar>
+
+</Shell>
