@@ -1,11 +1,18 @@
 ﻿using CommunityToolkit.Maui;
 using SmartGrowHub.Maui.Features.LogIn.View;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
+using SmartGrowHub.Maui.Features.Main.View;
+using SmartGrowHub.Maui.Features.Main.ViewModel;
 using SmartGrowHub.Maui.Features.Register.View;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
 using SmartGrowHub.Maui.Features.Start.View;
 using SmartGrowHub.Maui.Features.Start.ViewModel;
 using SmartGrowHub.Maui.Services;
+using SmartGrowHub.Maui.Services.Abstractions;
+using SmartGrowHub.Maui.Services.Api;
+using SmartGrowHub.Maui.Services.Extensions;
+using SmartGrowHub.Maui.Services.Mock;
+using System.Net.Http.Headers;
 
 namespace SmartGrowHub.Maui;
 
@@ -15,11 +22,19 @@ internal static class DependencyInjection
         services
             .AddTransientWithShellRoute<LogInPage, LogInPageModel>(nameof(LogInPageModel))
             .AddTransientWithShellRoute<StartPage, StartPageModel>(nameof(StartPageModel))
-            .AddTransientWithShellRoute<RegisterPage, RegisterPageModel>(nameof(RegisterPageModel));
+            .AddTransientWithShellRoute<RegisterPage, RegisterPageModel>(nameof(RegisterPageModel))
+            .AddTransientWithShellRoute<MainPage, MainPageModel>(nameof(MainPageModel));
 
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
-            .AddSingleton<IIdentityService, IdentityService>()
+            .AddSingleton<IUserService, UserService>()
             .AddSingleton<Shell>(new AppShell())
-            .AddSingleton(SecureStorage.Default);
+            .AddSingleton(SecureStorage.Default)
+            .AddSingleton<ISecureStorageService, SecureStorageService>()
+            .AddSingleton<ITokenProvider, TokenProvider>()
+            .AddSingleton<IHttpService, HttpService>();
+
+    public static IServiceCollection AddApis(this IServiceCollection services, bool isDevelopment) =>
+        services
+            .AddApi<IAuthService, AuthService, MockAuthService>(isDevelopment);
 }

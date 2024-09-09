@@ -17,9 +17,7 @@
 
     <ScrollView Padding="30">
         <Grid RowDefinitions="*,*,*" RowSpacing="40">
-            <VerticalStackLayout
-                Spacing="8"
-                VerticalOptions="End">
+            <VerticalStackLayout Spacing="8" VerticalOptions="End">
                 <Label Style="{StaticResource Headline}" Text="{x:Static localization:Resources.WelcomeBack}" />
                 <Label Style="{StaticResource Caption}" Text="{x:Static localization:Resources.LogInToYourAccount}" />
             </VerticalStackLayout>
@@ -28,14 +26,14 @@
                 <customControls:CustomEntry
                     IconSource="user_icon.png"
                     Placeholder="{x:Static localization:Resources.UserName}"
-                    Text="{Binding UserName}" />
+                    Text="{Binding UserNameRaw}" />
 
                 <customControls:CustomEntry
                     Margin="0,23,0,0"
                     IconSource="lock_icon.png"
                     IsPassword="True"
                     Placeholder="{x:Static localization:Resources.Password}"
-                    Text="{Binding Password}" />
+                    Text="{Binding PasswordRaw}" />
 
                 <Grid ColumnDefinitions="Auto,*,Auto">
                     <CheckBox />
@@ -89,6 +87,7 @@
                 <Button
                     Background="{OnPlatform Android={StaticResource PrimaryLinearGradientBrush}}"
                     BackgroundColor="{OnPlatform iOS={StaticResource Primary}}"
+                    Command="{Binding LogInCommand}"
                     CornerRadius="24"
                     FontFamily="Inter18SemiBold"
                     FontSize="18"

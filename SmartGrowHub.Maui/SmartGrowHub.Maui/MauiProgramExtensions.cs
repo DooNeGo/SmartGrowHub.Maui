@@ -21,7 +21,8 @@ public static class MauiProgramExtensions
 
         builder.Services
             .AddUi()
-            .AddServices();
+            .AddServices()
+            .AddApis(false);
 
 #if DEBUG
         builder.Logging.AddDebug();

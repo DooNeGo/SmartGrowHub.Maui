@@ -3,13 +3,7 @@ namespace SmartGrowHub.Maui.CustomControls;
 public sealed partial class CustomEntry
 {
     public static readonly BindableProperty TextProperty = BindableProperty.Create(
-        nameof(Text), typeof(string), typeof(CustomEntry), string.Empty,
-        propertyChanged: (bindable, _, newValue) =>
-        {
-            if (bindable is not CustomEntry entry) return;
-            if (newValue is not string value) return;
-            entry.Entry.Text = value;
-        });
+        nameof(Text), typeof(string), typeof(CustomEntry), string.Empty, BindingMode.TwoWay);
 
     public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
         nameof(Placeholder), typeof(string), typeof(CustomEntry), string.Empty,
