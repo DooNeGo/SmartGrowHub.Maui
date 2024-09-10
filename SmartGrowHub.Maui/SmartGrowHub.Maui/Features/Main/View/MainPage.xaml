@@ -4,7 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
+    x:DataType="viewModel:MainPageModel"
     BackgroundColor="#F2F2F7"
     Shell.NavBarIsVisible="False"
     Shell.TabBarIsVisible="False">
@@ -13,43 +16,40 @@
         <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
-    <ScrollView Padding="20,100,20,20">
+    <ScrollView Padding="20,60,20,20">
         <VerticalStackLayout Spacing="10">
-            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
-                <Label
-                    HorizontalOptions="Start"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource Headline}"
-                    Text="Your plants" />
+            <Grid ColumnDefinitions="*,Auto">
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        HorizontalOptions="Start"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource Headline}"
+                        Text="{x:Static localization:Resources.YourPlants}" />
+                    <Image
+                        Margin="0,5,0,0"
+                        Source="leaves_icon.png"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
                 <customControls:TextButton
                     Grid.Column="1"
+                    Margin="0,0,0,6"
+                    FontFamily="Inter18Medium"
                     FontSize="16"
-                    Text="Edit"
-                    TextColor="#81AF00"
-                    VerticalOptions="Center" />
+                    Text="{x:Static localization:Resources.Edit}"
+                    TextColor="{StaticResource Primary}"
+                    VerticalOptions="End" />
             </Grid>
 
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                <Border
-                    Padding="10,0,0,0"
-                    BackgroundColor="White"
-                    StrokeShape="RoundRectangle 8">
-                    <Entry
-                        FontSize="15"
-                        MinimumHeightRequest="0"
-                        Opacity="0.8"
-                        Placeholder="Search"
-                        PlaceholderColor="#74767C" />
-                </Border>
-                
+                <customControls:CustomSearchBar />
+
                 <customControls:CustomImageButton
                     Grid.Column="1"
-                    Padding="5"
+                    Padding="10,0"
                     BackgroundColor="White"
-                    HeightRequest="37"
                     ImageSource="sort_icon.png"
-                    StrokeShape="RoundRectangle 8"
-                    WidthRequest="42" />
+                    StrokeShape="RoundRectangle 8" />
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

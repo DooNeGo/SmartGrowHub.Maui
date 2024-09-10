@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border
+    x:Class="SmartGrowHub.Maui.CustomControls.CustomSearchBar"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
+    Padding="10,0"
+    BackgroundColor="White"
+    StrokeShape="RoundRectangle 8">
+    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">
+        <Image Source="search_icon.png" />
+        <Entry
+            Grid.Column="1"
+            FontSize="15"
+            MinimumHeightRequest="0"
+            Opacity="0.8"
+            Placeholder="{x:Static localization:Resources.Search}"
+            PlaceholderColor="#74767C"
+            ReturnType="Search" />
+    </Grid>
+</Border>

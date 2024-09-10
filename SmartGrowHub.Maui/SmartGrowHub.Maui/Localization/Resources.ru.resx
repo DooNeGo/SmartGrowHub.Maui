@@ -168,4 +168,13 @@
   <data name="DisplayName" xml:space="preserve">
     <value>Отображаемое имя</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="YourPlants" xml:space="preserve">
+    <value>Ваши растения</value>
+  </data>
 </root>

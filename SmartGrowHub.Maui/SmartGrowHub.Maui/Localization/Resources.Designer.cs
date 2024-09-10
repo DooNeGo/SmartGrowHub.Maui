@@ -106,6 +106,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Email.
         /// </summary>
         internal static string Email {
@@ -187,6 +196,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sign up.
         /// </summary>
         internal static string SignUp {
@@ -210,6 +228,15 @@ namespace SmartGrowHub.Maui.Localization {
         internal static string WelcomeBack {
             get {
                 return ResourceManager.GetString("WelcomeBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your plants.
+        /// </summary>
+        internal static string YourPlants {
+            get {
+                return ResourceManager.GetString("YourPlants", resourceCulture);
             }
         }
     }
