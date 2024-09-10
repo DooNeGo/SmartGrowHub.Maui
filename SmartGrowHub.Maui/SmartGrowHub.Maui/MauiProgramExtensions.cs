@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Mopups.Hosting;
 
 namespace SmartGrowHub.Maui;
 
@@ -10,6 +11,7 @@ public static class MauiProgramExtensions
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .ConfigureMopups()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -21,8 +23,8 @@ public static class MauiProgramExtensions
 
         builder.Services
             .AddUi()
-            .AddServices()
-            .AddApis(false);
+            .AddServices();
+            //.AddApis(false);
 
 #if DEBUG
         builder.Logging.AddDebug();

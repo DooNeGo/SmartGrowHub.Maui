@@ -42,6 +42,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Mopups" Version="1.3.1" />
 		<PackageReference Include="Ulid" Version="1.3.4" />
 	</ItemGroup>
 
@@ -89,6 +90,12 @@
 		</MauiXaml>
 		<MauiXaml Update="Features\Start\View\StartPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Features\UserProfile\View\UserProfilePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Mopups\LoadingMopup.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 

@@ -12,6 +12,8 @@ public sealed class AuthService(
     IUserCredentialProvider credentialProvider)
     : IAuthService
 {
+    public event Func<Unit>? LoggedOut;
+
     public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
         => httpService
             .PostAsync<LogInRequestDto, LogInResponseDto>("auth/login", request.ToDto(), cancellationToken)
@@ -44,6 +46,7 @@ public sealed class AuthService(
     public Try<bool> Logout() =>
         from token in tokenProvider.Remove()
         from credential in credentialProvider.Remove()
+        let _ = LoggedOut?.Invoke()
         select credential;
 
     public Either<Exception, RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)

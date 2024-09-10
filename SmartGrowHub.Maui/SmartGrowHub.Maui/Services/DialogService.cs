@@ -1,12 +1,16 @@
-﻿namespace SmartGrowHub.Maui.Services;
+﻿using Mopups.Interfaces;
+using SmartGrowHub.Maui.Mopups;
+
+namespace SmartGrowHub.Maui.Services;
 
 public interface IDialogService
 {
-    Task DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
+    Task<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
     Task<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
+    Task<IAsyncDisposable> Loading();
 }
 
-public sealed class DialogService : IDialogService
+public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogService
 {
     public Task<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
         CancellationToken cancellationToken) =>
@@ -14,7 +18,14 @@ public sealed class DialogService : IDialogService
             .DisplayAlert(title, message, accept, cancel)
             .WaitAsync(cancellationToken));
 
-    public Task DisplayAlertAsync(string title, string message, string cancel,
+    public Task<Unit> DisplayAlertAsync(string title, string message, string cancel,
         CancellationToken cancellationToken) =>
-        DisplayAlertAsync(title, message, null!, cancel, cancellationToken);
+        DisplayAlertAsync(title, message, null!, cancel, cancellationToken).ToUnit();
+
+    public Task<IAsyncDisposable> Loading() =>
+        Id(new LoadingMopup(popupNavigation))
+            .Map(mopup => popupNavigation
+                .PushAsync(mopup).ToUnit()
+                .Map(_ => (IAsyncDisposable)mopup))
+            .Value;
 }

@@ -7,19 +7,22 @@
     xmlns:logIn="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:start="clr-namespace:SmartGrowHub.Maui.Features.Start.View"
+    xmlns:userProfile="clr-namespace:SmartGrowHub.Maui.Features.UserProfile.View"
     Title="Smart Grow Hub"
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
-    <ShellContent ContentTemplate="{DataTemplate start:StartPage}" />
+    <ShellContent x:Name="StartPage" ContentTemplate="{DataTemplate start:StartPage}" />
 
     <TabBar
         x:Name="MainTabBar"
         FlyoutDisplayOptions="AsMultipleItems"
         Route="MainTabBar">
+        <ShellContent Title="{x:Static localization:Resources.Plants}" ContentTemplate="{DataTemplate main:MainPage}" />
+
         <ShellContent
-            Title="{x:Static localization:Resources.Plants}"
-            ContentTemplate="{DataTemplate main:MainPage}"
+            Title="{x:Static localization:Resources.Profile}"
+            ContentTemplate="{DataTemplate userProfile:UserProfilePage}"
             Icon="user_icon.png" />
     </TabBar>
 

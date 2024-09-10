@@ -9,4 +9,10 @@ public sealed partial class AppShell
         CurrentItem = MainTabBar;
         return unit;
     }
+
+    public Unit SetUpStartPageAsStartPage()
+    {
+        CurrentItem = StartPage;
+        return unit;
+    }
 }

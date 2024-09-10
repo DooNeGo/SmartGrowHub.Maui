@@ -5,6 +5,8 @@ namespace SmartGrowHub.Maui.Services.Abstractions;
 
 public interface IAuthService
 {
+    event Func<Unit>? LoggedOut;
+
     TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken);
     TryOptionAsync<LogInResponse> LogInIfRememberAsync(CancellationToken cancellationToken);
     Either<Exception, RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);

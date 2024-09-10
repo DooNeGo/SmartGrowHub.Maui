@@ -6,6 +6,8 @@ namespace SmartGrowHub.Maui.Services.Mock;
 
 public sealed class MockAuthService : IAuthService
 {
+    public event Func<Unit>? LoggedOut;
+
     public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

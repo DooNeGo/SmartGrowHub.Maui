@@ -29,14 +29,16 @@ public sealed partial class LogInPageModel(
             .WaitAsync(cancellationToken));
 
     [RelayCommand]
-    private Task<Unit> LogInAsync(CancellationToken cancellationToken)
+    private async Task<Unit> LogInAsync(CancellationToken cancellationToken)
     {
+        await using IAsyncDisposable loading = await dialogService.Loading();
+
         Fin<LogInRequest> requestFin =
             from userName in UserName.Create(UserNameRaw)
             from password in Password.Create(PasswordRaw)
             select new LogInRequest(userName, password);
 
-        return requestFin.ToEitherAsync().MatchAsync(
+        return await requestFin.ToEitherAsync().MatchAsync(
             RightAsync: request => authService
                 .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(

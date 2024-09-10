@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="SmartGrowHub.Maui.Mopups.LoadingMopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    BackgroundColor="#60000000"
+    CloseWhenBackgroundIsClicked="False">
+    <Border
+        Padding="40"
+        BackgroundColor="White"
+        HorizontalOptions="Center"
+        StrokeShape="RoundRectangle 11"
+        VerticalOptions="Center">
+        <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" />
+    </Border>
+</mopups:PopupPage>

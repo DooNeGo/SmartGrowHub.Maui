@@ -51,6 +51,8 @@
                     ImageSource="sort_icon.png"
                     StrokeShape="RoundRectangle 8" />
             </Grid>
+
+            <Button Command="{Binding LogoutCommand}" Text="Logout" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
