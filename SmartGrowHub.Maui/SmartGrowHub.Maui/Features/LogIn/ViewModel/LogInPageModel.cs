@@ -18,28 +18,30 @@ public sealed partial class LogInPageModel(Shell shell, IAuthService authService
 
     [RelayCommand]
     private Task GoToMainPageAsync(CancellationToken cancellationToken) =>
-        shell.GoToAsync("///MainTabBar").WaitAsync(cancellationToken);
+        Application.Current.Dispatcher.DispatchAsync(() => shell
+            .GoToAsync("///MainTabBar")
+            .WaitAsync(cancellationToken));
 
     [RelayCommand]
     private Task<Unit> LogInAsync(CancellationToken cancellationToken)
     {
-        Fin<LogInRequest> request =
+        Fin<LogInRequest> requestFin =
             from userName in UserName.Create(UserNameRaw)
             from password in Password.Create(PasswordRaw)
             select new LogInRequest(userName, password);
 
-        return request.ToEitherAsync().MatchAsync(
+        return requestFin.ToEitherAsync().MatchAsync(
             RightAsync: request => authService
                 .LogInAsync(request, cancellationToken)
                 .MatchAsync(
-                    SomeAsync: response => GoToMainPageAsync(cancellationToken).ToUnit(),
+                    SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
                     NoneAsync: () => DisplayAlert("User not found", cancellationToken).ToUnit(),
                     FailAsync: exception => DisplayAlert(exception.Message, cancellationToken).ToUnit()),
             LeftAsync: error => DisplayAlert(error.Message, cancellationToken));
     }
 
     private static Task DisplayAlert(string message, CancellationToken cancellationToken) =>
-        Application.Current.Dispatcher.DispatchAsync(() =>
-            Application.Current.MainPage.DisplayAlert("Log in", message, "Ok")
+        Application.Current!.Dispatcher.DispatchAsync(() =>
+            Application.Current.MainPage!.DisplayAlert("Log in", message, "Ok")
                 .WaitAsync(cancellationToken));
 }

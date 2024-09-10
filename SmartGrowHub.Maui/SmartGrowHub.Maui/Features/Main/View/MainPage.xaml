@@ -4,9 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
-    Shell.TabBarIsVisible="True">
-    <ScrollView Padding="20,40,20,20">
-        <VerticalStackLayout>
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BackgroundColor="#F2F2F7"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView Padding="20,100,20,20">
+        <VerticalStackLayout Spacing="10">
             <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
                 <Label
                     HorizontalOptions="Start"
@@ -21,17 +29,27 @@
                     VerticalOptions="Center" />
             </Grid>
 
-            <Grid ColumnDefinitions="*,Auto">
-                <SearchBar
-                    Margin="-20,0,0,0"
-                    MinimumWidthRequest="20"
-                    Placeholder="Search" />
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Border
+                    Padding="10,0,0,0"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 8">
+                    <Entry
+                        FontSize="15"
+                        MinimumHeightRequest="0"
+                        Opacity="0.8"
+                        Placeholder="Search"
+                        PlaceholderColor="#74767C" />
+                </Border>
+                
                 <customControls:CustomImageButton
                     Grid.Column="1"
-                    HeightRequest="25"
+                    Padding="5"
+                    BackgroundColor="White"
+                    HeightRequest="37"
                     ImageSource="sort_icon.png"
-                    Stroke="White"
-                    WidthRequest="25" />
+                    StrokeShape="RoundRectangle 8"
+                    WidthRequest="42" />
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

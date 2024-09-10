@@ -9,17 +9,18 @@ public interface IHttpService
     TryOptionAsync<TResponse> PostAsync<TRequest, TResponse>(string urn, TRequest request, CancellationToken cancellationToken);
 }
 
-public sealed class HttpService : IHttpService
+public sealed class HttpService : IHttpService, IDisposable
 {
     private readonly HttpClient _httpClient;
     private readonly ITokenProvider _tokenProvider;
 
-    public HttpService(ITokenProvider tokenProvider)
+    public HttpService(HttpClient httpClient, ITokenProvider tokenProvider)
     {
-        _httpClient = new HttpClient();
+        _httpClient = httpClient;
         _tokenProvider = tokenProvider;
 
         _httpClient.BaseAddress = new Uri("https://ftrjftdv-5116.euw.devtunnels.ms/api/");
+        ConfigureAuthorizationAsync(_httpClient, CancellationToken.None).GetAwaiter().GetResult();
     }
 
     public TryOptionAsync<TResponse> GetAsync<TResponse>(string urn, CancellationToken cancellationToken) =>
@@ -42,4 +43,6 @@ public sealed class HttpService : IHttpService
             .Map(token => new AuthenticationHeaderValue("Bearer", token))
             .Map(authentication => httpClient.DefaultRequestHeaders.Authorization = authentication)
             .Map(_ => httpClient);
+    
+    public void Dispose() => _httpClient.Dispose();
 }

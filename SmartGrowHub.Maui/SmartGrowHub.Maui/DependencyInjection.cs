@@ -32,9 +32,17 @@ internal static class DependencyInjection
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<ISecureStorageService, SecureStorageService>()
             .AddSingleton<ITokenProvider, TokenProvider>()
-            .AddSingleton<IHttpService, HttpService>();
+            .AddSingleton<IHttpService, HttpService>()
+            .AddSingleton<IUserCredentialProvider, UserCredentialProvider>()
+            .ConfigureHttpClient();
 
     public static IServiceCollection AddApis(this IServiceCollection services, bool isDevelopment) =>
         services
             .AddApi<IAuthService, AuthService, MockAuthService>(isDevelopment);
+
+    public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
+    {
+        services.AddHttpClient<HttpService>();
+        return services;
+    }
 }
