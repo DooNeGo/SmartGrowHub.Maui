@@ -3,11 +3,16 @@ using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Requests;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
+using SmartGrowHub.Maui.Localization;
+using SmartGrowHub.Maui.Services;
 using SmartGrowHub.Maui.Services.Abstractions;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-public sealed partial class LogInPageModel(AppShell shell, IAuthService authService)
+public sealed partial class LogInPageModel(
+    AppShell shell,
+    IAuthService authService,
+    IDialogService dialogService)
     : ObservableValidator
 {
     [ObservableProperty] private string _userNameRaw = string.Empty;
@@ -36,13 +41,11 @@ public sealed partial class LogInPageModel(AppShell shell, IAuthService authServ
                 .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(
                     SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
-                    NoneAsync: () => DisplayAlert("User not found", cancellationToken).ToUnit(),
-                    FailAsync: exception => DisplayAlert(exception.Message, cancellationToken).ToUnit()),
-            LeftAsync: error => DisplayAlert(error.Message, cancellationToken));
+                    NoneAsync: () => DisplayAlertAsync(Resources.UserNotFound, cancellationToken).ToUnit(),
+                    FailAsync: exception => DisplayAlertAsync(exception.Message, cancellationToken).ToUnit()),
+            LeftAsync: error => DisplayAlertAsync(error.Message, cancellationToken));
     }
 
-    private static Task DisplayAlert(string message, CancellationToken cancellationToken) =>
-        Application.Current!.Dispatcher.DispatchAsync(() =>
-            Application.Current.MainPage!.DisplayAlert("Log in", message, "Ok")
-                .WaitAsync(cancellationToken));
+    private Task DisplayAlertAsync(string message, CancellationToken cancellationToken) =>
+        dialogService.DisplayAlertAsync(Resources.Authorization, message, Resources.Ok, cancellationToken);
 }

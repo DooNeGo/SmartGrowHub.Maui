@@ -192,4 +192,7 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>A user with the same username and password was not found</value>
+  </data>
 </root>

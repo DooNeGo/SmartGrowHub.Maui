@@ -268,6 +268,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на A user with the same username and password was not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Welcome back.
         /// </summary>
         internal static string WelcomeBack {
