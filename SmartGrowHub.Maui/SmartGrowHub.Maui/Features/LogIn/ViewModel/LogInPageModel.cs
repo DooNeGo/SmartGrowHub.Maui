@@ -39,5 +39,7 @@ public sealed partial class LogInPageModel(Shell shell, IAuthService authService
     }
 
     private static Task DisplayAlert(string message, CancellationToken cancellationToken) =>
-        Application.Current.MainPage.DisplayAlert("Log in", message, "Ok").WaitAsync(cancellationToken);
+        Application.Current.Dispatcher.DispatchAsync(() =>
+            Application.Current.MainPage.DisplayAlert("Log in", message, "Ok")
+                .WaitAsync(cancellationToken));
 }

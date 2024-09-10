@@ -19,27 +19,23 @@ public sealed class HttpService : IHttpService
         _httpClient = new HttpClient();
         _tokenProvider = tokenProvider;
 
-        _httpClient.BaseAddress = new Uri("https://93w1qjqx-5116.euw.devtunnels.ms/api/");
+        _httpClient.BaseAddress = new Uri("https://ftrjftdv-5116.euw.devtunnels.ms/api/");
     }
 
     public TryOptionAsync<TResponse> GetAsync<TResponse>(string urn, CancellationToken cancellationToken) =>
-        ConfigureAuthorizationAsync(_httpClient, cancellationToken)
-            .Bind(httpClient => httpClient
-                .GetAsync(urn, cancellationToken)
-                .MapAsync(response => response.Content
-                    .ReadFromJsonAsync<TResponse>(cancellationToken)
-                    .Map(Optional))
-                .ToTryOptionAsync());
+        TryOptionAsync(() => _httpClient
+            .GetAsync(urn, cancellationToken)
+            .MapAsync(response => response.Content
+                .ReadFromJsonAsync<TResponse>(cancellationToken)
+                .Map(Optional)));
 
     public TryOptionAsync<TResponse> PostAsync<TRequest, TResponse>(
         string urn, TRequest request, CancellationToken cancellationToken) =>
-        ConfigureAuthorizationAsync(_httpClient, cancellationToken)
-            .Bind(httpClient => httpClient
-                .PostAsJsonAsync(urn, request, cancellationToken)
-                .MapAsync(response => response.Content
-                    .ReadFromJsonAsync<TResponse>(cancellationToken)
-                    .Map(Optional))
-                .ToTryOptionAsync());
+        TryOptionAsync(() => _httpClient
+            .PostAsJsonAsync(urn, request, cancellationToken)
+            .MapAsync(response => response.Content
+                .ReadFromJsonAsync<TResponse>(cancellationToken)
+                .Map(Optional)));
 
     private TryOptionAsync<HttpClient> ConfigureAuthorizationAsync(HttpClient httpClient, CancellationToken cancellationToken) =>
         _tokenProvider.GetAsync(cancellationToken)
