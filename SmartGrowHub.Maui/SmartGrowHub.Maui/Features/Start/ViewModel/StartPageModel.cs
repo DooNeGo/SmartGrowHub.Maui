@@ -5,7 +5,7 @@ using SmartGrowHub.Maui.Features.Register.ViewModel;
 
 namespace SmartGrowHub.Maui.Features.Start.ViewModel;
 
-public sealed partial class StartPageModel(Shell shell) : ObservableObject
+public sealed partial class StartPageModel(AppShell shell) : ObservableObject
 {
     [RelayCommand]
     private Task GoToLogInPageAsync() => shell.GoToAsync(nameof(LogInPageModel));

@@ -177,4 +177,19 @@
   <data name="YourPlants" xml:space="preserve">
     <value>Ваши растения</value>
   </data>
+  <data name="Plants" xml:space="preserve">
+    <value>Растения</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="FailedLogInYourAccount" xml:space="preserve">
+    <value>Не удалось войти в учетную запись. Войдите снова или проверьте подключение к интернету</value>
+  </data>
+  <data name="Authorization" xml:space="preserve">
+    <value>Авторизация</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ок</value>
+  </data>
 </root>

@@ -70,6 +70,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Authorization.
+        /// </summary>
+        internal static string Authorization {
+            get {
+                return ResourceManager.GetString("Authorization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create an account.
         /// </summary>
         internal static string CreateAnAccount {
@@ -124,6 +133,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to log in to your account. Log in again or check your internet connection.
+        /// </summary>
+        internal static string FailedLogInYourAccount {
+            get {
+                return ResourceManager.GetString("FailedLogInYourAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Forgot the password?.
         /// </summary>
         internal static string ForgotThePassword {
@@ -151,6 +169,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ok.
+        /// </summary>
+        internal static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Or continue with.
         /// </summary>
         internal static string OrContinueWith {
@@ -165,6 +192,24 @@ namespace SmartGrowHub.Maui.Localization {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Plants.
+        /// </summary>
+        internal static string Plants {
+            get {
+                return ResourceManager.GetString("Plants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         

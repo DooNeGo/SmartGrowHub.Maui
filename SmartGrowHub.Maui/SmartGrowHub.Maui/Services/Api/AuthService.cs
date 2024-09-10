@@ -12,11 +12,13 @@ public sealed class AuthService(
     IUserCredentialProvider credentialProvider)
     : IAuthService
 {
-    public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, CancellationToken cancellationToken)
+    public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
         => httpService
             .PostAsync<LogInRequestDto, LogInResponseDto>("auth/login", request.ToDto(), cancellationToken)
             .Bind(response => SaveTokenAsync(response, cancellationToken))
-            .Bind(response => SaveCredentialAsync(request, response, cancellationToken))
+            .Bind(response => remember
+                ? SaveCredentialAsync(request, response, cancellationToken)
+                : TryOptionAsync(response))
             .Map(response => response.ToDomain());
 
     private TryOptionAsync<LogInResponseDto> SaveTokenAsync(LogInResponseDto response,
@@ -32,6 +34,12 @@ public sealed class AuthService(
             .SetAsync(request.UserName, request.Password, cancellationToken)
             .Map(_ => response)
             .ToTryOption();
+
+    public TryOptionAsync<LogInResponse> LogInIfRememberAsync(CancellationToken cancellationToken) =>
+        credentialProvider
+            .GetAsync(cancellationToken)
+            .Map(tuple => new LogInRequest(tuple.Item1, tuple.Item2))
+            .Bind(request => LogInAsync(request, remember: false, cancellationToken));
 
     public Try<bool> Logout() =>
         from token in tokenProvider.Remove()

@@ -12,7 +12,6 @@ using SmartGrowHub.Maui.Services.Abstractions;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Mock;
-using System.Net.Http.Headers;
 
 namespace SmartGrowHub.Maui;
 
@@ -28,12 +27,13 @@ internal static class DependencyInjection
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
             .AddSingleton<IUserService, UserService>()
-            .AddSingleton<Shell>(new AppShell())
+            .AddSingleton(new AppShell())
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<ISecureStorageService, SecureStorageService>()
             .AddSingleton<ITokenProvider, TokenProvider>()
             .AddSingleton<IHttpService, HttpService>()
             .AddSingleton<IUserCredentialProvider, UserCredentialProvider>()
+            .AddSingleton<IDialogService, DialogService>()
             .ConfigureHttpClient();
 
     public static IServiceCollection AddApis(this IServiceCollection services, bool isDevelopment) =>

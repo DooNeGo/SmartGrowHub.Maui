@@ -7,11 +7,12 @@ using SmartGrowHub.Maui.Services.Abstractions;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-public sealed partial class LogInPageModel(Shell shell, IAuthService authService)
+public sealed partial class LogInPageModel(AppShell shell, IAuthService authService)
     : ObservableValidator
 {
     [ObservableProperty] private string _userNameRaw = string.Empty;
     [ObservableProperty] private string _passwordRaw = string.Empty;
+    [ObservableProperty] private bool _remember;
 
     [RelayCommand]
     private Task GoToRegisterPageAsync() => shell.GoToAsync(nameof(RegisterPageModel));
@@ -32,7 +33,7 @@ public sealed partial class LogInPageModel(Shell shell, IAuthService authService
 
         return requestFin.ToEitherAsync().MatchAsync(
             RightAsync: request => authService
-                .LogInAsync(request, cancellationToken)
+                .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(
                     SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
                     NoneAsync: () => DisplayAlert("User not found", cancellationToken).ToUnit(),

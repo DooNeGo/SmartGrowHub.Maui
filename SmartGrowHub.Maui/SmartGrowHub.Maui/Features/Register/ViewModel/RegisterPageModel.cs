@@ -4,7 +4,7 @@ using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 namespace SmartGrowHub.Maui.Features.Register.ViewModel;
 
-public sealed partial class RegisterPageModel(Shell shell) : ObservableObject
+public sealed partial class RegisterPageModel(AppShell shell) : ObservableObject
 {
     [RelayCommand]
     private Task GoToLogInPageAsync() => shell.GoToAsync(nameof(LogInPageModel));

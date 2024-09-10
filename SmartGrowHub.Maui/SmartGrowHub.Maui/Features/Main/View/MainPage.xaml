@@ -10,7 +10,7 @@
     x:DataType="viewModel:MainPageModel"
     BackgroundColor="#F2F2F7"
     Shell.NavBarIsVisible="False"
-    Shell.TabBarIsVisible="False">
+    Shell.TabBarIsVisible="True">
 
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
