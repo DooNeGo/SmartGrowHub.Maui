@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
-    Padding="10,0"
+    Padding="{OnPlatform Default='10,0',
+                         iOS='10'}"
     BackgroundColor="White"
     StrokeShape="RoundRectangle 8">
     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">

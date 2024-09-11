@@ -24,30 +24,30 @@ public sealed partial class LogInPageModel(
 
     [RelayCommand]
     private Task GoToMainPageAsync(CancellationToken cancellationToken) =>
-        Application.Current.Dispatcher.DispatchAsync(() => shell
+        Application.Current!.Dispatcher.DispatchAsync(() => shell
             .GoToAsync("///MainTabBar")
             .WaitAsync(cancellationToken));
 
     [RelayCommand]
     private async Task<Unit> LogInAsync(CancellationToken cancellationToken)
     {
-        await using IAsyncDisposable loading = await dialogService.Loading();
-
         Fin<LogInRequest> requestFin =
             from userName in UserName.Create(UserNameRaw)
             from password in Password.Create(PasswordRaw)
             select new LogInRequest(userName, password);
+
+        using IDisposable loading = dialogService.Loading();
 
         return await requestFin.ToEitherAsync().MatchAsync(
             RightAsync: request => authService
                 .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(
                     SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
-                    NoneAsync: () => DisplayAlertAsync(Resources.UserNotFound, cancellationToken).ToUnit(),
-                    FailAsync: exception => DisplayAlertAsync(exception.Message, cancellationToken).ToUnit()),
-            LeftAsync: error => DisplayAlertAsync(error.Message, cancellationToken));
+                    None: () => DisplayAlert(Resources.UserNotFound, cancellationToken),
+                    Fail: exception => DisplayAlert(exception.Message, cancellationToken)),
+            Left: error => DisplayAlert(error.Message, cancellationToken));
     }
 
-    private Task DisplayAlertAsync(string message, CancellationToken cancellationToken) =>
-        dialogService.DisplayAlertAsync(Resources.Authorization, message, Resources.Ok, cancellationToken);
+    private Unit DisplayAlert(string message, CancellationToken cancellationToken) =>
+        dialogService.DisplayAlert(Resources.Authorization, message, Resources.Ok, cancellationToken);
 }

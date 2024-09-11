@@ -11,9 +11,8 @@ public sealed partial class MainPageModel(
     : ObservableObject
 {
     [RelayCommand]
-    public async Task LogoutAsync(CancellationToken cancellationToken)
+    public void Logout()
     {
-        await using IAsyncDisposable loading = await dialogService.Loading();
-        authService.Logout().Try();
+        _ = authService.Logout().IfFailThrow();
     }
 }

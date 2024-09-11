@@ -17,11 +17,12 @@ public sealed partial class App
 
         authService.LoggedOut += OnLoggedOut;
 
-        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(10));
+        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(5));
         authService.LogInIfRememberAsync(tokenSource.Token)
-            .MatchAsync(
-                Succ: _ => OnLoggedIn(),
-                FailAsync: () => dialogService.DisplayAlertAsync(
+            .Match(
+                Some: _ => OnLoggedIn(),
+                None: () => unit,
+                Fail: _ => dialogService.DisplayAlert(
                     Localization.Resources.Authorization,
                     Localization.Resources.FailedLogInYourAccount,
                     Localization.Resources.Ok,
