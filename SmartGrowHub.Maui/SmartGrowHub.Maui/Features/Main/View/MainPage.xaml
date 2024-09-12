@@ -19,17 +19,11 @@
     <ScrollView Padding="20,60,20,20">
         <VerticalStackLayout Spacing="10">
             <Grid ColumnDefinitions="*,Auto">
-                <HorizontalStackLayout Spacing="8">
-                    <Label
-                        HorizontalOptions="Start"
-                        HorizontalTextAlignment="Start"
-                        Style="{StaticResource Headline}"
-                        Text="{x:Static localization:Resources.YourPlants}" />
-                    <Image
-                        Margin="0,5,0,0"
-                        Source="leaves_icon.png"
-                        VerticalOptions="Center" />
-                </HorizontalStackLayout>
+                <Label
+                    HorizontalOptions="Start"
+                    HorizontalTextAlignment="Start"
+                    Style="{StaticResource Headline}"
+                    Text="{x:Static localization:Resources.YourPlants}" />
 
                 <customControls:TextButton
                     Grid.Column="1"

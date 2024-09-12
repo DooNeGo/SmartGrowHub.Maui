@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
-    xmlns:logIn="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:start="clr-namespace:SmartGrowHub.Maui.Features.Start.View"
     xmlns:userProfile="clr-namespace:SmartGrowHub.Maui.Features.UserProfile.View"
@@ -18,7 +17,10 @@
         x:Name="MainTabBar"
         FlyoutDisplayOptions="AsMultipleItems"
         Route="MainTabBar">
-        <ShellContent Title="{x:Static localization:Resources.Plants}" ContentTemplate="{DataTemplate main:MainPage}" />
+        <ShellContent
+            Title="{x:Static localization:Resources.Plants}"
+            ContentTemplate="{DataTemplate main:MainPage}"
+            Icon="leaves_icon.png" />
 
         <ShellContent
             Title="{x:Static localization:Resources.Profile}"
