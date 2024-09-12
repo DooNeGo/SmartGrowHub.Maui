@@ -25,8 +25,7 @@ public sealed partial class App
                 Fail: _ => dialogService.DisplayAlert(
                     Localization.Resources.Authorization,
                     Localization.Resources.FailedLogInYourAccount,
-                    Localization.Resources.Ok,
-                    tokenSource.Token))
+                    Localization.Resources.Ok))
             .GetAwaiter().GetResult();
     }
 

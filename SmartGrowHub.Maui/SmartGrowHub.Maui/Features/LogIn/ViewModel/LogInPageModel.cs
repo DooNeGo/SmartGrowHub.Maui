@@ -43,11 +43,11 @@ public sealed partial class LogInPageModel(
                 .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(
                     SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
-                    None: () => DisplayAlert(Resources.UserNotFound, cancellationToken),
-                    Fail: exception => DisplayAlert(exception.Message, cancellationToken)),
-            Left: error => DisplayAlert(error.Message, cancellationToken));
+                    None: () => DisplayAlert(Resources.UserNotFound),
+                    Fail: exception => DisplayAlert(exception.Message)),
+            Left: error => DisplayAlert(error.Message));
     }
 
-    private Unit DisplayAlert(string message, CancellationToken cancellationToken) =>
-        dialogService.DisplayAlert(Resources.Authorization, message, Resources.Ok, cancellationToken);
+    private Unit DisplayAlert(string message) =>
+        dialogService.DisplayAlert(Resources.Authorization, message, Resources.Ok);
 }

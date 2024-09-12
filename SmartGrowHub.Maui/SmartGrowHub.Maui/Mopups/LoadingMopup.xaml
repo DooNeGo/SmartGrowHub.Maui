@@ -12,6 +12,6 @@
         HorizontalOptions="Center"
         StrokeShape="RoundRectangle 11"
         VerticalOptions="Center">
-        <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" />
+        <ActivityIndicator IsRunning="True" Color="{DynamicResource Primary}" />
     </Border>
 </mopups:PopupPage>
