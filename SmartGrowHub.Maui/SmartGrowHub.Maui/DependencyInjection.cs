@@ -13,7 +13,6 @@ using SmartGrowHub.Maui.Features.UserProfile.ViewModel;
 using SmartGrowHub.Maui.Services;
 using SmartGrowHub.Maui.Services.Abstractions;
 using SmartGrowHub.Maui.Services.Api;
-using System.Net.Http.Headers;
 
 namespace SmartGrowHub.Maui;
 
@@ -33,21 +32,19 @@ internal static class DependencyInjection
             .AddSingleton(new AppShell())
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<ISecureStorageService, SecureStorageService>()
-            .AddSingleton<ITokenProvider, TokenProvider>()
-            .AddTransient<IHttpService, HttpService>()
+            .AddSingleton<ITokenStorage, TokenStorage>()
             .AddSingleton<IUserCredentialProvider, UserCredentialProvider>()
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton(MopupService.Instance)
-            .AddSingleton<IAuthService, AuthService>()
-            .ConfigureHttpClient();
+            .AddSingleton(MopupService.Instance);
 
-    //public static IServiceCollection AddApis(this IServiceCollection services, bool isDevelopment) =>
-    //    services
-    //        .AddApi<IAuthService, AuthService, MockAuthService>(isDevelopment);
-
-    public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
+    public static IServiceCollection AddHttpServices(this IServiceCollection services)
     {
-        services.AddHttpClient<HttpService>();
+        services
+            .AddSingleton<IAuthService, AuthService>()
+            .AddScoped<TokenDelegatingHandler>()
+            .AddScoped<IHttpService, HttpService>()
+            .AddHttpClient<IHttpService, HttpService>()
+            .AddHttpMessageHandler<TokenDelegatingHandler>();
         return services;
     }
 }

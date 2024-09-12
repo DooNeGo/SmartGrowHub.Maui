@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Requests;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
 using SmartGrowHub.Maui.Localization;
 using SmartGrowHub.Maui.Services;
 using SmartGrowHub.Maui.Services.Abstractions;
+using SmartGrowHub.Shared.Auth.Dto.LogIn;
+using SmartGrowHub.Shared.Auth.Extensions;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
@@ -23,18 +24,14 @@ public sealed partial class LogInPageModel(
     private Task GoToRegisterPageAsync() => shell.GoToAsync(nameof(RegisterPageModel));
 
     [RelayCommand]
-    private Task GoToMainPageAsync(CancellationToken cancellationToken) =>
-        Application.Current!.Dispatcher.DispatchAsync(() => shell
-            .GoToAsync("///MainTabBar")
-            .WaitAsync(cancellationToken));
+    private Task GoToMainPageAsync() =>
+        Application.Current!.Dispatcher.DispatchAsync(() =>
+            shell.GoToAsync("///MainTabBar"));
 
     [RelayCommand]
     private async Task<Unit> LogInAsync(CancellationToken cancellationToken)
     {
-        Fin<LogInRequest> requestFin =
-            from userName in UserName.Create(UserNameRaw)
-            from password in Password.Create(PasswordRaw)
-            select new LogInRequest(userName, password);
+        Fin<LogInRequest> requestFin = new LogInRequestDto(UserNameRaw, PasswordRaw).TryToDomain();
 
         using IDisposable loading = dialogService.Loading();
 
@@ -42,7 +39,7 @@ public sealed partial class LogInPageModel(
             RightAsync: request => authService
                 .LogInAsync(request, Remember, cancellationToken)
                 .MatchAsync(
-                    SomeAsync: _ => GoToMainPageAsync(cancellationToken).ToUnit(),
+                    SomeAsync: _ => GoToMainPageAsync().ToUnit(),
                     None: () => DisplayAlert(Resources.UserNotFound),
                     Fail: exception => DisplayAlert(exception.Message)),
             Left: error => DisplayAlert(error.Message));

@@ -26,6 +26,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Features\LogIn\Model\**" />
+	  <EmbeddedResource Remove="Features\LogIn\Model\**" />
+	  <MauiCss Remove="Features\LogIn\Model\**" />
+	  <MauiXaml Remove="Features\LogIn\Model\**" />
+	  <None Remove="Features\LogIn\Model\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Images\leaves_icon.svg" />
 	  <None Remove="Resources\Images\search_icon.svg" />
 	  <None Remove="Resources\Images\sort_icon.svg" />
@@ -33,12 +41,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="8.0.0" />
-		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.0" />
-		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.0" />
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.1" />
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.1" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
 		<PackageReference Include="LanguageExt.Core" Version="4.4.9" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -97,10 +106,6 @@
 		<MauiXaml Update="Mopups\LoadingMopup.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Features\LogIn\Model\" />
 	</ItemGroup>
 
 </Project>

@@ -7,7 +7,8 @@ namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
 public sealed partial class MainPageModel(
     IAuthService authService,
-    IDialogService dialogService)
+    IDialogService dialogService,
+    ITokenStorage tokenProvider)
     : ObservableObject
 {
     [RelayCommand]
@@ -15,4 +16,11 @@ public sealed partial class MainPageModel(
     {
         _ = authService.Logout().IfFailThrow();
     }
+
+    [RelayCommand]
+    public Task<Unit> IsTokenExpired() =>
+        tokenProvider
+            .IsTokenExpiredAsync(CancellationToken.None)
+            .IfSome(result => dialogService
+                .DisplayAlert("Token", result ? "Expired" : "Exists", "Ok"));
 }

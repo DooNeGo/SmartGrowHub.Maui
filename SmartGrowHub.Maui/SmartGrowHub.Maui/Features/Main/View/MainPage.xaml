@@ -47,6 +47,7 @@
             </Grid>
 
             <Button Command="{Binding LogoutCommand}" Text="Logout" />
+            <Button Command="{Binding IsTokenExpiredCommand}" Text="Check token" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

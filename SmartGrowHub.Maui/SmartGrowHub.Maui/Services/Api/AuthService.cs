@@ -8,7 +8,7 @@ namespace SmartGrowHub.Maui.Services.Api;
 
 public sealed class AuthService(
     IHttpService httpService,
-    ITokenProvider tokenProvider,
+    ITokenStorage tokenProvider,
     IUserCredentialProvider credentialProvider)
     : IAuthService
 {
