@@ -1,55 +1,43 @@
-﻿using SmartGrowHub.Domain.Requests;
-using SmartGrowHub.Domain.Responses;
+﻿using SmartGrowHub.Domain.Features.LogIn;
+using SmartGrowHub.Domain.Features.RefreshTokens;
+using SmartGrowHub.Domain.Features.Register;
 using SmartGrowHub.Maui.Services.Abstractions;
 using SmartGrowHub.Shared.Auth.Dto.LogIn;
 using SmartGrowHub.Shared.Auth.Extensions;
+using SmartGrowHub.Shared.UserSessions.Dto;
+using SmartGrowHub.Shared.UserSessions.Dto.RefreshTokens;
 
 namespace SmartGrowHub.Maui.Services.Api;
 
 public sealed class AuthService(
     IHttpService httpService,
-    ITokenStorage tokenProvider,
-    IUserCredentialProvider credentialProvider)
+    IUserSessionProvider sessionProvider)
     : IAuthService
 {
-    public event Func<Unit>? LoggedOut;
-
-    public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
+    public Eff<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
         => httpService
             .PostAsync<LogInRequestDto, LogInResponseDto>("auth/login", request.ToDto(), cancellationToken)
-            .Bind(response => SaveTokenAsync(response, cancellationToken))
-            .Bind(response => remember
-                ? SaveCredentialAsync(request, response, cancellationToken)
-                : TryOptionAsync(response))
-            .Map(response => response.ToDomain());
+            .Bind(option => option.Match(
+                Some: response => response.TryToDomain().ToEff(),
+                None: () => Error.New("Log in response was empty")))
+            .Bind(response => (remember
+                ? sessionProvider.SaveAndSetSessionAsync(response.UserSession, cancellationToken)
+                : sessionProvider.SetSession(response.UserSession))
+                .Map(_ => response));
 
-    private TryOptionAsync<LogInResponseDto> SaveTokenAsync(LogInResponseDto response,
-        CancellationToken cancellationToken) =>
-        tokenProvider
-            .SetAsync(response.JwtToken, cancellationToken)
-            .Map(_ => response)
-            .ToTryOption();
+    public Eff<Unit> LogOutAsync(CancellationToken cancellationToken) => sessionProvider.Remove();
 
-    private TryOptionAsync<LogInResponseDto> SaveCredentialAsync(LogInRequest request, LogInResponseDto response,
-        CancellationToken cancellationToken) =>
-        credentialProvider
-            .SetAsync(request.UserName, request.Password, cancellationToken)
-            .Map(_ => response)
-            .ToTryOption();
+    public Eff<RefreshTokensResponse> RefreshTokensAsync(RefreshTokensRequest request, CancellationToken cancellationToken)
+        => httpService
+            .PostAsync<RefreshTokensRequestDto, RefreshTokensResponseDto>("auth/refresh", request.ToDto(), cancellationToken)
+            .Bind(option => option.Match(
+                Some: response => response.TryToDomain().ToEff(),
+                None: () => Error.New("Refresh tokens response was empty")))
+            .Bind(response => sessionProvider
+                .UpdateTokensAsync(response.AuthTokens, cancellationToken)
+                .Map(_ => response));
 
-    public TryOptionAsync<LogInResponse> LogInIfRememberAsync(CancellationToken cancellationToken) =>
-        credentialProvider
-            .GetAsync(cancellationToken)
-            .Map(tuple => new LogInRequest(tuple.Item1, tuple.Item2))
-            .Bind(request => LogInAsync(request, remember: false, cancellationToken));
-
-    public Try<bool> Logout() =>
-        from token in tokenProvider.Remove()
-        from credential in credentialProvider.Remove()
-        let _ = LoggedOut?.Invoke()
-        select credential;
-
-    public Either<Exception, RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+    public Eff<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

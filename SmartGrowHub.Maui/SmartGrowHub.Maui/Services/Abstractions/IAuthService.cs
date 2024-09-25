@@ -1,14 +1,13 @@
-﻿using SmartGrowHub.Domain.Requests;
-using SmartGrowHub.Domain.Responses;
+﻿using SmartGrowHub.Domain.Features.LogIn;
+using SmartGrowHub.Domain.Features.RefreshTokens;
+using SmartGrowHub.Domain.Features.Register;
 
 namespace SmartGrowHub.Maui.Services.Abstractions;
 
 public interface IAuthService
 {
-    event Func<Unit>? LoggedOut;
-
-    TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken);
-    TryOptionAsync<LogInResponse> LogInIfRememberAsync(CancellationToken cancellationToken);
-    Either<Exception, RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);
-    Try<bool> Logout();
+    Eff<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken);
+    Eff<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);
+    Eff<RefreshTokensResponse> RefreshTokensAsync(RefreshTokensRequest request, CancellationToken cancellationToken);
+    Eff<Unit> LogOutAsync(CancellationToken cancellationToken);
 }

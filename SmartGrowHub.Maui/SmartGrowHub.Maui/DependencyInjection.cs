@@ -32,8 +32,7 @@ internal static class DependencyInjection
             .AddSingleton(new AppShell())
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<ISecureStorageService, SecureStorageService>()
-            .AddSingleton<ITokenStorage, TokenStorage>()
-            .AddSingleton<IUserCredentialProvider, UserCredentialProvider>()
+            .AddSingleton<IUserSessionProvider, UserSessionProvider>()
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton(MopupService.Instance);
 
@@ -42,9 +41,8 @@ internal static class DependencyInjection
         services
             .AddSingleton<IAuthService, AuthService>()
             .AddScoped<TokenDelegatingHandler>()
-            .AddScoped<IHttpService, HttpService>()
-            .AddHttpClient<IHttpService, HttpService>()
-            .AddHttpMessageHandler<TokenDelegatingHandler>();
+            .AddSingleton<IHttpService, HttpService>()
+            .AddHttpClient<IHttpService, HttpService>();
         return services;
     }
 }

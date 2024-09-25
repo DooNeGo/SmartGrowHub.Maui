@@ -1,39 +1,48 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace SmartGrowHub.Maui.Services.Api;
 
-public interface IHttpService
+public interface IHttpService : IDisposable
 {
-    TryOptionAsync<TResponse> GetAsync<TResponse>(string urn, CancellationToken cancellationToken);
-    TryOptionAsync<TResponse> PostAsync<TRequest, TResponse>(string urn, TRequest request, CancellationToken cancellationToken);
+    Eff<Option<TResponse>> GetAsync<TResponse>(string urn, CancellationToken cancellationToken);
+    Eff<Option<TResponse>> PostAsync<TRequest, TResponse>(string urn, TRequest request, CancellationToken cancellationToken);
 }
 
-public sealed class HttpService : IHttpService, IDisposable
+public sealed class HttpService : IHttpService
 {
     private readonly HttpClient _httpClient;
+    private readonly IUserSessionProvider _sessionProvider;
 
-    public HttpService(HttpClient httpClient)
+    public HttpService(HttpClient httpClient, IUserSessionProvider sessionProvider)
     {
         _httpClient = httpClient;
+        _sessionProvider = sessionProvider;
 
         _httpClient.BaseAddress = new Uri("https://ftrjftdv-5116.euw.devtunnels.ms/api/");
     }
 
-    public TryOptionAsync<TResponse> GetAsync<TResponse>(string urn,
-        CancellationToken cancellationToken) =>
-        TryOptionAsync(() => _httpClient
+    public Eff<Option<TResponse>> GetAsync<TResponse>(string urn, CancellationToken cancellationToken) =>
+        liftEff(() => _httpClient
             .GetAsync(urn, cancellationToken)
-            .MapAsync(response => response.Content
+            .Bind(response => response.Content
                 .ReadFromJsonAsync<TResponse>(cancellationToken)
                 .Map(Optional)));
 
-    public TryOptionAsync<TResponse> PostAsync<TRequest, TResponse>(
+    public Eff<Option<TResponse>> PostAsync<TRequest, TResponse>(
         string urn, TRequest request, CancellationToken cancellationToken) =>
-        TryOptionAsync(() => _httpClient
+        liftEff(() => _httpClient
             .PostAsJsonAsync(urn, request, cancellationToken)
-            .MapAsync(response => response.Content
+            .Bind(response => response.Content
                 .ReadFromJsonAsync<TResponse>(cancellationToken)
                 .Map(Optional)));
 
     public void Dispose() => _httpClient.Dispose();
+
+    private Eff<HttpClient> ConfigureAuthentication(HttpClient httpClient, CancellationToken cancellationToken) =>
+        _sessionProvider.GetAccessTokenIfNotExpiredAsync(cancellationToken)
+            .Map(option => option
+                .Map(token => new AuthenticationHeaderValue("Bearer", token))
+                .Map(authHeader => httpClient.DefaultRequestHeaders.Authorization = authHeader))
+            .Map(_ => httpClient);
 }

@@ -8,10 +8,10 @@ namespace SmartGrowHub.Maui.Services;
 
 public interface IDialogService
 {
-    Task<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
-    Task<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
+    Eff<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
+    Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
     Unit DisplayAlert(string title, string message, string cancel);
-    Task<IAsyncDisposable> LoadingAsync();
+    Eff<IAsyncDisposable> LoadingAsync();
     IDisposable Loading();
 }
 
@@ -20,27 +20,30 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
 {
     private readonly LoadingMopup _loadingMopup = new(popupNavigation);
 
-    public Task<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
+    public Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
         CancellationToken cancellationToken) =>
-        Application.Current!.Dispatcher.DispatchAsync(() => Application.Current.MainPage!
-            .DisplayAlert(title, message, accept, cancel)
-            .WaitAsync(cancellationToken));
+        liftEff(() => Application.Current!.Dispatcher.DispatchAsync(() =>
+            Application.Current.MainPage!
+                .DisplayAlert(title, message, accept, cancel)
+                .WaitAsync(cancellationToken)));
 
-    public Task<Unit> DisplayAlertAsync(string title, string message, string cancel,
+    public Eff<Unit> DisplayAlertAsync(string title, string message, string cancel,
         CancellationToken cancellationToken) =>
-        DisplayAlertAsync(title, message, null!, cancel, cancellationToken).ToUnit();
+        DisplayAlertAsync(title, message, null!, cancel, cancellationToken).Map(_ => unit);
 
     public Unit DisplayAlert(string title, string message, string cancel) =>
-        DisplayAlertAsync(title, message, cancel, CancellationToken.None).SafeFireAndForget();
+        DisplayAlertAsync(title, message, cancel, CancellationToken.None)
+            .RunAsync().SafeFireAndForget();
 
-    public Task<IAsyncDisposable> LoadingAsync() =>
-        popupNavigation
-            .PushAsync(_loadingMopup).ToUnit()
-            .Map(_ => (IAsyncDisposable)_loadingMopup);
+    public Eff<IAsyncDisposable> LoadingAsync() =>
+        liftEff(() => popupNavigation
+            .PushAsync(_loadingMopup)
+            .ToUnit()
+            .Map(_ => (IAsyncDisposable)_loadingMopup));
 
     public IDisposable Loading()
     {
-        popupNavigation.PushAsync(_loadingMopup).SafeFireAndForget();
+        LoadingAsync().RunAsync().SafeFireAndForget();
         return _loadingMopup;
     }
 }

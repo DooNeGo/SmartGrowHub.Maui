@@ -1,5 +1,4 @@
 ﻿using SmartGrowHub.Maui.Services;
-using SmartGrowHub.Maui.Services.Abstractions;
 
 namespace SmartGrowHub.Maui;
 
@@ -7,7 +6,7 @@ public sealed partial class App
 {
     private readonly AppShell _shell;
 
-    public App(AppShell shell, IAuthService authService, IDialogService dialogService)
+    public App(AppShell shell, IUserSessionProvider sessionProvider, IDialogService dialogService)
     {
         InitializeComponent();
         _shell = shell;
@@ -15,21 +14,22 @@ public sealed partial class App
         UserAppTheme = AppTheme.Light;
         MainPage = shell;
 
-        authService.LoggedOut += OnLoggedOut;
+        sessionProvider.SessionRemoved += OnSessionRemoved;
+        sessionProvider.SessionSetted += OnSessionSetted;
 
         using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(5));
-        authService.LogInIfRememberAsync(tokenSource.Token)
-            .Match(
-                Some: _ => OnLoggedIn(),
-                None: () => unit,
-                Fail: _ => dialogService.DisplayAlert(
-                    Localization.Resources.Authorization,
-                    Localization.Resources.FailedLogInYourAccount,
-                    Localization.Resources.Ok))
-            .GetAwaiter().GetResult();
+
+        _ = sessionProvider.GetUserSessionAsync(tokenSource.Token)
+            .Map(option => option.Match(
+                Some: _ =>
+                    OnSessionSetted(),
+                None: () =>
+                    OnSessionRemoved()))
+            .Run()
+            .IfFail(error => dialogService.DisplayAlert("Start up error", error.Message, "Ok"));
     }
 
-    private Unit OnLoggedIn() => _shell.SetUpMainPageAsStartPage();
+    private Unit OnSessionSetted() => _shell.SetUpMainPageAsStartPage().RunUnsafe();
 
-    private Unit OnLoggedOut() => _shell.SetUpStartPageAsStartPage();
+    private Unit OnSessionRemoved() => _shell.SetUpStartPageAsStartPage().RunUnsafe();
 }

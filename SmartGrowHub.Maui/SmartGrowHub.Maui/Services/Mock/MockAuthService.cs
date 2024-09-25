@@ -1,29 +1,28 @@
-﻿using SmartGrowHub.Domain.Requests;
-using SmartGrowHub.Domain.Responses;
+﻿using SmartGrowHub.Domain.Features.LogIn;
+using SmartGrowHub.Domain.Features.RefreshTokens;
+using SmartGrowHub.Domain.Features.Register;
 using SmartGrowHub.Maui.Services.Abstractions;
 
 namespace SmartGrowHub.Maui.Services.Mock;
 
 public sealed class MockAuthService : IAuthService
 {
-    public event Func<Unit>? LoggedOut;
-
-    public TryOptionAsync<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
+    public Eff<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public TryOptionAsync<LogInResponse> LogInIfRememberAsync(CancellationToken cancellationToken)
+    public Eff<Unit> LogOutAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Try<bool> Logout()
+    public Eff<RefreshTokensResponse> RefreshTokensAsync(RefreshTokensRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Either<Exception, RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+    public Eff<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
