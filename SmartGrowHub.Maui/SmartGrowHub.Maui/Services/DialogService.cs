@@ -1,5 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using Mopups.Interfaces;
+﻿using Mopups.Interfaces;
 using SmartGrowHub.Maui.Mopups;
 using SmartGrowHub.Maui.Services.Extensions;
 using System.Diagnostics.CodeAnalysis;
@@ -12,7 +11,7 @@ public interface IDialogService
     Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
     Unit DisplayAlert(string title, string message, string cancel);
     Eff<IAsyncDisposable> LoadingAsync();
-    IDisposable Loading();
+    Eff<IDisposable> Loading();
 }
 
 [SuppressMessage("Design", "CA1001:Типы, владеющие высвобождаемыми полями, должны быть высвобождаемыми", Justification = "<Ожидание>")]
@@ -22,8 +21,8 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
 
     public Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
         CancellationToken cancellationToken) =>
-        liftEff(() => Application.Current!.Dispatcher.DispatchAsync(() =>
-            Application.Current.MainPage!
+        liftEff(() => Application.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
+            () => Application.Current.MainPage!
                 .DisplayAlert(title, message, accept, cancel)
                 .WaitAsync(cancellationToken)));
 
@@ -33,17 +32,21 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
 
     public Unit DisplayAlert(string title, string message, string cancel) =>
         DisplayAlertAsync(title, message, cancel, CancellationToken.None)
-            .RunAsync().SafeFireAndForget();
+            .RunUnsafeAsync()
+            .SafeFireAndForget();
 
     public Eff<IAsyncDisposable> LoadingAsync() =>
         liftEff(() => popupNavigation
-            .PushAsync(_loadingMopup)
-            .ToUnit()
-            .Map(_ => (IAsyncDisposable)_loadingMopup));
+            .PushAsync(_loadingMopup).ToUnit()
+            .Map(IAsyncDisposable (_) => _loadingMopup));
 
-    public IDisposable Loading()
-    {
-        LoadingAsync().RunAsync().SafeFireAndForget();
-        return _loadingMopup;
-    }
+    public Eff<IDisposable> Loading() =>
+        liftEff(IDisposable () =>
+        {
+            _ = LoadingAsync()
+                .RunUnsafeAsync()
+                .SafeFireAndForget();
+
+            return _loadingMopup;
+        });
 }

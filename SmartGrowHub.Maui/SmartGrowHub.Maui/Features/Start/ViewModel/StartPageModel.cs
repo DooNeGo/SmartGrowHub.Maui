@@ -2,14 +2,22 @@
 using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
+using SmartGrowHub.Maui.Services;
 
 namespace SmartGrowHub.Maui.Features.Start.ViewModel;
 
-public sealed partial class StartPageModel(AppShell shell) : ObservableObject
+public sealed partial class StartPageModel(INavigationService navigationService)
+    : ObservableObject
 {
     [RelayCommand]
-    private Task GoToLogInPageAsync() => shell.GoToAsync(nameof(LogInPageModel));
+    private Task<Unit> GoToLogInPageAsync() => navigationService
+        .GoToAsync(nameof(LogInPageModel))
+        .RunUnsafeAsync()
+        .AsTask();
 
     [RelayCommand]
-    private Task GoToRegisterPageAsync() => shell.GoToAsync(nameof(RegisterPageModel));
+    private Task<Unit> GoToRegisterPageAsync() => navigationService
+        .GoToAsync(nameof(RegisterPageModel))
+        .RunUnsafeAsync()
+        .AsTask();
 }

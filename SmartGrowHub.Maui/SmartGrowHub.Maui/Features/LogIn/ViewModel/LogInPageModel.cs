@@ -1,5 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Domain.Features.LogIn;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
@@ -12,7 +11,7 @@ using Resources = SmartGrowHub.Maui.Localization.Resources;
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 public sealed partial class LogInPageModel(
-    AppShell shell,
+    INavigationService navigationService,
     IServiceProvider serviceProvider,
     IDialogService dialogService)
     : ObservableObject
@@ -22,38 +21,28 @@ public sealed partial class LogInPageModel(
     [ObservableProperty] private bool _remember;
 
     [RelayCommand]
-    private Task GoToRegisterPageAsync() => shell.GoToAsync(nameof(RegisterPageModel));
+    private Task<Unit> GoToRegisterPageAsync() => navigationService
+        .GoToAsync(nameof(RegisterPageModel))
+        .RunUnsafeAsync()
+        .AsTask();
 
     [RelayCommand]
-    private Task GoToMainPageAsync() =>
-        Application.Current!.Dispatcher.DispatchAsync(() =>
-            shell.GoToAsync("///MainTabBar"));
-
-    [RelayCommand]
-    private void LogIn()
+    private async Task<Unit> LogInAsync()
     {
         Fin<LogInRequest> requestFin = new LogInRequestDto(UserNameRaw, PasswordRaw).TryToDomain();
 
-        IDisposable loading = dialogService.Loading();
-        AsyncServiceScope scope = serviceProvider.CreateAsyncScope();
-        IAuthService authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
-        CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(15));
-
-        requestFin
-            .Match(
-                Succ: request => authService
-                    .LogInAsync(request, Remember, tokenSource.Token)
-                    .Map(_ =>
-                        unit),
-                Fail: error => Pure(unit))
-            .Bind(_ => liftEff(() =>
-            {
-                loading.Dispose();
-                scope.DisposeAsync().SafeFireAndForget();
-                tokenSource.Dispose();
-            }))
-            .RunUnsafeAsync()
-            .SafeFireAndForget();
+        using IDisposable loading = dialogService.Loading().RunUnsafe();
+        var authService = serviceProvider.GetRequiredService<IAuthService>();
+     
+        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(15));
+        
+        return await Task.Run(() => requestFin.ToEff()
+            .Bind(request => authService
+                .LogInAsync(request, Remember, tokenSource.Token)
+                .Map(_ => unit))
+            .RunAsync()
+            .Map(fin => fin.IfFail(error => DisplayAlert(error.Message))),
+            tokenSource.Token);
     }
 
     private Unit DisplayAlert(string message) =>

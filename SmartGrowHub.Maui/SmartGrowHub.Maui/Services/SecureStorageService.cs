@@ -34,5 +34,5 @@ public sealed class SecureStorageService(ISecureStorage secureStorage) : ISecure
         where T : DomainType<T, string> =>
         GetAsync(key, cancellationToken)
             .Map(option => option
-                .Map(token => T.FromUnsafe(token)));
+                .Map(T.FromUnsafe));
 }

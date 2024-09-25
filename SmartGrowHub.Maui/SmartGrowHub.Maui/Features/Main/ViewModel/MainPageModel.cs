@@ -10,23 +10,22 @@ public sealed partial class MainPageModel(
     : ObservableObject
 {
     [RelayCommand]
-    public Task<Unit> Logout(CancellationToken cancellationToken) =>
-        sessionProvider.Remove()
-            .RunAsync()
-            .WaitAsync(cancellationToken)
-            .Map(fin => fin
-                .IfFail(error => dialogService
-                    .DisplayAlert("Logout error", error.Message, "Ok")));
+    public Task<Unit> LogoutAsync(CancellationToken cancellationToken) =>
+        Task.Run(() => sessionProvider
+            .Remove().Run()
+            .IfFail(error => dialogService
+                .DisplayAlert("Logout error", error.Message, "Ok")),
+            cancellationToken);
 
     [RelayCommand]
     public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>
-        sessionProvider
+        Task.Run(() => sessionProvider
             .GetAccessTokenIfNotExpiredAsync(cancellationToken)
             .Map(option => option.Match(
                 Some: token => dialogService.DisplayAlert("Token", token, "Ok"),
                 None: () => dialogService.DisplayAlert("Token", "Expired", "Ok")))
             .RunAsync()
-            .Map(fin => fin
-                .IfFail(error => dialogService
-                    .DisplayAlert("Token1", error.Message, "Ok")));
+            .Map(fin => fin.IfFail(error => dialogService
+                .DisplayAlert("Token1", error.Message, "Ok"))),
+            cancellationToken);
 }

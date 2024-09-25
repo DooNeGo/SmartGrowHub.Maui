@@ -9,4 +9,10 @@ public static class AsyncAwaitBestPracticeExtensions
         SafeFireAndForgetExtensions.SafeFireAndForget(task);
         return unit;
     }
+    
+    public static Unit SafeFireAndForget<T>(this ValueTask<T> task)
+    {
+        SafeFireAndForgetExtensions.SafeFireAndForget(task);
+        return unit;
+    }
 }

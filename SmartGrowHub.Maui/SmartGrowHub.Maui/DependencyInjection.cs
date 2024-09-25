@@ -29,18 +29,18 @@ internal static class DependencyInjection
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
             .AddSingleton<IUserService, UserService>()
-            .AddSingleton(new AppShell())
+            .AddSingleton<AppShell>()
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<ISecureStorageService, SecureStorageService>()
             .AddSingleton<IUserSessionProvider, UserSessionProvider>()
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton(MopupService.Instance);
+            .AddSingleton(MopupService.Instance)
+            .AddSingleton<INavigationService, NavigationService>();
 
     public static IServiceCollection AddHttpServices(this IServiceCollection services)
     {
         services
             .AddSingleton<IAuthService, AuthService>()
-            .AddScoped<TokenDelegatingHandler>()
             .AddSingleton<IHttpService, HttpService>()
             .AddHttpClient<IHttpService, HttpService>();
         return services;

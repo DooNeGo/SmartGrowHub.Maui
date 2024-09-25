@@ -1,4 +1,6 @@
-﻿namespace SmartGrowHub.Maui;
+﻿using SmartGrowHub.Maui.Services.Extensions;
+
+namespace SmartGrowHub.Maui;
 
 public sealed partial class AppShell
 {
@@ -11,7 +13,9 @@ public sealed partial class AppShell
         SetUpRootPage(StartPage);
 
     private Eff<Unit> SetUpRootPage(ShellItem item) =>
-        Pure(Application.Current!.Dispatcher
-            .Dispatch(() => CurrentItem = item))
-            .Map(_ => unit);
+        Pure(Dispatcher.InvokeOnUiThreadIfNeeded(() =>
+        {
+            CurrentItem = item;
+            return unit;
+        }));
 }

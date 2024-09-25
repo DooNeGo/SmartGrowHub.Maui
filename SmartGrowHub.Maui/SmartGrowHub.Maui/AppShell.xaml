@@ -11,7 +11,10 @@
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
-    <ShellContent x:Name="StartPage" ContentTemplate="{DataTemplate start:StartPage}" />
+    <ShellContent
+        x:Name="StartPage"
+        Route="StartPage"
+        ContentTemplate="{DataTemplate start:StartPage}" />
 
     <TabBar
         x:Name="MainTabBar"

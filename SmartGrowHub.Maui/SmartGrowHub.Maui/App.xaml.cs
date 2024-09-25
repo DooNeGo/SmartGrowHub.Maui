@@ -15,21 +15,19 @@ public sealed partial class App
         MainPage = shell;
 
         sessionProvider.SessionRemoved += OnSessionRemoved;
-        sessionProvider.SessionSetted += OnSessionSetted;
+        sessionProvider.SessionSet += OnSessionSet;
 
-        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(5));
+        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(6));
 
         _ = sessionProvider.GetUserSessionAsync(tokenSource.Token)
-            .Map(option => option.Match(
-                Some: _ =>
-                    OnSessionSetted(),
-                None: () =>
-                    OnSessionRemoved()))
+            .Bind(option => option.Match(
+                Some: _ => _shell.SetUpMainPageAsStartPage(),
+                None: () => _shell.SetUpStartPageAsStartPage()))
             .Run()
             .IfFail(error => dialogService.DisplayAlert("Start up error", error.Message, "Ok"));
     }
 
-    private Unit OnSessionSetted() => _shell.SetUpMainPageAsStartPage().RunUnsafe();
+    private Unit OnSessionSet() => _shell.SetUpMainPageAsStartPage().RunUnsafe();
 
     private Unit OnSessionRemoved() => _shell.SetUpStartPageAsStartPage().RunUnsafe();
 }

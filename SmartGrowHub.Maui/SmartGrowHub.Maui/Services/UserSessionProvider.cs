@@ -7,7 +7,7 @@ namespace SmartGrowHub.Maui.Services;
 
 public interface IUserSessionProvider
 {
-    event Func<Unit>? SessionSetted;
+    event Func<Unit>? SessionSet;
     event Func<Unit>? SessionRemoved;
 
     Eff<Option<UserSession>> GetUserSessionAsync(CancellationToken cancellationToken);
@@ -26,11 +26,11 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
     private const string SessionIdKey = "session_id";
     private const string UserIdKey = "user_id";
 
-    private static readonly JsonWebTokenHandler _tokenHandler = new();
+    private static readonly JsonWebTokenHandler TokenHandler = new();
 
     private Option<UserSession> _currentUserSession = None;
 
-    public event Func<Unit>? SessionSetted;
+    public event Func<Unit>? SessionSet;
     public event Func<Unit>? SessionRemoved;
 
     public Eff<Option<UserSession>> GetUserSessionAsync(CancellationToken cancellationToken) =>
@@ -49,12 +49,12 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
             Some: session => Pure(Some(session.AuthTokens.RefreshToken)),
             None: GetSavedRefreshTokenAsync(cancellationToken));
 
-    public Eff<Unit> SetSession(UserSession session) =>
-        liftEff(() =>
-        {
-            _currentUserSession = session;
-            SessionSetted?.Invoke();
-        });
+    public Eff<Unit> SetSession(UserSession session)
+    {
+        _currentUserSession = session;
+        SessionSet?.Invoke();
+        return Pure(unit);
+    }
 
     public Eff<Unit> SaveAndSetSessionAsync(UserSession session, CancellationToken cancellationToken) =>
         from _1 in SaveSessionAsync(session, cancellationToken)
@@ -85,12 +85,12 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
                 Some: _ => SaveAuthTokensAsync(authTokens, cancellationToken),
                 None: Pure(unit)));
 
-    private Eff<Unit> RemoveCurrentSession() =>
-        liftEff(() =>
-        {
-            _currentUserSession = None;
-            SessionRemoved?.Invoke();
-        });
+    private Eff<Unit> RemoveCurrentSession()
+    {
+        _currentUserSession = None;
+        SessionRemoved?.Invoke();
+        return Pure(unit);
+    }
 
     private Eff<Option<AccessToken>> GetAccessTokenAsync(CancellationToken cancellationToken) =>
         _currentUserSession.Match(
@@ -102,11 +102,11 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
         from optionUserId in GetSavedUserIdAsync(cancellationToken)
         from optionAccessToken in GetSavedAccessTokenAsync(cancellationToken)
         from optionRefreshToken in GetSavedRefreshTokenAsync(cancellationToken)
-        select (from sessionId in optionSessionId
-                from userId in optionUserId
-                from accessToken in optionAccessToken
-                from refreshToken in optionRefreshToken
-                select new UserSession(sessionId, userId, new AuthTokens(accessToken, refreshToken)));
+        select from sessionId in optionSessionId
+               from userId in optionUserId
+               from accessToken in optionAccessToken
+               from refreshToken in optionRefreshToken
+               select new UserSession(sessionId, userId, new AuthTokens(accessToken, refreshToken));
 
     private Eff<Unit> SaveSessionAsync(UserSession session, CancellationToken cancellationToken) =>
         from _1 in SaveSessionIdAsync(session.Id, cancellationToken)
@@ -146,13 +146,13 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
     private Eff<Option<AuthTokens>> GetSavedAuthTokensAsync(CancellationToken cancellationToken) =>
         from optionAccessToken in GetSavedAccessTokenAsync(cancellationToken)
         from optionRefreshToken in GetSavedRefreshTokenAsync(cancellationToken)
-        select (from accessToken in optionAccessToken
-                from refreshToken in optionRefreshToken
-                select new AuthTokens(accessToken, refreshToken));
+        select from accessToken in optionAccessToken
+               from refreshToken in optionRefreshToken
+               select new AuthTokens(accessToken, refreshToken);
 
     private static bool IsTokenExpired<T>(T token) where T : DomainType<T, string>
     {
-        int expiration = _tokenHandler
+        int expiration = TokenHandler
             .ReadJsonWebToken(token.To())
             .GetPayloadValue<int>("exp");
 
