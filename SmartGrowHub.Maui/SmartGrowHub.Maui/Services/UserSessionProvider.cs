@@ -49,12 +49,12 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
             Some: session => Pure(Some(session.AuthTokens.RefreshToken)),
             None: GetSavedRefreshTokenAsync(cancellationToken));
 
-    public Eff<Unit> SetSession(UserSession session)
-    {
-        _currentUserSession = session;
-        SessionSet?.Invoke();
-        return Pure(unit);
-    }
+    public Eff<Unit> SetSession(UserSession session) =>
+        liftEff(() =>
+        {
+            _currentUserSession = session;
+            SessionSet?.Invoke();
+        });
 
     public Eff<Unit> SaveAndSetSessionAsync(UserSession session, CancellationToken cancellationToken) =>
         from _1 in SaveSessionAsync(session, cancellationToken)
@@ -85,12 +85,12 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
                 Some: _ => SaveAuthTokensAsync(authTokens, cancellationToken),
                 None: Pure(unit)));
 
-    private Eff<Unit> RemoveCurrentSession()
-    {
-        _currentUserSession = None;
-        SessionRemoved?.Invoke();
-        return Pure(unit);
-    }
+    private Eff<Unit> RemoveCurrentSession() =>
+        liftEff(() =>
+        {
+            _currentUserSession = None;
+            SessionRemoved?.Invoke();
+        });
 
     private Eff<Option<AccessToken>> GetAccessTokenAsync(CancellationToken cancellationToken) =>
         _currentUserSession.Match(
