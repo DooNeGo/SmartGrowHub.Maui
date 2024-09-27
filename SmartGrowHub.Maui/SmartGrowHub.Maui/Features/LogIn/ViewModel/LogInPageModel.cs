@@ -4,15 +4,13 @@ using SmartGrowHub.Domain.Features.LogIn;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
 using SmartGrowHub.Maui.Services;
 using SmartGrowHub.Maui.Services.Abstractions;
-using SmartGrowHub.Shared.Auth.Dto.LogIn;
-using SmartGrowHub.Shared.Auth.Extensions;
 using Resources = SmartGrowHub.Maui.Localization.Resources;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 public sealed partial class LogInPageModel(
     INavigationService navigationService,
-    IServiceProvider serviceProvider,
+    IAuthService authService,
     IDialogService dialogService)
     : ObservableObject
 {
@@ -27,24 +25,26 @@ public sealed partial class LogInPageModel(
         .AsTask();
 
     [RelayCommand]
-    private async Task<Unit> LogInAsync()
+    private Task<Unit> LogInAsync()
     {
-        Fin<LogInRequest> requestFin = new LogInRequestDto(UserNameRaw, PasswordRaw).TryToDomain();
+        CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(5));
 
-        using IDisposable loading = dialogService.Loading().RunUnsafe();
-        var authService = serviceProvider.GetRequiredService<IAuthService>();
-     
-        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(15));
-        
-        return await Task.Run(() => requestFin.ToEff()
-            .Bind(request => authService
-                .LogInAsync(request, Remember, tokenSource.Token)
-                .Map(_ => unit))
-            .RunAsync()
-            .Map(fin => fin.IfFail(error => DisplayAlert(error.Message))),
-            tokenSource.Token);
+        return Task.Run(() =>
+            (from request in LogInRequest.Create(UserNameRaw, PasswordRaw).ToEff()
+             from _1 in dialogService.ShowLoading()
+             from _2 in authService.LogInAsync(request, Remember, tokenSource.Token)
+             select unit)
+             .IfFailEff(error => DisplayAlert(error.Message))
+             .RunUnsafeAsync()
+             .Bind(_ => dialogService.HideLoading().RunAsync())
+             .AsTask()
+             .Map(_ =>
+             {
+                 tokenSource.Dispose();
+                 return unit;
+             }));
     }
 
-    private Unit DisplayAlert(string message) =>
+    private IO<Unit> DisplayAlert(string message) =>
         dialogService.DisplayAlert(Resources.Authorization, message, Resources.Ok);
 }

@@ -12,20 +12,21 @@ public sealed partial class MainPageModel(
     [RelayCommand]
     public Task<Unit> LogoutAsync(CancellationToken cancellationToken) =>
         Task.Run(() => sessionProvider
-            .Remove().Run()
-            .IfFail(error => dialogService
-                .DisplayAlert("Logout error", error.Message, "Ok")),
+            .Remove()
+            .IfFailEff(error => dialogService.DisplayAlert("Logout error", error.Message, "Ok"))
+            .RunUnsafeAsync()
+            .AsTask(),
             cancellationToken);
 
     [RelayCommand]
     public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>
         Task.Run(() => sessionProvider
             .GetAccessTokenIfNotExpiredAsync(cancellationToken)
-            .Map(option => option.Match(
+            .Bind(option => option.Match(
                 Some: token => dialogService.DisplayAlert("Token", token, "Ok"),
                 None: () => dialogService.DisplayAlert("Token", "Expired", "Ok")))
-            .RunAsync()
-            .Map(fin => fin.IfFail(error => dialogService
-                .DisplayAlert("Token1", error.Message, "Ok"))),
+            .IfFailEff(error => dialogService.DisplayAlert("Token", error.Message, "Ok"))
+            .RunUnsafeAsync()
+            .AsTask(),
             cancellationToken);
 }

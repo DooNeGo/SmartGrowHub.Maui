@@ -1,52 +1,57 @@
 ﻿using Mopups.Interfaces;
 using SmartGrowHub.Maui.Mopups;
 using SmartGrowHub.Maui.Services.Extensions;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SmartGrowHub.Maui.Services;
 
 public interface IDialogService
 {
-    Eff<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
-    Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
-    Unit DisplayAlert(string title, string message, string cancel);
-    Eff<IAsyncDisposable> LoadingAsync();
-    Eff<IDisposable> Loading();
+    IO<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
+    IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
+    IO<Unit> DisplayAlert(string title, string message, string cancel);
+    IO<Unit> ShowLoadingAsync();
+    IO<Unit> HideLoadingAsync();
+    IO<Unit> ShowLoading();
+    IO<Unit> HideLoading();
 }
 
-[SuppressMessage("Design", "CA1001:Типы, владеющие высвобождаемыми полями, должны быть высвобождаемыми", Justification = "<Ожидание>")]
 public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogService
 {
-    private readonly LoadingMopup _loadingMopup = new(popupNavigation);
+    private readonly LoadingMopup _loadingMopup = new();
 
-    public Eff<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
+    public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
         CancellationToken cancellationToken) =>
-        liftEff(() => Application.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
+        liftIO(() => Application.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
             () => Application.Current.MainPage!
                 .DisplayAlert(title, message, accept, cancel)
                 .WaitAsync(cancellationToken)));
 
-    public Eff<Unit> DisplayAlertAsync(string title, string message, string cancel,
+    public IO<Unit> DisplayAlertAsync(string title, string message, string cancel,
         CancellationToken cancellationToken) =>
         DisplayAlertAsync(title, message, null!, cancel, cancellationToken).Map(_ => unit);
 
-    public Unit DisplayAlert(string title, string message, string cancel) =>
-        DisplayAlertAsync(title, message, cancel, CancellationToken.None)
-            .RunUnsafeAsync()
-            .SafeFireAndForget();
+    public IO<Unit> DisplayAlert(string title, string message, string cancel) =>
+        lift(() => DisplayAlertAsync(title, message, cancel, CancellationToken.None)
+            .RunAsync()
+            .SafeFireAndForget());
 
-    public Eff<IAsyncDisposable> LoadingAsync() =>
-        liftEff(() => popupNavigation
-            .PushAsync(_loadingMopup).ToUnit()
-            .Map(IAsyncDisposable (_) => _loadingMopup));
+    public IO<Unit> ShowLoadingAsync() =>
+        liftIO(() => popupNavigation
+            .PushAsync(_loadingMopup)
+            .ToUnit());
 
-    public Eff<IDisposable> Loading() =>
-        liftEff(IDisposable () =>
-        {
-            _ = LoadingAsync()
-                .RunUnsafeAsync()
-                .SafeFireAndForget();
+    public IO<Unit> HideLoadingAsync() =>
+        liftIO(() => popupNavigation
+            .PopAsync()
+            .ToUnit());
 
-            return _loadingMopup;
-        });
+    public IO<Unit> ShowLoading() =>
+        lift(() => ShowLoadingAsync()
+            .RunAsync()
+            .SafeFireAndForget());
+
+    public IO<Unit> HideLoading() =>
+        lift(() => HideLoadingAsync()
+            .RunAsync()
+            .SafeFireAndForget());
 }
