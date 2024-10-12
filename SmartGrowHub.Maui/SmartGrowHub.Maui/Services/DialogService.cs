@@ -10,9 +10,9 @@ public interface IDialogService
     IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
     IO<Unit> DisplayAlert(string title, string message, string cancel);
     IO<Unit> ShowLoadingAsync();
-    IO<Unit> HideLoadingAsync();
+    IO<Unit> PopAsync();
     IO<Unit> ShowLoading();
-    IO<Unit> HideLoading();
+    IO<Unit> Pop();
 }
 
 public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogService
@@ -40,18 +40,18 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
             .PushAsync(_loadingMopup)
             .ToUnit());
 
-    public IO<Unit> HideLoadingAsync() =>
-        liftIO(() => popupNavigation
-            .PopAsync()
-            .ToUnit());
+    public IO<Unit> PopAsync() =>
+        liftIO(() => popupNavigation.PopupStack.Count > 0
+            ? popupNavigation.PopAsync()
+            : Task.CompletedTask);
 
     public IO<Unit> ShowLoading() =>
         lift(() => ShowLoadingAsync()
             .RunAsync()
             .SafeFireAndForget());
 
-    public IO<Unit> HideLoading() =>
-        lift(() => HideLoadingAsync()
+    public IO<Unit> Pop() =>
+        lift(() => PopAsync()
             .RunAsync()
             .SafeFireAndForget());
 }

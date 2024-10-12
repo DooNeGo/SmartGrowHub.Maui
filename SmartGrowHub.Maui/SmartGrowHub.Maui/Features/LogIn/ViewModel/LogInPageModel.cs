@@ -19,31 +19,25 @@ public sealed partial class LogInPageModel(
     [ObservableProperty] private bool _remember;
 
     [RelayCommand]
-    private Task<Unit> GoToRegisterPageAsync() => navigationService
-        .GoToAsync(nameof(RegisterPageModel))
-        .RunUnsafeAsync()
-        .AsTask();
+    private Task<Unit> GoToRegisterPageAsync(CancellationToken cancellationToken) =>
+        navigationService
+            .GoToAsync(nameof(RegisterPageModel), cancellationToken)
+            .RunUnsafeAsync()
+            .AsTask();
 
     [RelayCommand]
-    private Task<Unit> LogInAsync()
-    {
-        CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(5));
-
-        return Task.Run(() =>
-            (from request in LogInRequest.Create(UserNameRaw, PasswordRaw).ToEff()
-             from _1 in dialogService.ShowLoading()
-             from _2 in authService.LogInAsync(request, Remember, tokenSource.Token)
-             select unit)
-             .IfFailEff(error => DisplayAlert(error.Message))
-             .RunUnsafeAsync()
-             .Bind(_ => dialogService.HideLoading().RunAsync())
-             .AsTask()
-             .Map(_ =>
-             {
-                 tokenSource.Dispose();
-                 return unit;
-             }));
-    }
+    private Task<Unit> LogInAsync(CancellationToken cancellationToken) =>
+        Task.Run(() => (
+            from request in LogInRequest.Create(UserNameRaw, PasswordRaw).ToEff()
+            from _1 in dialogService.ShowLoadingAsync()
+            from _2 in authService.LogInAsync(request, Remember, cancellationToken)
+            select unit)
+            .RunAsync()
+            .Bind(fin => dialogService
+                .PopAsync()
+                .RunAsync().AsTask()
+                .Map(_ => fin.IfFail(error => DisplayAlert(error.Message).Run()))),
+            cancellationToken);
 
     private IO<Unit> DisplayAlert(string message) =>
         dialogService.DisplayAlert(Resources.Authorization, message, Resources.Ok);

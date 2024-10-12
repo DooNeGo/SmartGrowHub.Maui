@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace SmartGrowHub.Maui.Services.Api;
 
-public interface IHttpService : IDisposable
+public interface IHttpService
 {
     Eff<Option<TResponse>> GetAsync<TResponse>(string urn, CancellationToken cancellationToken);
     Eff<Option<TResponse>> PostAsync<TRequest, TResponse>(string urn, TRequest request, CancellationToken cancellationToken);
@@ -20,6 +20,7 @@ public sealed class HttpService : IHttpService
         _sessionProvider = sessionProvider;
 
         _httpClient.BaseAddress = new Uri("https://ftrjftdv-5116.euw.devtunnels.ms/api/");
+        _httpClient.Timeout = TimeSpan.FromSeconds(10);
     }
 
     public Eff<Option<TResponse>> GetAsync<TResponse>(string urn, CancellationToken cancellationToken) =>
@@ -36,8 +37,6 @@ public sealed class HttpService : IHttpService
             .Bind(response => response.Content
                 .ReadFromJsonAsync<TResponse>(cancellationToken)
                 .Map(Optional)));
-
-    public void Dispose() => _httpClient.Dispose();
 
     private Eff<HttpClient> ConfigureAuthentication(HttpClient httpClient, CancellationToken cancellationToken) =>
         _sessionProvider.GetAccessTokenIfNotExpiredAsync(cancellationToken)

@@ -22,7 +22,7 @@
                 HorizontalOptions="Center"
                 Spacing="35"
                 VerticalOptions="End">
-                <Image HeightRequest="110" Source="appicon_foreground" />
+                <Image HeightRequest="110" Source="appicon_foreground.png" />
                 <Image HeightRequest="110" Source="start_app_text.png" />
             </HorizontalStackLayout>
 

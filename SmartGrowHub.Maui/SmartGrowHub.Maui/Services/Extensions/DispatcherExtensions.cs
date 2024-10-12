@@ -11,12 +11,6 @@ public static class DispatcherExtensions
         dispatcher.IsDispatchRequired
             ? dispatcher.Dispatch(action)
             : action();
-
-    private static Unit Dispatch(this IDispatcher dispatcher, Func<Unit> action)
-    {
-        dispatcher.Dispatch(() => action());
-        return unit;
-    }
     
     private static Unit Dispatch<T>(this IDispatcher dispatcher, Func<T> action)
     {

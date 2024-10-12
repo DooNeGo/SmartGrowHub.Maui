@@ -1,22 +1,25 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Maui.Services;
+using SmartGrowHub.Maui.Services.Abstractions;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
 public sealed partial class MainPageModel(
     IDialogService dialogService,
+    IAuthService authService,
     IUserSessionProvider sessionProvider)
     : ObservableObject
 {
     [RelayCommand]
     public Task<Unit> LogoutAsync(CancellationToken cancellationToken) =>
-        Task.Run(() => sessionProvider
-            .Remove()
-            .IfFailEff(error => dialogService.DisplayAlert("Logout error", error.Message, "Ok"))
+        Task.Run(() => (
+            from _1 in dialogService.ShowLoading()
+            from _2 in authService.LogOutAsync(cancellationToken)
+            select unit)
             .RunUnsafeAsync()
-            .AsTask(),
-            cancellationToken);
+            .Bind(_ => dialogService.PopAsync().RunAsync())
+            .AsTask(), cancellationToken);
 
     [RelayCommand]
     public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>

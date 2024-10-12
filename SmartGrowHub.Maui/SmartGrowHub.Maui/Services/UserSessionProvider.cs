@@ -11,6 +11,7 @@ public interface IUserSessionProvider
     event Func<Unit>? SessionRemoved;
 
     Eff<Option<UserSession>> GetUserSessionAsync(CancellationToken cancellationToken);
+    Eff<Option<Id<UserSession>>> GetUserSessionIdAsync(CancellationToken cancellationToken);
     Eff<Option<AccessToken>> GetAccessTokenIfNotExpiredAsync(CancellationToken cancellationToken);
     Eff<Option<RefreshToken>> GetRefreshTokenAsync(CancellationToken cancellationToken);
     Eff<Unit> SetSession(UserSession session);
@@ -36,7 +37,13 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
     public Eff<Option<UserSession>> GetUserSessionAsync(CancellationToken cancellationToken) =>
         _currentUserSession.Match(
             Some: session => Pure(Some(session)),
-            None: GetSavedUserSessionAsync(cancellationToken));
+            None: FetchAndSetUserSessionAsync(cancellationToken));
+
+    public Eff<Option<Id<UserSession>>> GetUserSessionIdAsync(CancellationToken cancellationToken) =>
+        _currentUserSession.Match(
+            Some: session => Pure(Some(session.Id)),
+            None: FetchAndSetUserSessionAsync(cancellationToken)
+                .Map(option => option.Map(session => session.Id)));
 
     public Eff<Option<AccessToken>> GetAccessTokenIfNotExpiredAsync(CancellationToken cancellationToken) =>
         GetAccessTokenAsync(cancellationToken)
@@ -47,7 +54,8 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
     public Eff<Option<RefreshToken>> GetRefreshTokenAsync(CancellationToken cancellationToken) =>
         _currentUserSession.Match(
             Some: session => Pure(Some(session.AuthTokens.RefreshToken)),
-            None: GetSavedRefreshTokenAsync(cancellationToken));
+            None: FetchAndSetUserSessionAsync(cancellationToken)
+                .Map(option => option.Map(session => session.AuthTokens.RefreshToken)));
 
     public Eff<Unit> SetSession(UserSession session) =>
         liftEff(() =>
@@ -57,33 +65,36 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
         });
 
     public Eff<Unit> SaveAndSetSessionAsync(UserSession session, CancellationToken cancellationToken) =>
-        from _1 in SaveSessionAsync(session, cancellationToken)
-        from _2 in SetSession(session)
-        select unit;
+        SaveSessionAsync(session, cancellationToken) >>
+        SetSession(session);
 
     public Eff<Unit> Remove() =>
-        from _1 in secureStorage.Remove(SessionIdKey)
-        from _2 in secureStorage.Remove(UserIdKey)
-        from _3 in secureStorage.Remove(AccessTokenKey)
-        from _4 in secureStorage.Remove(RefreshTokenKey)
-        from _5 in RemoveCurrentSession()
-        select unit;
+        RemoveSavedValue(SessionIdKey) >>
+        RemoveSavedValue(UserIdKey) >>
+        RemoveSavedValue(AccessTokenKey) >>
+        RemoveSavedValue(RefreshTokenKey) >>
+        RemoveCurrentSession();
 
     public Eff<Unit> UpdateTokensAsync(AuthTokens authTokens, CancellationToken cancellationToken) =>
-        from _1 in UpdateTokens(authTokens)
-        from _2 in UpdateSavedTokensAsync(authTokens, cancellationToken)
-        select unit;
+        UpdateCurrentSessionTokens(authTokens) >>
+        UpdateSavedTokensAsync(authTokens, cancellationToken);
 
-    private Eff<Unit> UpdateTokens(AuthTokens authTokens) =>
-        Pure(_currentUserSession = _currentUserSession
-            .Map(session => session with { AuthTokens = authTokens }))
+    private Eff<Unit> UpdateCurrentSessionTokens(AuthTokens authTokens) =>
+        liftEff(() => _currentUserSession = _currentUserSession
+                .Map(session => session with { AuthTokens = authTokens }))
             .Map(_ => unit);
 
     private Eff<Unit> UpdateSavedTokensAsync(AuthTokens authTokens, CancellationToken cancellationToken) =>
-        GetSavedAuthTokensAsync(cancellationToken)
+        FetchAuthTokensAsync(cancellationToken)
             .Bind(option => option.Match(
                 Some: _ => SaveAuthTokensAsync(authTokens, cancellationToken),
-                None: Pure(unit)));
+                None: unitEff));
+    
+    private Eff<Option<AccessToken>> GetAccessTokenAsync(CancellationToken cancellationToken) =>
+        _currentUserSession.Match(
+            Some: session => Pure(Some(session.AuthTokens.AccessToken)),
+            None: FetchAndSetUserSessionAsync(cancellationToken)
+                .Map(option => option.Map(session => session.AuthTokens.AccessToken)));
 
     private Eff<Unit> RemoveCurrentSession() =>
         liftEff(() =>
@@ -92,28 +103,21 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
             SessionRemoved?.Invoke();
         });
 
-    private Eff<Option<AccessToken>> GetAccessTokenAsync(CancellationToken cancellationToken) =>
-        _currentUserSession.Match(
-            Some: session => Pure(Some(session.AuthTokens.AccessToken)),
-            None: GetSavedAccessTokenAsync(cancellationToken));
-
-    private Eff<Option<UserSession>> GetSavedUserSessionAsync(CancellationToken cancellationToken) =>
-        from optionSessionId in GetSavedSessionIdAsync(cancellationToken)
-        from optionUserId in GetSavedUserIdAsync(cancellationToken)
-        from optionAccessToken in GetSavedAccessTokenAsync(cancellationToken)
-        from optionRefreshToken in GetSavedRefreshTokenAsync(cancellationToken)
-        select from sessionId in optionSessionId
-               from userId in optionUserId
-               from accessToken in optionAccessToken
-               from refreshToken in optionRefreshToken
-               select new UserSession(sessionId, userId, new AuthTokens(accessToken, refreshToken));
+    private Eff<Option<UserSession>> FetchAndSetUserSessionAsync(CancellationToken cancellationToken) =>
+        FetchUserSessionAsync(cancellationToken)
+            .Bind(option => option.Match(
+                Some: session => SetSession(session).Map(_ => Some(session)),
+                None: Pure(Option<UserSession>.None)));
 
     private Eff<Unit> SaveSessionAsync(UserSession session, CancellationToken cancellationToken) =>
-        from _1 in SaveSessionIdAsync(session.Id, cancellationToken)
-        from _2 in SaveUserIdAsync(session.UserId, cancellationToken)
-        from _3 in SaveAuthTokensAsync(session.AuthTokens, cancellationToken)
-        select unit;
+        SaveSessionIdAsync(session.Id, cancellationToken) >>
+        SaveUserIdAsync(session.UserId, cancellationToken) >>
+        SaveAuthTokensAsync(session.AuthTokens, cancellationToken);
 
+    private Eff<Unit> SaveAuthTokensAsync(AuthTokens authTokens, CancellationToken cancellationToken) =>
+        SaveAccessTokenAsync(authTokens.AccessToken, cancellationToken) >>
+        SaveRefreshTokenAsync(authTokens.RefreshToken, cancellationToken);
+    
     private Eff<Unit> SaveSessionIdAsync(Id<UserSession> id, CancellationToken cancellationToken) =>
         secureStorage.SaveDomainTypeAsync(SessionIdKey, id, cancellationToken);
 
@@ -125,34 +129,41 @@ public sealed class UserSessionProvider(ISecureStorageService secureStorage) : I
 
     private Eff<Unit> SaveRefreshTokenAsync(RefreshToken token, CancellationToken cancellationToken) =>
         secureStorage.SaveDomainTypeAsync(RefreshTokenKey, token, cancellationToken);
-
-    private Eff<Unit> SaveAuthTokensAsync(AuthTokens authTokens, CancellationToken cancellationToken) =>
-        from _1 in SaveAccessTokenAsync(authTokens.AccessToken, cancellationToken)
-        from _2 in SaveRefreshTokenAsync(authTokens.RefreshToken, cancellationToken)
-        select unit;
-
-    private Eff<Option<Id<UserSession>>> GetSavedSessionIdAsync(CancellationToken cancellationToken) =>
-        secureStorage.GetDomainTypeAsync<Id<UserSession>>(SessionIdKey, cancellationToken);
-
-    private Eff<Option<Id<User>>> GetSavedUserIdAsync(CancellationToken cancellationToken) =>
-        secureStorage.GetDomainTypeAsync<Id<User>>(UserIdKey, cancellationToken);
-
-    private Eff<Option<AccessToken>> GetSavedAccessTokenAsync(CancellationToken cancellationToken) =>
-        secureStorage.GetDomainTypeAsync<AccessToken>(AccessTokenKey, cancellationToken);
-
-    private Eff<Option<RefreshToken>> GetSavedRefreshTokenAsync(CancellationToken cancellationToken) =>
-        secureStorage.GetDomainTypeAsync<RefreshToken>(RefreshTokenKey, cancellationToken);
-
-    private Eff<Option<AuthTokens>> GetSavedAuthTokensAsync(CancellationToken cancellationToken) =>
-        from optionAccessToken in GetSavedAccessTokenAsync(cancellationToken)
-        from optionRefreshToken in GetSavedRefreshTokenAsync(cancellationToken)
+    
+    private Eff<Option<UserSession>> FetchUserSessionAsync(CancellationToken cancellationToken) =>
+        from optionSessionId in FetchSessionIdAsync(cancellationToken)
+        from optionUserId in FetchUserIdAsync(cancellationToken)
+        from optionAuthTokens in FetchAuthTokensAsync(cancellationToken)
+        select from sessionId in optionSessionId
+               from userId in optionUserId
+               from authTokens in optionAuthTokens
+               select new UserSession(sessionId, userId, authTokens);
+    
+    private Eff<Option<AuthTokens>> FetchAuthTokensAsync(CancellationToken cancellationToken) =>
+        from optionAccessToken in FetchAccessTokenAsync(cancellationToken)
+        from optionRefreshToken in FetchRefreshTokenAsync(cancellationToken)
         select from accessToken in optionAccessToken
                from refreshToken in optionRefreshToken
                select new AuthTokens(accessToken, refreshToken);
 
-    private static bool IsTokenExpired<T>(T token) where T : DomainType<T, string>
+    private Eff<Option<Id<UserSession>>> FetchSessionIdAsync(CancellationToken cancellationToken) =>
+        secureStorage.GetDomainTypeAsync<Id<UserSession>>(SessionIdKey, cancellationToken);
+
+    private Eff<Option<Id<User>>> FetchUserIdAsync(CancellationToken cancellationToken) =>
+        secureStorage.GetDomainTypeAsync<Id<User>>(UserIdKey, cancellationToken);
+
+    private Eff<Option<AccessToken>> FetchAccessTokenAsync(CancellationToken cancellationToken) =>
+        secureStorage.GetDomainTypeAsync<AccessToken>(AccessTokenKey, cancellationToken);
+
+    private Eff<Option<RefreshToken>> FetchRefreshTokenAsync(CancellationToken cancellationToken) =>
+        secureStorage.GetDomainTypeAsync<RefreshToken>(RefreshTokenKey, cancellationToken);
+
+    private Eff<Unit> RemoveSavedValue(string key) =>
+        secureStorage.Remove(key).Map(_ => unit);
+
+    private static bool IsTokenExpired(AccessToken token)
     {
-        int expiration = TokenHandler
+        var expiration = TokenHandler
             .ReadJsonWebToken(token.To())
             .GetPayloadValue<int>("exp");
 

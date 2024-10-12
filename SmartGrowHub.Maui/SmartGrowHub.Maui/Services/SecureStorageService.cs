@@ -33,6 +33,7 @@ public sealed class SecureStorageService(ISecureStorage secureStorage) : ISecure
     public Eff<Option<T>> GetDomainTypeAsync<T>(string key, CancellationToken cancellationToken)
         where T : DomainType<T, string> =>
         GetAsync(key, cancellationToken)
-            .Map(option => option
-                .Map(T.FromUnsafe));
+            .Bind(option => option.Map(T.From).Match(
+                Some: value => value.ToEff().Map(Optional),
+                None: Pure(Option<T>.None)));
 }
