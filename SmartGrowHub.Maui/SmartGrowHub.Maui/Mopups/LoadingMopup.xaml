@@ -7,11 +7,15 @@
     BackgroundColor="#60000000"
     CloseWhenBackgroundIsClicked="False">
     <Border
-        Padding="40"
+        Padding="30"
         BackgroundColor="White"
         HorizontalOptions="Center"
-        StrokeShape="RoundRectangle 11"
+        StrokeShape="RoundRectangle 20"
         VerticalOptions="Center">
-        <ActivityIndicator IsRunning="True" Color="{DynamicResource Primary}" />
+        <ActivityIndicator
+            HeightRequest="40"
+            IsRunning="True"
+            WidthRequest="40"
+            Color="{DynamicResource Primary}" />
     </Border>
 </mopups:PopupPage>

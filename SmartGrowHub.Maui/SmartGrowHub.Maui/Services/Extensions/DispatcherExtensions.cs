@@ -2,11 +2,11 @@ namespace SmartGrowHub.Maui.Services.Extensions;
 
 public static class DispatcherExtensions
 {
-    public static Task<T> InvokeOnUiThreadIfNeeded<T>(this IDispatcher dispatcher, Func<Task<T>> action) =>
-        dispatcher.IsDispatchRequired
+    public static IO<T> InvokeOnUiThreadIfNeeded<T>(this IDispatcher dispatcher, Func<Task<T>> action) =>
+        liftIO(() => dispatcher.IsDispatchRequired
             ? dispatcher.DispatchAsync(action)
-            : action();
-    
+            : action());
+
     public static Unit InvokeOnUiThreadIfNeeded(this IDispatcher dispatcher, Func<Unit> action) =>
         dispatcher.IsDispatchRequired
             ? dispatcher.Dispatch(action)

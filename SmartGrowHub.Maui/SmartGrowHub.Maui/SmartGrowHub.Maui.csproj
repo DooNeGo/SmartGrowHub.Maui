@@ -45,19 +45,18 @@
 		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-24" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.1.2" />
+		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-26" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
-		<PackageReference Include="Ulid" Version="1.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Domain\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj" />
-	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Shared\SmartGrowHub.Shared.csproj" />
+	  <ProjectReference Include="..\..\SmartGrowHub.Maui.Application\SmartGrowHub.Maui.Application.csproj" />
+	  <ProjectReference Include="..\..\SmartGrowHub.Maui.Infrastructure\SmartGrowHub.Maui.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Application\SmartGrowHub.Application.csproj" />
+	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

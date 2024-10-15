@@ -1,4 +1,4 @@
-﻿using SmartGrowHub.Maui.Services;
+﻿using SmartGrowHub.Maui.Application.Interfaces;
 
 namespace SmartGrowHub.Maui;
 
@@ -26,22 +26,19 @@ public sealed partial class App
     {
         using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(6));
 
-        _sessionProvider.GetUserSessionAsync(tokenSource.Token)
-            .Bind(option => option.Match(
-                Some: _ => _shell.SetUpMainPageAsStartPage(),
-                None: () => unitEff))
-            .Run()
-            .IfFail(error => _dialogService
-                .DisplayAlert("Start up error", error.Message, Localization.Resources.Ok));
+        Task.Run(() => _sessionProvider.GetUserSession(tokenSource.Token)
+            .Bind(_ => _shell.SetMainAsRoot())
+            .RunAsync()
+            .Map(fin => fin.IfFail(error => _dialogService
+                .DisplayAlert("Start up error", error.Message, Localization.Resources.Ok))))
+            .GetAwaiter().GetResult();
 
         base.OnStart();
     }
 
     private Unit OnSessionSet() => _shell
-        .SetUpMainPageAsStartPage()
-        .RunUnsafe();
+        .SetMainAsRoot().Run();
 
     private Unit OnSessionRemoved() => _shell
-        .SetUpStartPageAsStartPage()
-        .RunUnsafe();
+        .SetLogInAsRoot().Run();
 }

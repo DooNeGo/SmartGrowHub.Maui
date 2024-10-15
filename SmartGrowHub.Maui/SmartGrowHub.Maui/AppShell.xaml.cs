@@ -6,16 +6,17 @@ public sealed partial class AppShell
 {
     public AppShell() => InitializeComponent();
 
-    public Eff<Unit> SetUpMainPageAsStartPage() =>
-        SetUpRootPage(MainTabBar);
+    public IO<Unit> SetMainAsRoot() =>
+        SetRootPage(MainTabBar);
 
-    public Eff<Unit> SetUpStartPageAsStartPage() =>
-        SetUpRootPage(StartPage);
+    public IO<Unit> SetLogInAsRoot() =>
+        SetRootPage(StartPage);
 
-    private Eff<Unit> SetUpRootPage(ShellItem item) =>
-        Pure(Dispatcher.InvokeOnUiThreadIfNeeded(() =>
-        {
-            CurrentItem = item;
-            return unit;
-        }));
+    private IO<Unit> SetRootPage(ShellItem item) =>
+        lift(() => Dispatcher
+            .InvokeOnUiThreadIfNeeded(() =>
+            {
+                CurrentItem = item;
+                return unit;
+            }));
 }

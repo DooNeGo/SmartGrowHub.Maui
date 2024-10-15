@@ -1,19 +1,9 @@
 ﻿using Mopups.Interfaces;
+using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Mopups;
 using SmartGrowHub.Maui.Services.Extensions;
 
 namespace SmartGrowHub.Maui.Services;
-
-public interface IDialogService
-{
-    IO<Unit> DisplayAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken);
-    IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel, CancellationToken cancellationToken);
-    IO<Unit> DisplayAlert(string title, string message, string cancel);
-    IO<Unit> ShowLoadingAsync();
-    IO<Unit> PopAsync();
-    IO<Unit> ShowLoading();
-    IO<Unit> Pop();
-}
 
 public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogService
 {
@@ -21,10 +11,10 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
 
     public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
         CancellationToken cancellationToken) =>
-        liftIO(() => Application.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
-            () => Application.Current.MainPage!
+        App.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
+            () => App.Current.MainPage!
                 .DisplayAlert(title, message, accept, cancel)
-                .WaitAsync(cancellationToken)));
+                .WaitAsync(cancellationToken));
 
     public IO<Unit> DisplayAlertAsync(string title, string message, string cancel,
         CancellationToken cancellationToken) =>

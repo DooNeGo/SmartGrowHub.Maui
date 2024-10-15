@@ -9,9 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui.iOS", "Sm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui", "SmartGrowHub.Maui\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj", "{D620AEC7-E113-4852-986F-0530A0E7AFFF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Shared", "SmartGrowHub.Shared\SmartGrowHub.Shared\SmartGrowHub.Shared.csproj", "{13F597DB-BD77-43AE-8705-F62234FF6311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Shared", "SmartGrowHub.Shared\SmartGrowHub.Shared\SmartGrowHub.Shared.csproj", "{3BD4C686-0485-4696-BA76-744AB37344C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Domain", "SmartGrowHub.Shared\SmartGrowHub.Domain\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj", "{A4B04630-7B43-4378-B478-D443062528DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Domain", "SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj", "{05A838F6-005D-4185-9D80-613BD2FF9C82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Application", "SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Application\SmartGrowHub.Application.csproj", "{15C3DF81-316E-428F-B5B5-64E4D63F31F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Application", "SmartGrowHub.Maui.Application\SmartGrowHub.Maui.Application.csproj", "{67D157AF-02AC-4154-9FB9-0B83537B57AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Infrastructure", "SmartGrowHub.Maui.Infrastructure\SmartGrowHub.Maui.Infrastructure.csproj", "{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,14 +41,26 @@ Global
 		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13F597DB-BD77-43AE-8705-F62234FF6311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13F597DB-BD77-43AE-8705-F62234FF6311}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13F597DB-BD77-43AE-8705-F62234FF6311}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13F597DB-BD77-43AE-8705-F62234FF6311}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4B04630-7B43-4378-B478-D443062528DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4B04630-7B43-4378-B478-D443062528DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4B04630-7B43-4378-B478-D443062528DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4B04630-7B43-4378-B478-D443062528DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD4C686-0485-4696-BA76-744AB37344C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD4C686-0485-4696-BA76-744AB37344C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD4C686-0485-4696-BA76-744AB37344C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD4C686-0485-4696-BA76-744AB37344C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

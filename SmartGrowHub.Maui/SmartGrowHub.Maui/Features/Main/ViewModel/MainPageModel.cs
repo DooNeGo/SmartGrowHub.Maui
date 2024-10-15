@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SmartGrowHub.Maui.Services;
-using SmartGrowHub.Maui.Services.Abstractions;
+using SmartGrowHub.Application.LogOut;
+using SmartGrowHub.Application.Services;
+using SmartGrowHub.Domain.Model;
+using SmartGrowHub.Maui.Application.Interfaces;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
@@ -15,7 +17,8 @@ public sealed partial class MainPageModel(
     public Task<Unit> LogoutAsync(CancellationToken cancellationToken) =>
         Task.Run(() => (
             from _1 in dialogService.ShowLoading()
-            from _2 in authService.LogOutAsync(cancellationToken)
+            from sessionId in sessionProvider.GetUserSessionId(cancellationToken)
+            from _3 in authService.LogOut(new LogOutRequest(sessionId), cancellationToken)
             select unit)
             .RunUnsafeAsync()
             .Bind(_ => dialogService.PopAsync().RunAsync())
@@ -24,11 +27,9 @@ public sealed partial class MainPageModel(
     [RelayCommand]
     public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>
         Task.Run(() => sessionProvider
-            .GetAccessTokenIfNotExpiredAsync(cancellationToken)
-            .Bind(option => option.Match(
-                Some: token => dialogService.DisplayAlert("Token", token, "Ok"),
-                None: () => dialogService.DisplayAlert("Token", "Expired", "Ok")))
-            .IfFailEff(error => dialogService.DisplayAlert("Token", error.Message, "Ok"))
+            .GetAccessTokenIfNotExpired(cancellationToken)
+            .Bind(token => dialogService.DisplayAlert("Token", token, "Ok"))
+            .IfFailEff(error => dialogService.DisplayAlert("Token", error.IsEmpty ? "Expired" : error.Message, "Ok"))
             .RunUnsafeAsync()
             .AsTask(),
             cancellationToken);

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Mvvm.Messaging;
 using Mopups.Services;
+using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Features.LogIn.View;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 using SmartGrowHub.Maui.Features.Main.View;
@@ -12,9 +12,6 @@ using SmartGrowHub.Maui.Features.Start.ViewModel;
 using SmartGrowHub.Maui.Features.UserProfile.View;
 using SmartGrowHub.Maui.Features.UserProfile.ViewModel;
 using SmartGrowHub.Maui.Services;
-using SmartGrowHub.Maui.Services.Abstractions;
-using SmartGrowHub.Maui.Services.Api;
-using SmartGrowHub.Maui.Services.Mock;
 
 namespace SmartGrowHub.Maui;
 
@@ -30,22 +27,10 @@ internal static class DependencyInjection
 
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
-            .AddSingleton<IUserService, UserService>()
-            .AddSingleton<AppShell>()
-            .AddSingleton(SecureStorage.Default)
-            .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
-            .AddSingleton<ISecureStorageService, SecureStorageService>()
-            .AddSingleton<IUserSessionProvider, UserSessionProvider>()
-            .AddSingleton<IDialogService, DialogService>()
             .AddSingleton(MopupService.Instance)
+            .AddSingleton(SecureStorage.Default)
+            .AddSingleton<AppShell>()
+            .AddSingleton<ISecureStorageService, SecureStorageService>()
+            .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<INavigationService, NavigationService>();
-
-    public static IServiceCollection AddHttpServices(this IServiceCollection services)
-    {
-        services
-            .AddTransient<IAuthService, AuthService>()
-            .AddHttpClient<IHttpService, HttpService>();
-        
-        return services;
-    }
 }

@@ -1,4 +1,6 @@
-﻿namespace SmartGrowHub.Maui.Services.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace SmartGrowHub.Maui.Infrastructure.Services.Extensions;
 
 public static class ApiMockDiExtensions
 {
