@@ -195,4 +195,13 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>Пользователь с таким именем пользователя и паролем не найден</value>
   </data>
+  <data name="AuthorizationError" xml:space="preserve">
+    <value>Ошибка авторизации</value>
+  </data>
+  <data name="LogInToYourAccountAgain" xml:space="preserve">
+    <value>Войдите снова в вашу учетную запись</value>
+  </data>
+  <data name="FailedToRefreshPage" xml:space="preserve">
+    <value>Не удалось обновить страницу</value>
+  </data>
 </root>

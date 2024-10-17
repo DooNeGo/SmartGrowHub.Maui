@@ -7,10 +7,10 @@ public static class DispatcherExtensions
             ? dispatcher.DispatchAsync(action)
             : action());
 
-    public static Unit InvokeOnUiThreadIfNeeded(this IDispatcher dispatcher, Func<Unit> action) =>
-        dispatcher.IsDispatchRequired
+    public static IO<Unit> InvokeOnUiThreadIfNeeded(this IDispatcher dispatcher, Func<Unit> action) =>
+        lift(() => dispatcher.IsDispatchRequired
             ? dispatcher.Dispatch(action)
-            : action();
+            : action());
     
     private static Unit Dispatch<T>(this IDispatcher dispatcher, Func<T> action)
     {

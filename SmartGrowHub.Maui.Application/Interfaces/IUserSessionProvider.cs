@@ -5,11 +5,9 @@ namespace SmartGrowHub.Maui.Application.Interfaces;
 
 public interface IUserSessionProvider
 {
-    event Func<Unit>? SessionSet;
-    event Func<Unit>? SessionRemoved;
-
     Eff<UserSession> GetUserSession(CancellationToken cancellationToken);
     Eff<Id<UserSession>> GetUserSessionId(CancellationToken cancellationToken);
+    Eff<Id<User>> GetUserId(CancellationToken cancellationToken);
     Eff<AccessToken> GetAccessTokenIfNotExpired(CancellationToken cancellationToken);
     Eff<RefreshToken> GetRefreshToken(CancellationToken cancellationToken);
     IO<Unit> SetSession(UserSession session);

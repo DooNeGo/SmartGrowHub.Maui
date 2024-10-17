@@ -1,28 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SmartGrowHub.Application.LogOut;
-using SmartGrowHub.Application.Services;
-using SmartGrowHub.Domain.Model;
+using Mediator;
+using SmartGrowHub.Domain.Extensions;
 using SmartGrowHub.Maui.Application.Interfaces;
+using SmartGrowHub.Maui.Application.Messages.Commands;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
 public sealed partial class MainPageModel(
     IDialogService dialogService,
-    IAuthService authService,
-    IUserSessionProvider sessionProvider)
+    IUserSessionProvider sessionProvider,
+    IMediator mediator)
     : ObservableObject
 {
     [RelayCommand]
-    public Task<Unit> LogoutAsync(CancellationToken cancellationToken) =>
-        Task.Run(() => (
-            from _1 in dialogService.ShowLoading()
-            from sessionId in sessionProvider.GetUserSessionId(cancellationToken)
-            from _3 in authService.LogOut(new LogOutRequest(sessionId), cancellationToken)
-            select unit)
-            .RunUnsafeAsync()
-            .Bind(_ => dialogService.PopAsync().RunAsync())
-            .AsTask(), cancellationToken);
+    public async Task<Unit> LogoutAsync(CancellationToken cancellationToken)
+    {
+        await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
+        await Task.Run(() => LogOut(cancellationToken).RunUnsafeAsync())
+            .ConfigureAwait(false);
+
+        return dialogService.Pop().Run();
+    }
+
+    private Eff<Unit> LogOut(CancellationToken cancellationToken) =>
+        from sessionId in sessionProvider.GetUserSessionId(cancellationToken)
+        from _ in mediator.Send(LogOutCommand.Default, cancellationToken).ToEff()
+        select unit;
 
     [RelayCommand]
     public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>

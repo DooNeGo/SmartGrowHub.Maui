@@ -27,6 +27,7 @@ internal static class DependencyInjection
 
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
+            .AddMediator()
             .AddSingleton(MopupService.Instance)
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<AppShell>()

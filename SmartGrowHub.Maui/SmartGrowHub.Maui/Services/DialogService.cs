@@ -1,4 +1,5 @@
 ﻿using Mopups.Interfaces;
+using SmartGrowHub.Domain.Extensions;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Mopups;
 using SmartGrowHub.Maui.Services.Extensions;
@@ -26,14 +27,12 @@ public sealed class DialogService(IPopupNavigation popupNavigation) : IDialogSer
             .SafeFireAndForget());
 
     public IO<Unit> ShowLoadingAsync() =>
-        liftIO(() => popupNavigation
-            .PushAsync(_loadingMopup)
-            .ToUnit());
+        popupNavigation.PushAsync(_loadingMopup).ToIO();
 
     public IO<Unit> PopAsync() =>
-        liftIO(() => popupNavigation.PopupStack.Count > 0
-            ? popupNavigation.PopAsync()
-            : Task.CompletedTask);
+        popupNavigation.PopupStack.Count > 0
+            ? popupNavigation.PopAsync().ToIO()
+            : unitIO;
 
     public IO<Unit> ShowLoading() =>
         lift(() => ShowLoadingAsync()

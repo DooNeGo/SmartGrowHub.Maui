@@ -195,4 +195,13 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>A user with the same username and password was not found</value>
   </data>
+  <data name="AuthorizationError" xml:space="preserve">
+    <value>Authorization error</value>
+  </data>
+  <data name="LogInToYourAccountAgain" xml:space="preserve">
+    <value>Log in to your account again</value>
+  </data>
+  <data name="FailedToRefreshPage" xml:space="preserve">
+    <value>The page could not be refreshed</value>
+  </data>
 </root>

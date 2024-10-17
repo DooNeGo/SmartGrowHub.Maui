@@ -26,28 +26,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Features\LogIn\Model\**" />
-	  <EmbeddedResource Remove="Features\LogIn\Model\**" />
-	  <MauiCss Remove="Features\LogIn\Model\**" />
-	  <MauiXaml Remove="Features\LogIn\Model\**" />
-	  <None Remove="Features\LogIn\Model\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Images\leaves_icon.svg" />
-	  <None Remove="Resources\Images\search_icon.svg" />
-	  <None Remove="Resources\Images\sort_icon.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="8.0.0" />
-		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
-		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-26" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Mediator.SourceGenerator" Version="2.1.7">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 	</ItemGroup>

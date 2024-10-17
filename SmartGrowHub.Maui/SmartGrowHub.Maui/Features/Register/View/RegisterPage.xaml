@@ -18,10 +18,25 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Row="1" Spacing="20">
-                <customControls:CustomEntry IconSource="user_icon.png" Placeholder="{x:Static localization:Resources.UserName}" />
-                <customControls:CustomEntry IconSource="user_icon.png" Placeholder="{x:Static localization:Resources.DisplayName}" />
-                <customControls:CustomEntry IconSource="envelope_icon.png" Placeholder="{x:Static localization:Resources.Email}" />
-                <customControls:CustomEntry IconSource="lock_icon.png" Placeholder="{x:Static localization:Resources.Password}" />
+                <customControls:CustomEntry
+                    IconSource="user_icon.png"
+                    Placeholder="{x:Static localization:Resources.UserName}"
+                    Text="{Binding UserNameRaw}" />
+
+                <customControls:CustomEntry
+                    IconSource="user_icon.png"
+                    Placeholder="{x:Static localization:Resources.DisplayName}"
+                    Text="{Binding DisplayNameRaw}" />
+
+                <customControls:CustomEntry
+                    IconSource="envelope_icon.png"
+                    Placeholder="{x:Static localization:Resources.Email}"
+                    Text="{Binding EmailRaw}" />
+
+                <customControls:CustomEntry
+                    IconSource="lock_icon.png"
+                    Placeholder="{x:Static localization:Resources.Password}"
+                    Text="{Binding PasswordRaw}" />
 
                 <Button
                     Background="{OnPlatform Android={StaticResource PrimaryLinearGradientBrush}}"

@@ -79,6 +79,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Authorization error.
+        /// </summary>
+        internal static string AuthorizationError {
+            get {
+                return ResourceManager.GetString("AuthorizationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create an account.
         /// </summary>
         internal static string CreateAnAccount {
@@ -142,6 +151,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The page could not be refreshed.
+        /// </summary>
+        internal static string FailedToRefreshPage {
+            get {
+                return ResourceManager.GetString("FailedToRefreshPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Forgot the password?.
         /// </summary>
         internal static string ForgotThePassword {
@@ -165,6 +183,15 @@ namespace SmartGrowHub.Maui.Localization {
         internal static string LogInToYourAccount {
             get {
                 return ResourceManager.GetString("LogInToYourAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Log in to your account again.
+        /// </summary>
+        internal static string LogInToYourAccountAgain {
+            get {
+                return ResourceManager.GetString("LogInToYourAccountAgain", resourceCulture);
             }
         }
         

@@ -1,32 +1,32 @@
-﻿using SmartGrowHub.Maui.Application.Interfaces;
+﻿using SmartGrowHub.Domain.Extensions;
+using SmartGrowHub.Maui.Application.Interfaces;
 
 namespace SmartGrowHub.Maui.Services;
 
 public sealed class SecureStorageService(ISecureStorage secureStorage) : ISecureStorageService
 {
-    public Eff<Option<string>> GetAsync(string key, CancellationToken cancellationToken) =>
-        liftEff(() => secureStorage
+    public Eff<string> GetAsync(string key, CancellationToken cancellationToken) =>
+        secureStorage
             .GetAsync(key)
             .WaitAsync(cancellationToken)
-            .Map(Optional));
+            .Map(Optional)
+            .ToEff()
+            .Bind(option => option.ToEff());
 
     public Eff<bool> Remove(string key) =>
         liftEff(() => secureStorage.Remove(key));
 
     public Eff<Unit> SetAsync(string key, string value, CancellationToken cancellationToken) =>
-        liftEff(() => secureStorage
+        secureStorage
             .SetAsync(key, value)
             .WaitAsync(cancellationToken)
-            .ToUnit());
+            .ToEff();
 
     public Eff<Unit> SaveDomainTypeAsync<T>(string key, T domainType, CancellationToken cancellationToken)
         where T : DomainType<T, string> =>
         SetAsync(key, domainType.To(), cancellationToken);
 
-    public Eff<Option<T>> GetDomainTypeAsync<T>(string key, CancellationToken cancellationToken)
+    public Eff<T> GetDomainTypeAsync<T>(string key, CancellationToken cancellationToken)
         where T : DomainType<T, string> =>
-        GetAsync(key, cancellationToken)
-            .Bind(option => option.Map(T.From).Match(
-                Some: value => value.ToEff().Map(Optional),
-                None: Pure(Option<T>.None)));
+        GetAsync(key, cancellationToken).Bind(value => T.From(value).ToEff());
 }
