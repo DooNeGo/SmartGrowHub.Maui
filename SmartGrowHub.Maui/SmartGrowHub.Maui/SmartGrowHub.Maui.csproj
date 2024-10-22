@@ -109,8 +109,4 @@
 		</MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Convertors\" />
-	</ItemGroup>
-
 </Project>
