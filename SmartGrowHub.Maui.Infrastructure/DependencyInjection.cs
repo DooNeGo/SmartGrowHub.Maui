@@ -4,7 +4,6 @@ using SmartGrowHub.Application.Services;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Infrastructure.Services;
 using SmartGrowHub.Maui.Infrastructure.Services.DelegatingHandlers;
-using Mediator;
 
 namespace SmartGrowHub.Maui.Infrastructure;
 

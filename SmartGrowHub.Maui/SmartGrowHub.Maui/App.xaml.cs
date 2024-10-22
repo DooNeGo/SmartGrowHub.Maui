@@ -15,7 +15,7 @@ public sealed partial class App
 
         Task.Run(() => sessionProvider
             .GetUserSession(tokenSource.Token)
-            .Bind(_ => shell.SetMainAsRoot())
+            .Bind(_ => shell.SetMainAsRoot(false))
             .RunAsync(), tokenSource.Token)
             .GetAwaiter().GetResult();
 

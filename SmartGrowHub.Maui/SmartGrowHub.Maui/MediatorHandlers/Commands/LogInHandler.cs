@@ -1,15 +1,18 @@
-﻿using Mediator;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Mediator;
 using SmartGrowHub.Application.LogIn;
 using SmartGrowHub.Application.Services;
+using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages.Commands;
+using SmartGrowHub.Maui.Application.Messages;
 
 namespace SmartGrowHub.Maui.MediatorHandlers.Commands;
 
 internal sealed class LogInHandler(
     IAuthService authService,
     IUserSessionProvider sessionProvider,
-    INavigationService navigationService)
+    INavigationService navigationService,
+    IMessenger messenger)
     : ICommandHandler<LogInCommand, Unit>
 {
     public ValueTask<Unit> Handle(LogInCommand command, CancellationToken cancellationToken) =>
@@ -22,5 +25,6 @@ internal sealed class LogInHandler(
             ? sessionProvider.SaveAndSetSession(response.UserSession, cancellationToken)
             : sessionProvider.SetSession(response.UserSession)
         from _2 in navigationService.SetMainPageAsRoot()
+        from _3 in liftEff(() => messenger.Send(LoggedInMessage.Default))
         select unit;
 }

@@ -1,6 +1,6 @@
 ﻿using Mediator;
 
-namespace SmartGrowHub.Maui.Application.Messages.Notifications;
+namespace SmartGrowHub.Maui.Application.Notifications;
 
 public sealed class NoAuthorizeNotification : INotification
 {

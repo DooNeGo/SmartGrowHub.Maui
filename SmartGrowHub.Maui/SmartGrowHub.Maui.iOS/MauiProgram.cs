@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Handlers;
+using UIKit;
 
 namespace SmartGrowHub.Maui.iOS;
 
@@ -9,7 +10,7 @@ public static class MauiProgram
         MauiAppBuilder builder = MauiApp.CreateBuilder();
 
         EntryHandler.Mapper.AppendToMapping("SetUpEntry", (handler, _) =>
-            handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None);
+            handler.PlatformView.BorderStyle = UITextBorderStyle.None);
 
         builder
             .UseSharedMauiApp();

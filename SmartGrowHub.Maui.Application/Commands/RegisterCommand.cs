@@ -2,7 +2,7 @@
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Common.Password;
 
-namespace SmartGrowHub.Maui.Application.Messages.Commands;
+namespace SmartGrowHub.Maui.Application.Commands;
 
 public sealed record RegisterCommand(
     UserName UserName,

@@ -15,6 +15,10 @@
         <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding GoBackCommand}" />
+    </Shell.BackButtonBehavior>
+
     <ScrollView Padding="30">
         <Grid RowDefinitions="*,*,*" RowSpacing="40">
             <VerticalStackLayout Spacing="8" VerticalOptions="End">

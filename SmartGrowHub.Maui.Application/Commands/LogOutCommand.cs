@@ -1,6 +1,6 @@
 ﻿using Mediator;
 
-namespace SmartGrowHub.Maui.Application.Messages.Commands;
+namespace SmartGrowHub.Maui.Application.Commands;
 
 public sealed class LogOutCommand : ICommand<Unit>
 {

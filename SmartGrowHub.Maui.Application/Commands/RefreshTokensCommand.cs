@@ -1,7 +1,7 @@
 ﻿using Mediator;
 using SmartGrowHub.Domain.Common;
 
-namespace SmartGrowHub.Maui.Application.Messages.Commands;
+namespace SmartGrowHub.Maui.Application.Commands;
 
 public sealed record RefreshTokensCommand : ICommand<AuthTokens>
 {

@@ -15,6 +15,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<EnableSGenConc>True</EnableSGenConc>
 		<MtouchLink>Full</MtouchLink>
+		<NoWarn>1701;1702;CA1711</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <NoWarn>1701;1702;CA1711</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

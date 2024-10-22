@@ -7,7 +7,7 @@
     Padding="{OnPlatform Default='10,0',
                          iOS='10'}"
     BackgroundColor="White"
-    StrokeShape="RoundRectangle 8">
+    StrokeShape="RoundRectangle 7">
     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">
         <Image Source="search_icon.png" />
         <Entry

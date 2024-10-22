@@ -1,8 +1,8 @@
 ﻿using Mediator;
 using SmartGrowHub.Domain.Extensions;
+using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages.Commands;
-using SmartGrowHub.Maui.Application.Messages.Notifications;
+using SmartGrowHub.Maui.Application.Notifications;
 
 namespace SmartGrowHub.Maui.MediatorHandlers.Notifications;
 
@@ -15,7 +15,7 @@ internal sealed class NoAuthorizeHandler(
         await HandleEff(cancellationToken).RunUnsafeAsync();
 
     private Eff<Unit> HandleEff(CancellationToken cancellationToken) =>
-        from _1 in dialogService.PopAsync()
+        from _1 in dialogService.PopAllAsync()
         from _2 in DisplayAuthorizationError(cancellationToken)
         from _3 in mediator.Send(LogOutCommand.Default, cancellationToken).ToEff()
         select unit;

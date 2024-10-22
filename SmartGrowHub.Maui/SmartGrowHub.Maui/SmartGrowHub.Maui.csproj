@@ -61,6 +61,9 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Popups\LoadingPopup.xaml.cs">
+		  <DependentUpon>LoadingPopup.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -86,6 +89,9 @@
 		<MauiXaml Update="Features\Main\View\MainPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Features\Main\View\PlantViewItem.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Features\Register\View\RegisterPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -98,9 +104,13 @@
 		<MauiXaml Update="Features\UserProfile\View\UserProfilePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Mopups\LoadingMopup.xaml">
+		<MauiXaml Update="Popups\LoadingPopup.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Convertors\" />
 	</ItemGroup>
 
 </Project>

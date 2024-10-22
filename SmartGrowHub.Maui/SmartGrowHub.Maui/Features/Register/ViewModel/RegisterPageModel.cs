@@ -4,8 +4,8 @@ using Mediator;
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Common.Password;
 using SmartGrowHub.Domain.Extensions;
+using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages.Commands;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 namespace SmartGrowHub.Maui.Features.Register.ViewModel;
@@ -35,7 +35,7 @@ public sealed partial class RegisterPageModel(
     private async Task RegisterAsync(CancellationToken cancellationToken)
     {
         await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await Task.Run(() => Register(cancellationToken).RunUnsafeAsync()).ConfigureAwait(false);
+        await Task.Run(() => Register(cancellationToken).RunAsync()).ConfigureAwait(false);
         dialogService.Pop().Run();
     }
 

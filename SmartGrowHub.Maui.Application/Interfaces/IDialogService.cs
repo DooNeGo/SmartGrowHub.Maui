@@ -7,6 +7,7 @@ public interface IDialogService
     IO<Unit> DisplayAlert(string title, string message, string cancel);
     IO<Unit> ShowLoadingAsync();
     IO<Unit> PopAsync();
+    IO<Unit> PopAllAsync();
     IO<Unit> ShowLoading();
     IO<Unit> Pop();
 }

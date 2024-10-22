@@ -7,10 +7,10 @@ namespace SmartGrowHub.Maui.Droid;
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
-    { 
+    {
         MauiAppBuilder builder = MauiApp.CreateBuilder();
-        
-        EntryHandler.Mapper.AppendToMapping("NoUnderLine", (handler, _) => 
+
+        EntryHandler.Mapper.AppendToMapping("NoUnderLine", (handler, _) =>
             handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Colors.Transparent.ToAndroid()));
 
         builder

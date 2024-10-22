@@ -6,7 +6,7 @@ using SmartGrowHub.Application.Register;
 using SmartGrowHub.Application.Services;
 using SmartGrowHub.Domain.Errors;
 using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Messages.Notifications;
+using SmartGrowHub.Maui.Application.Notifications;
 using SmartGrowHub.Maui.Infrastructure.Services.Extensions;
 using SmartGrowHub.Shared.Auth.Dto.LogIn;
 using SmartGrowHub.Shared.Auth.Dto.LogOut;
@@ -22,13 +22,11 @@ namespace SmartGrowHub.Maui.Infrastructure.Services;
 internal sealed class AuthService(HttpClient httpClient, IMediator mediator) : IAuthService
 {
     public Eff<LogInResponse> LogIn(LogInRequest request, CancellationToken cancellationToken) =>
-        from requestDto in Pure(request.ToDto())
-        from result in httpClient
-            .PostAsync<LogInRequestDto, LogInResponseDto, ErrorDto>("auth/login", requestDto, cancellationToken)
+        httpClient
+            .PostAsync<LogInRequestDto, LogInResponseDto, ErrorDto>("auth/login", request.ToDto(), cancellationToken)
             .Bind(either => either.Match(
                 Left: errorDto => errorDto.ToDomain(),
-                Right: response => response.TryToDomain().ToEff()))
-        select result;
+                Right: response => response.TryToDomain().ToEff()));
 
     public Eff<LogOutResponse> LogOut(LogOutRequest request, CancellationToken cancellationToken) =>
         httpClient
@@ -48,11 +46,9 @@ internal sealed class AuthService(HttpClient httpClient, IMediator mediator) : I
                 .Bind(_ => FailEff<RefreshTokensResponse>(error)));
 
     public Eff<RegisterResponse> Register(RegisterRequest request, CancellationToken cancellationToken) =>
-        from requestDto in Pure(request.ToDto())
-        from result in httpClient
-            .PostAsync<RegisterRequestDto, RegisterResponse, ErrorDto>("auth/register", requestDto, cancellationToken)
+        httpClient
+            .PostAsync<RegisterRequestDto, RegisterResponse, ErrorDto>("auth/register", request.ToDto(), cancellationToken)
             .Bind(either => either.Match(
                 Left: errorDto => errorDto.ToDomain(),
-                Right: response => SuccessEff(response)))
-        select result;
+                Right: response => SuccessEff(response)));
 }

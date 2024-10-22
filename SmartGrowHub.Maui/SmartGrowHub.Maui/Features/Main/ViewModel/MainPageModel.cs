@@ -1,40 +1,46 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Mediator;
-using SmartGrowHub.Domain.Extensions;
+using CommunityToolkit.Mvvm.Messaging;
 using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages.Commands;
+using SmartGrowHub.Maui.Application.Messages;
+using SmartGrowHub.Maui.ObservableModel;
+using System.Collections.ObjectModel;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
-public sealed partial class MainPageModel(
-    IDialogService dialogService,
-    IUserSessionProvider sessionProvider,
-    IMediator mediator)
-    : ObservableObject
+public sealed partial class MainPageModel : ObservableObject
 {
-    [RelayCommand]
-    public async Task<Unit> LogoutAsync(CancellationToken cancellationToken)
-    {
-        await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await Task.Run(() => LogOut(cancellationToken).RunUnsafeAsync())
-            .ConfigureAwait(false);
+    private readonly IDialogService _dialogService;
 
-        return dialogService.Pop().Run();
+    [ObservableProperty] private bool _isRefreshing;
+    [ObservableProperty] private ObservableCollection<GrowHubVm> _growHubs = [];
+
+    public MainPageModel(IDialogService dialogService, IMessenger messenger)
+    {
+        _dialogService = dialogService;
+
+        messenger.Register<LoggedOutMessage>(this, (_, _) =>
+        {
+            GrowHubs = [];
+            RefreshCommand.Cancel();
+            IsRefreshing = false;
+        });
     }
 
-    private Eff<Unit> LogOut(CancellationToken cancellationToken) =>
-        from sessionId in sessionProvider.GetUserSessionId(cancellationToken)
-        from _ in mediator.Send(LogOutCommand.Default, cancellationToken).ToEff()
-        select unit;
-
     [RelayCommand]
-    public Task<Unit> IsTokenExpired(CancellationToken cancellationToken) =>
-        Task.Run(() => sessionProvider
-            .GetAccessTokenIfNotExpired(cancellationToken)
-            .Bind(token => dialogService.DisplayAlert("Token", token, "Ok"))
-            .IfFailEff(error => dialogService.DisplayAlert("Token", error.IsEmpty ? "Expired" : error.Message, "Ok"))
-            .RunUnsafeAsync()
-            .AsTask(),
-            cancellationToken);
+    private Task RefreshAsync(CancellationToken cancellationToken)
+    {
+        GrowHubs.Add(new GrowHubVm(
+            Ulid.NewUlid(),
+            "MyFirstGrowHub",
+            new PlantVm(
+                Ulid.NewUlid(),
+                "MyFirstPlant",
+                DateTime.UtcNow),
+            []));
+
+        IsRefreshing = false;
+
+        return Task.CompletedTask;
+    }
 }

@@ -3,8 +3,10 @@
     x:Class="SmartGrowHub.Maui.Features.Main.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:common="clr-namespace:SmartGrowHub.Domain.Common;assembly=SmartGrowHub.Domain"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
+    xmlns:observable="clr-namespace:SmartGrowHub.Maui.ObservableModel"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:DataType="viewModel:MainPageModel"
@@ -16,38 +18,74 @@
         <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
-    <ScrollView Padding="20,60,20,20">
-        <VerticalStackLayout Spacing="10">
-            <Grid ColumnDefinitions="*,Auto">
-                <Label
-                    HorizontalOptions="Start"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource Headline}"
-                    Text="{x:Static localization:Resources.YourPlants}" />
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView Padding="20,60,20,20">
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label
+                        HorizontalOptions="Start"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource Headline}"
+                        Text="{x:Static localization:Resources.YourPlants}" />
 
-                <customControls:TextButton
-                    Grid.Column="1"
-                    Margin="0,0,0,6"
-                    FontFamily="Inter18Medium"
-                    FontSize="16"
-                    Text="{x:Static localization:Resources.Edit}"
-                    TextColor="{StaticResource Primary}"
-                    VerticalOptions="End" />
-            </Grid>
+                    <customControls:TextButton
+                        Grid.Column="1"
+                        Margin="0,0,0,6"
+                        FontFamily="Inter18Medium"
+                        FontSize="16"
+                        Text="{x:Static localization:Resources.Edit}"
+                        TextColor="{StaticResource Primary}"
+                        VerticalOptions="End" />
+                </Grid>
 
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                <customControls:CustomSearchBar />
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <customControls:CustomSearchBar />
 
-                <customControls:CustomImageButton
-                    Grid.Column="1"
-                    Padding="10,0"
-                    BackgroundColor="White"
-                    ImageSource="sort_icon.png"
-                    StrokeShape="RoundRectangle 8" />
-            </Grid>
+                    <customControls:CustomImageButton
+                        Grid.Column="1"
+                        Padding="10,0"
+                        BackgroundColor="White"
+                        ImageSource="sort_icon.png"
+                        StrokeShape="RoundRectangle 7" />
+                </Grid>
 
-            <Button Command="{Binding LogoutCommand}" Text="Logout" />
-            <Button Command="{Binding IsTokenExpiredCommand}" Text="Check token" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <CollectionView ItemsSource="{Binding GrowHubs}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="observable:GrowHubVm">
+                            <Border
+                                Padding="20"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 10">
+                                <FlyoutBase.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Edit plant" />
+                                        <MenuFlyoutItem Text="About" />
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem Text="Remove plant" />
+                                    </MenuFlyout>
+                                </FlyoutBase.ContextFlyout>
+                                
+                                <Grid RowDefinitions="Auto, *" RowSpacing="5">
+                                    <Label
+                                        Grid.Row="0"
+                                        FontSize="20"
+                                        Text="{Binding Plant.Name}" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        FontSize="15"
+                                        Text="{Binding Name}"
+                                        TextColor="{StaticResource Gray300}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
 </ContentPage>

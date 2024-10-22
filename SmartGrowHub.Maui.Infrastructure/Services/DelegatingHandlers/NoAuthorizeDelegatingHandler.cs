@@ -1,6 +1,6 @@
 ﻿using Mediator;
 using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Messages.Notifications;
+using SmartGrowHub.Maui.Application.Notifications;
 using System.Net;
 
 namespace SmartGrowHub.Maui.Infrastructure.Services.DelegatingHandlers;

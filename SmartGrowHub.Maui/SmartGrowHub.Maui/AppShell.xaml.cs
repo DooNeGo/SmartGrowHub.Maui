@@ -6,9 +6,9 @@ public sealed partial class AppShell
 {
     public AppShell() => InitializeComponent();
 
-    public IO<Unit> SetMainAsRoot() =>
-        GoToAsync("///MainTabBar", false).ToIO();
+    public IO<Unit> SetMainAsRoot(bool animate = true) =>
+        GoToAsync("//MainTabBar", animate).ToIO();
 
-    public IO<Unit> SetLogInAsRoot() =>
-        GoToAsync("///StartPage", false).ToIO();
+    public IO<Unit> SetLogInAsRoot(bool animate = true) =>
+        GoToAsync("//StartPage", animate).ToIO();
 }

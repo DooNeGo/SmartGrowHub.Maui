@@ -1,3 +1,4 @@
+using SmartGrowHub.Domain.Extensions;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Services.Extensions;
 
@@ -14,12 +15,11 @@ public sealed class NavigationService(AppShell shell) : INavigationService
                 .ToUnit());
 
     public IO<Unit> GoToAsync(string path, CancellationToken cancellationToken = default) =>
-        _dispatcher.InvokeOnUiThreadIfNeeded(() =>
-            shell.GoToAsync(path)
-                .WaitAsync(cancellationToken)
-                .ToUnit());
+        shell.GoToAsync(path).ToIO();
 
-    public IO<Unit> SetLogInAsRoot() => shell.SetLogInAsRoot();
+    public IO<Unit> SetLogInAsRoot() =>
+        shell.SetLogInAsRoot();
 
-    public IO<Unit> SetMainPageAsRoot() => shell.SetMainAsRoot();
+    public IO<Unit> SetMainPageAsRoot() =>
+        shell.SetMainAsRoot();
 }

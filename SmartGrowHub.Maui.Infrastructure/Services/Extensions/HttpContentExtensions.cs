@@ -22,12 +22,10 @@ public static class HttpContentExtensions
         liftEff(() => Optional(JsonSerializer.Deserialize<T>(json, Options)))
             .Bind(option => option.ToEff());
 
-
     private static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions
         {
-            PreferredObjectCreationHandling = JsonObjectCreationHandling.Populate,
             PropertyNameCaseInsensitive = true,
         };
 

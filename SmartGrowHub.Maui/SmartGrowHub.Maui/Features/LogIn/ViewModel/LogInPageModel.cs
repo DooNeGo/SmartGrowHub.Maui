@@ -4,8 +4,8 @@ using Mediator;
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Common.Password;
 using SmartGrowHub.Domain.Extensions;
+using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages.Commands;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
@@ -33,10 +33,15 @@ public sealed partial class LogInPageModel(
     private async Task<Unit> LogInAsync(CancellationToken cancellationToken)
     {
         await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await Task.Run(() => LogIn(cancellationToken).RunUnsafeAsync())
-            .ConfigureAwait(false);
+        await LogIn(cancellationToken).RunAsync().ConfigureAwait(false);
 
-        return dialogService.Pop().Run();
+        return await dialogService.Pop().RunAsync().ConfigureAwait(false);
+    }
+
+    [RelayCommand]
+    private void OnGoBack()
+    {
+        LogInCommand.Cancel();
     }
 
     private Eff<Unit> LogIn(CancellationToken cancellationToken) =>

@@ -1,7 +1,7 @@
 ﻿using Mediator;
 using SmartGrowHub.Application.Register;
 using SmartGrowHub.Application.Services;
-using SmartGrowHub.Maui.Application.Messages.Commands;
+using SmartGrowHub.Maui.Application.Commands;
 
 namespace SmartGrowHub.Maui.MediatorHandlers.Commands;
 
