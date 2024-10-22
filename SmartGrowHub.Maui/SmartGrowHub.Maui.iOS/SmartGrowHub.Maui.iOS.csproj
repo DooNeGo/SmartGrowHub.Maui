@@ -16,6 +16,7 @@
 		<EnableSGenConc>True</EnableSGenConc>
 		<MtouchLink>Full</MtouchLink>
 		<NoWarn>1701;1702;CA1711</NoWarn>
+		<MtouchEnableSGenConc>true</MtouchEnableSGenConc>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

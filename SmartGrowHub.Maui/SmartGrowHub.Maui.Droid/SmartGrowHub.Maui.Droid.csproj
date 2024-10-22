@@ -13,6 +13,13 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <AndroidLinkTool>r8</AndroidLinkTool>
+	  <AndroidLinkMode>Full</AndroidLinkMode>
+	  <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidMessageHandler</AndroidHttpClientHandlerType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	  <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidMessageHandler</AndroidHttpClientHandlerType>
+	  <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
 	</PropertyGroup>
 
 	<ItemGroup>
