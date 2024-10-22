@@ -28,5 +28,9 @@ public sealed class SecureStorageService(ISecureStorage secureStorage) : ISecure
 
     public Eff<T> GetDomainTypeAsync<T>(string key, CancellationToken cancellationToken)
         where T : DomainType<T, string> =>
-        GetAsync(key, cancellationToken).Bind(value => T.From(value).ToEff());
+        GetAsync(key, cancellationToken).Bind(value =>
+        {
+            var s = T.From(value);
+            return s.ToEff();
+        });
 }

@@ -1,5 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mediator;
@@ -33,6 +32,13 @@ public sealed partial class UserProfilePageModel : ObservableObject
         _sessionProvider = sessionProvider;
         _mediator = mediator;
 
+        RegisterMessages(messenger);
+
+        IsRefreshing = true;
+    }
+
+    private Unit RegisterMessages(IMessenger messenger)
+    {
         messenger.Register<LoggedOutMessage>(this, (_, _) =>
         {
             User = null;
@@ -40,7 +46,12 @@ public sealed partial class UserProfilePageModel : ObservableObject
             IsRefreshing = false;
         });
 
-        RefreshWithLoadingAsync(CancellationToken.None).SafeFireAndForget();
+        messenger.Register<LoggedInMessage>(this, (_, _) =>
+        {
+            IsRefreshing = true;
+        });
+
+        return unit;
     }
 
     private async Task RefreshWithLoadingAsync(CancellationToken cancellationToken)
@@ -53,10 +64,9 @@ public sealed partial class UserProfilePageModel : ObservableObject
     [RelayCommand]
     private async Task RefreshAsync(CancellationToken cancellationToken)
     {
-        Fin<User> userFin = await Task.Run(() =>
-            GetUser(cancellationToken)
-                .Bind(user => SetUser(user))
-                .RunAsync())
+        Fin<User> userFin = await GetUser(cancellationToken)
+            .Bind(SetUser)
+            .RunAsync()
             .ConfigureAwait(false);
 
         IsRefreshing = false;
@@ -71,12 +81,14 @@ public sealed partial class UserProfilePageModel : ObservableObject
         lift(() => User = user);
 
     [RelayCommand]
-    private async Task<Unit> LogoutAsync(CancellationToken cancellationToken)
+    private async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await LogOut(cancellationToken).RunAsync().ConfigureAwait(false);
+        using var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4));
+        using CancellationTokenSource token = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, tokenSource.Token);
 
-        return await _dialogService.Pop().RunAsync().ConfigureAwait(false);
+        await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
+        await LogOut(token.Token).RunAsync().ConfigureAwait(false);
+        _dialogService.Pop().Run();
     }
 
     private Eff<Unit> LogOut(CancellationToken cancellationToken) =>

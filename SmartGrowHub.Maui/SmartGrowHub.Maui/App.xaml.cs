@@ -5,26 +5,27 @@ namespace SmartGrowHub.Maui;
 public sealed partial class App
 {
     private readonly AppShell _shell;
+    private readonly IUserSessionProvider _sessionProvider;
 
     public App(AppShell shell, IUserSessionProvider sessionProvider)
     {
         InitializeComponent();
+
         UserAppTheme = AppTheme.Light;
-
-        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(3));
-
-        Task.Run(() => sessionProvider
-            .GetUserSession(tokenSource.Token)
-            .Bind(_ => shell.SetMainAsRoot(false))
-            .RunAsync(), tokenSource.Token)
-            .GetAwaiter().GetResult();
-
-        _shell = shell;
+        MainPage = _shell = shell;
+        _sessionProvider = sessionProvider;
     }
 
-    protected override Window CreateWindow(IActivationState? activationState)
+    protected override void OnStart()
     {
-        MainPage = _shell;
-        return base.CreateWindow(activationState);
+        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(300));
+
+        _ = Task.Run(() => _sessionProvider
+            .GetUserSession(tokenSource.Token)
+            .Bind(_ => _shell.SetMainAsRoot(false))
+            .RunAsync())
+            .GetAwaiter().GetResult();
+
+        base.OnStart();
     }
 }

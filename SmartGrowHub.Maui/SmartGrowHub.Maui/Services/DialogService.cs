@@ -18,21 +18,20 @@ public sealed class DialogService : IDialogService
         _loadingPopup = new(this);
     }
 
-    public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel,
-        CancellationToken cancellationToken) =>
-        App.Current!.Dispatcher.InvokeOnUiThreadIfNeeded(
-            () => App.Current.MainPage!
-                .DisplayAlert(title, message, accept, cancel)
-                .WaitAsync(cancellationToken));
-
-    public IO<Unit> DisplayAlertAsync(string title, string message, string cancel,
-        CancellationToken cancellationToken) =>
-        DisplayAlertAsync(title, message, null!, cancel, cancellationToken).Map(_ => unit);
+    public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel) =>
+        liftIO(() => MainThread.InvokeOnMainThreadAsync(() =>
+            DisplayAlertInternal(title, message, accept, cancel)));
 
     public IO<Unit> DisplayAlert(string title, string message, string cancel) =>
-        lift(() => DisplayAlertAsync(title, message, cancel, CancellationToken.None)
-            .RunAsync()
-            .SafeFireAndForget());
+        lift(() => MainThread.BeginInvokeOnMainThread(() =>
+            DisplayAlertInternal(title, message, null!, cancel)
+        .SafeFireAndForget()));
+
+    private static Task<bool> DisplayAlertInternal(string title, string message, string accept, string cancel) =>
+        App.Current!.MainPage!.DisplayAlert(title, message, accept, cancel);
+
+    public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
+        DisplayAlertAsync(title, message, null!, cancel).Map(_ => unit);
 
     public IO<Unit> ShowLoadingAsync() =>
         _loadingCount

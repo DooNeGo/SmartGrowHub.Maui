@@ -15,7 +15,7 @@
         <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}">
         <ScrollView Padding="20,60,20,20">
             <VerticalStackLayout>
                 <Label
@@ -32,7 +32,7 @@
 
                 <Label Style="{StaticResource Caption}" Text="{Binding User.Email}" />
 
-                <Button Command="{Binding LogoutCommand}" Text="Logout" />
+                <Button Command="{Binding LogoutCommand}" Text="{x:Static localization:Resources.LogOut}" />
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>

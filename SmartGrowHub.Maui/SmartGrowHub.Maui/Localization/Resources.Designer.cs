@@ -196,6 +196,15 @@ namespace SmartGrowHub.Maui.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Log out.
+        /// </summary>
+        internal static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ok.
         /// </summary>
         internal static string Ok {

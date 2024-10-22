@@ -16,13 +16,13 @@ internal sealed class NoAuthorizeHandler(
 
     private Eff<Unit> HandleEff(CancellationToken cancellationToken) =>
         from _1 in dialogService.PopAllAsync()
-        from _2 in DisplayAuthorizationError(cancellationToken)
+        from _2 in DisplayAuthorizationError()
         from _3 in mediator.Send(LogOutCommand.Default, cancellationToken).ToEff()
         select unit;
 
-    private IO<Unit> DisplayAuthorizationError(CancellationToken cancellationToken) =>
+    private IO<Unit> DisplayAuthorizationError() =>
         dialogService.DisplayAlertAsync(
             Resources.AuthorizationError,
             Resources.LogInToYourAccountAgain,
-            Resources.Ok, cancellationToken);
+            Resources.Ok);
 }

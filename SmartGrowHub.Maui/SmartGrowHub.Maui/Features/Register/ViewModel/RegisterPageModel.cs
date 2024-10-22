@@ -35,7 +35,7 @@ public sealed partial class RegisterPageModel(
     private async Task RegisterAsync(CancellationToken cancellationToken)
     {
         await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await Task.Run(() => Register(cancellationToken).RunAsync()).ConfigureAwait(false);
+        await Register(cancellationToken).RunAsync().ConfigureAwait(false);
         dialogService.Pop().Run();
     }
 
@@ -45,7 +45,7 @@ public sealed partial class RegisterPageModel(
         from email in CreateDomainType<EmailAddress>(EmailRaw, error => EmailError = error.Message)
         from displayName in CreateDomainType<NonEmptyString>(DisplayNameRaw, error => DisplayNameError = error.Message)
         let command = new RegisterCommand(userName, password, email, displayName)
-        from _ in mediator.Send(command, cancellationToken).ToIO()
+        from _ in mediator.Send(command, cancellationToken).ToEff()
         select unit;
 
     private static Eff<T> CreateDomainType<T>(string repr, Action<Error> onError)

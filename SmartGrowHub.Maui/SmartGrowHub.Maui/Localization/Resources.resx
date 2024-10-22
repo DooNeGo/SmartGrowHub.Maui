@@ -204,4 +204,7 @@
   <data name="FailedToRefreshPage" xml:space="preserve">
     <value>The page could not be refreshed</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
 </root>

@@ -13,14 +13,13 @@ public static class HttpContentExtensions
         this HttpContent content, CancellationToken cancellationToken) =>
         content.ReadAsStringAsync(cancellationToken).ToEff()
             .Bind(json =>
-                json.ReadValue<TResponse>()
+                json.ReadValue<TResponse>().ToEff()
                     .Map(response => (Either<TError, TResponse>)response) |
-                json.ReadValue<TError>()
+                json.ReadValue<TError>().ToEff()
                     .Map(error => (Either<TError, TResponse>)error));
 
-    private static Eff<T> ReadValue<T>(this string json) =>
-        liftEff(() => Optional(JsonSerializer.Deserialize<T>(json, Options)))
-            .Bind(option => option.ToEff());
+    private static Fin<T> ReadValue<T>(this string json) =>
+        Optional(JsonSerializer.Deserialize<T>(json, Options)).ToFin();
 
     private static JsonSerializerOptions CreateOptions()
     {

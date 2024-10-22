@@ -24,7 +24,7 @@ internal sealed class LogOutHandler(
         let request = new LogOutRequest(sessionId)
         from response in authService.LogOut(request, cancellationToken)
         from _1 in sessionProvider.RemoveSession()
-        from _2 in navigationService.SetLogInAsRoot()
+        from _2 in navigationService.SetLogInAsRoot(cancellationToken: cancellationToken)
         from _3 in liftEff(() => messenger.Send(LoggedOutMessage.Default))
         select unit;
 }

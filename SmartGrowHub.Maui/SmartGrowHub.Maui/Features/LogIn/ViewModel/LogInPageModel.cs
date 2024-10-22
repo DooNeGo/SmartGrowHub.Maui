@@ -30,19 +30,15 @@ public sealed partial class LogInPageModel(
             .RunAsync().AsTask();
 
     [RelayCommand]
-    private async Task<Unit> LogInAsync(CancellationToken cancellationToken)
+    private async Task LogInAsync(CancellationToken cancellationToken)
     {
         await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
         await LogIn(cancellationToken).RunAsync().ConfigureAwait(false);
-
-        return await dialogService.Pop().RunAsync().ConfigureAwait(false);
+        await dialogService.Pop().RunAsync().ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private void OnGoBack()
-    {
-        LogInCommand.Cancel();
-    }
+    private void OnGoBack() => LogInCommand.Cancel();
 
     private Eff<Unit> LogIn(CancellationToken cancellationToken) =>
         from userName in CreateUserName(UserNameRaw).ToEff()
@@ -68,5 +64,8 @@ public sealed partial class LogInPageModel(
         });
 
     private IO<Unit> DisplayError(Error error) =>
-        dialogService.DisplayAlert(Resources.Authorization, error.Message, Resources.Ok);
+        dialogService.DisplayAlert(
+            Resources.Authorization,
+            error.Message,
+            Resources.Ok);
 }
