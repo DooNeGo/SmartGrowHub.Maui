@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AsyncAwaitBestPractices;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mediator;
@@ -33,8 +34,7 @@ public sealed partial class UserProfilePageModel : ObservableObject
         _mediator = mediator;
 
         RegisterMessages(messenger);
-
-        IsRefreshing = true;
+        RefreshWithLoadingAsync(CancellationToken.None).SafeFireAndForget();
     }
 
     private Unit RegisterMessages(IMessenger messenger)
@@ -58,7 +58,7 @@ public sealed partial class UserProfilePageModel : ObservableObject
     {
         await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
         await RefreshAsync(cancellationToken).ConfigureAwait(false);
-        _dialogService.Pop().Run();
+        await _dialogService.Pop().RunAsync().ConfigureAwait(false);
     }
 
     [RelayCommand]
@@ -83,12 +83,9 @@ public sealed partial class UserProfilePageModel : ObservableObject
     [RelayCommand]
     private async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        using var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4));
-        using CancellationTokenSource token = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, tokenSource.Token);
-
-        await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
-        await LogOut(token.Token).RunAsync().ConfigureAwait(false);
-        _dialogService.Pop().Run();
+        await _dialogService.ShowLoadingAsync().RunAsync();
+        await LogOut(cancellationToken).RunAsync().ConfigureAwait(false);
+        await _dialogService.Pop().RunAsync().ConfigureAwait(false);
     }
 
     private Eff<Unit> LogOut(CancellationToken cancellationToken) =>

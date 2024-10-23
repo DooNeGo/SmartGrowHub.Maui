@@ -83,6 +83,9 @@
 		<MauiXaml Update="CustomControls\CustomSearchBar.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Features\AppStart\View\AppStartPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Features\LogIn\View\LogInPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

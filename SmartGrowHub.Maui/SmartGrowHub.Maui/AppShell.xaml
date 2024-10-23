@@ -6,10 +6,16 @@
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:start="clr-namespace:SmartGrowHub.Maui.Features.Start.View"
+    xmlns:appStart="clr-namespace:SmartGrowHub.Maui.Features.AppStart.View"
     xmlns:userProfile="clr-namespace:SmartGrowHub.Maui.Features.UserProfile.View"
     Title="Smart Grow Hub"
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
+
+    <ShellContent
+        x:Name="AppStart"
+        Route="AppStartPage"
+        ContentTemplate="{DataTemplate appStart:AppStartPage}" />
 
     <ShellContent
         x:Name="StartPage"

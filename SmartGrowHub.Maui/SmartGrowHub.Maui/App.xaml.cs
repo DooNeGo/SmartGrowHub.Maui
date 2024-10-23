@@ -1,4 +1,5 @@
-﻿using SmartGrowHub.Maui.Application.Interfaces;
+﻿using LanguageExt.Async;
+using SmartGrowHub.Maui.Application.Interfaces;
 
 namespace SmartGrowHub.Maui;
 
@@ -18,13 +19,12 @@ public sealed partial class App
 
     protected override void OnStart()
     {
-        using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(300));
+        //using CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(3));
 
-        _ = Task.Run(() => _sessionProvider
-            .GetUserSession(tokenSource.Token)
-            .Bind(_ => _shell.SetMainAsRoot(false))
-            .RunAsync())
-            .GetAwaiter().GetResult();
+        //_ = Async.await(_sessionProvider
+        //    .GetUserSession(tokenSource.Token)
+        //    .Bind(_ => _shell.SetMainAsRoot(false, tokenSource.Token))
+        //    .RunAsync());
 
         base.OnStart();
     }

@@ -11,6 +11,14 @@ public sealed class NavigationService(AppShell shell) : INavigationService
     public IO<Unit> GoToAsync(string path, CancellationToken cancellationToken = default) =>
         shell.GoToAsync(path).WaitAsync(cancellationToken).ToIO();
 
+    public IO<Unit> SetLogInAsRootAsync(bool animate = true,
+        CancellationToken cancellationToken = default) =>
+        shell.SetLogInAsRootAsync(animate, cancellationToken);
+
+    public IO<Unit> SetMainPageAsRootAsync(bool animate = true,
+        CancellationToken cancellationToken = default) =>
+        shell.SetMainAsRootAsync(animate, cancellationToken);
+
     public IO<Unit> SetLogInAsRoot(bool animate = true,
         CancellationToken cancellationToken = default) =>
         shell.SetLogInAsRoot(animate, cancellationToken);

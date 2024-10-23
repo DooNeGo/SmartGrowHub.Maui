@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Mopups.Services;
 using SmartGrowHub.Maui.Application.Interfaces;
+using SmartGrowHub.Maui.Features.AppStart.View;
+using SmartGrowHub.Maui.Features.AppStart.ViewModel;
 using SmartGrowHub.Maui.Features.LogIn.View;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 using SmartGrowHub.Maui.Features.Main.View;
@@ -23,7 +25,8 @@ internal static class DependencyInjection
             .AddTransientWithShellRoute<StartPage, StartPageModel>(nameof(StartPageModel))
             .AddTransientWithShellRoute<RegisterPage, RegisterPageModel>(nameof(RegisterPageModel))
             .AddTransientWithShellRoute<MainPage, MainPageModel>(nameof(MainPageModel))
-            .AddTransientWithShellRoute<UserProfilePage, UserProfilePageModel>(nameof(UserProfilePageModel));
+            .AddTransientWithShellRoute<UserProfilePage, UserProfilePageModel>(nameof(UserProfilePageModel))
+            .AddTransientWithShellRoute<AppStartPage, AppStartPageModel>(nameof(AppStartPageModel));
 
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
