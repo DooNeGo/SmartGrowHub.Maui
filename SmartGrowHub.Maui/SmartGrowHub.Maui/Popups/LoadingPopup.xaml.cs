@@ -15,6 +15,6 @@ public sealed partial class LoadingPopup
     protected override bool OnBackButtonPressed()
     {
         _dialogService.Pop().Run();
-        return base.OnBackButtonPressed();
+        return true;
     }
 }
