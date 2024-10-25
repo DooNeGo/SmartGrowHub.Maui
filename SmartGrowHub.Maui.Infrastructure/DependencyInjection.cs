@@ -23,6 +23,10 @@ public static class DependencyInjection
             .AddTransient<TokenDelegatingHandler>()
             .AddTransient<NoAuthorizeDelegatingHandler>()
             .AddSingleton<IUserSessionProvider, UserSessionProvider>()
+            .AddTransient<ILogInService, LogInService>()
+            .AddTransient<ILogOutService, LogOutService>()
+            .AddTransient<IRegisterService, RegisterService>()
+            .AddTransient<IRefreshTokensService, RefreshTokensService>()
             .AddHttpClients();
 
     private static IServiceCollection AddHttpClients(this IServiceCollection services)

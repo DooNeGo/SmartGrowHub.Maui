@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Mediator;
+using SmartGrowHub.Application.LogIn;
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Common.Password;
-using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Features.Register.ViewModel;
 
@@ -12,7 +10,7 @@ namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 public sealed partial class LogInPageModel(
     INavigationService navigationService,
-    IMediator mediator,
+    ILogInService logInService,
     IDialogService dialogService)
     : ObservableObject
 {
@@ -43,9 +41,9 @@ public sealed partial class LogInPageModel(
     private Eff<Unit> LogIn(CancellationToken cancellationToken) =>
         from userName in CreateUserName(UserNameRaw).ToEff()
         from password in CreatePassword(PasswordRaw).ToEff()
-        let command = new LogInCommand(userName, password, Remember)
-        from _ in mediator
-            .Send(command, cancellationToken).ToEff()
+        let request = new LogInRequest(userName, password)
+        from _ in logInService
+            .LogIn(request, Remember, cancellationToken)
             .IfFailEff(error => DisplayError(error))
         select unit;
 

@@ -1,12 +1,8 @@
-﻿using Mediator;
-using SmartGrowHub.Application.LogIn;
+﻿using SmartGrowHub.Application.LogIn;
 using SmartGrowHub.Application.LogOut;
 using SmartGrowHub.Application.RefreshTokens;
 using SmartGrowHub.Application.Register;
 using SmartGrowHub.Application.Services;
-using SmartGrowHub.Domain.Errors;
-using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Notifications;
 using SmartGrowHub.Maui.Infrastructure.Services.Extensions;
 using SmartGrowHub.Shared.Auth.Dto.LogIn;
 using SmartGrowHub.Shared.Auth.Dto.LogOut;
@@ -19,7 +15,7 @@ using SmartGrowHub.Shared.UserSessions.Extensions;
 
 namespace SmartGrowHub.Maui.Infrastructure.Services;
 
-internal sealed class AuthService(HttpClient httpClient, IMediator mediator) : IAuthService
+internal sealed class AuthService(HttpClient httpClient) : IAuthService
 {
     public Eff<LogInResponse> LogIn(LogInRequest request, CancellationToken cancellationToken) =>
         httpClient
@@ -40,10 +36,7 @@ internal sealed class AuthService(HttpClient httpClient, IMediator mediator) : I
             .PostAsync<RefreshTokensRequestDto, RefreshTokensResponseDto, ErrorDto>("auth/refresh", request.ToDto(), cancellationToken)
             .Bind(either => either.Match(
                 Left: errorDto => errorDto.ToDomain(),
-                Right: response => response.TryToDomain().ToEff()))
-            | @catch(DomainErrors.SessionNotFoundError, error => mediator
-                .Publish(NoAuthorizeNotification.Default).ToEff()
-                .Bind(_ => FailEff<RefreshTokensResponse>(error)));
+                Right: response => response.TryToDomain().ToEff()));
 
     public Eff<RegisterResponse> Register(RegisterRequest request, CancellationToken cancellationToken) =>
         httpClient

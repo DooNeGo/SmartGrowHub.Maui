@@ -1,31 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
-using Mediator;
 using Microsoft.Extensions.Logging;
 using SmartGrowHub.Application.LogIn;
 using SmartGrowHub.Application.Services;
-using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Application.Messages;
 
-namespace SmartGrowHub.Maui.MediatorHandlers.Commands;
+namespace SmartGrowHub.Maui.Infrastructure.Services;
 
-internal sealed partial class LogInHandler(
+internal sealed partial class LogInService(
     IAuthService authService,
     IUserSessionProvider sessionProvider,
     INavigationService navigationService,
     IMessenger messenger,
-    ILogger<LogInHandler> logger)
-    : ICommandHandler<LogInCommand, Unit>
+    ILogger<LogInService> logger)
+    : ILogInService
 {
-    public ValueTask<Unit> Handle(LogInCommand command, CancellationToken cancellationToken) =>
-        LogIn(command, cancellationToken)
-            .IfFailEff(LogErrorEff)
-            .RunUnsafeAsync();
+    public Eff<Unit> LogIn(LogInRequest request, bool remember, CancellationToken cancellationToken) =>
+        LogInInternal(request, remember, cancellationToken)
+            .IfFailEff(LogErrorEff);
 
-    private Eff<Unit> LogIn(LogInCommand command, CancellationToken cancellationToken) =>
-        from request in Pure(new LogInRequest(command.UserName, command.Password))
+    private Eff<Unit> LogInInternal(LogInRequest request, bool remember, CancellationToken cancellationToken) =>
         from response in authService.LogIn(request, cancellationToken)
-        from _1 in command.Remember
+        from _1 in remember
             ? sessionProvider.SaveAndSetSession(response.UserSession, cancellationToken)
             : sessionProvider.SetSession(response.UserSession)
         from _2 in navigationService.SetMainPageAsRoot()

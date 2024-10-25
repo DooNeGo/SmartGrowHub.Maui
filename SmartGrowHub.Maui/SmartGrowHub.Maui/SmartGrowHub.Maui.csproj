@@ -34,10 +34,6 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="Mediator.SourceGenerator" Version="2.1.7">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

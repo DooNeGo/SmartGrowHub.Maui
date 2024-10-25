@@ -2,10 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Mediator;
-using SmartGrowHub.Domain.Extensions;
 using SmartGrowHub.Domain.Model;
-using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Application.Messages;
 
@@ -16,7 +13,7 @@ public sealed partial class UserProfilePageModel : ObservableObject
     private readonly IUserService _userService;
     private readonly IDialogService _dialogService;
     private readonly IUserSessionProvider _sessionProvider;
-    private readonly IMediator _mediator;
+    private readonly ILogOutService _logOutService;
 
     [ObservableProperty] private User? _user;
     [ObservableProperty] private bool _isRefreshing;
@@ -25,13 +22,13 @@ public sealed partial class UserProfilePageModel : ObservableObject
         IUserService userService,
         IDialogService dialogService,
         IUserSessionProvider sessionProvider,
-        IMediator mediator,
+        ILogOutService logOutService,
         IMessenger messenger)
     {
         _userService = userService;
         _dialogService = dialogService;
         _sessionProvider = sessionProvider;
-        _mediator = mediator;
+        _logOutService = logOutService;
 
         RegisterMessages(messenger);
         RefreshWithLoadingAsync(CancellationToken.None).SafeFireAndForget();
@@ -83,11 +80,8 @@ public sealed partial class UserProfilePageModel : ObservableObject
     [RelayCommand]
     private async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        await _dialogService.ShowLoadingAsync().RunAsync();
-        await LogOut(cancellationToken).RunAsync().ConfigureAwait(false);
+        await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
+        await _logOutService.LogOut(cancellationToken).RunAsync().ConfigureAwait(false);
         await _dialogService.Pop().RunAsync().ConfigureAwait(false);
     }
-
-    private Eff<Unit> LogOut(CancellationToken cancellationToken) =>
-        _mediator.Send(LogOutCommand.Default, cancellationToken).ToEff();
 }

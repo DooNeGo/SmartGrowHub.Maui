@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Mediator;
+using SmartGrowHub.Application.Register;
 using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Common.Password;
-using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
@@ -13,7 +11,7 @@ namespace SmartGrowHub.Maui.Features.Register.ViewModel;
 public sealed partial class RegisterPageModel(
     INavigationService navigationService,
     IDialogService dialogService,
-    IMediator mediator)
+    IRegisterService registerService)
     : ObservableObject
 {
     [ObservableProperty] private string _userNameRaw = string.Empty;
@@ -36,7 +34,7 @@ public sealed partial class RegisterPageModel(
     {
         await dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
         await Register(cancellationToken).RunAsync().ConfigureAwait(false);
-        dialogService.Pop().Run();
+        await dialogService.Pop().RunAsync().ConfigureAwait(false);
     }
 
     private Eff<Unit> Register(CancellationToken cancellationToken) =>
@@ -44,8 +42,8 @@ public sealed partial class RegisterPageModel(
         from password in CreateDomainType<PlainTextPassword>(PasswordRaw, error => PasswordError = error.Message)
         from email in CreateDomainType<EmailAddress>(EmailRaw, error => EmailError = error.Message)
         from displayName in CreateDomainType<NonEmptyString>(DisplayNameRaw, error => DisplayNameError = error.Message)
-        let command = new RegisterCommand(userName, password, email, displayName)
-        from _ in mediator.Send(command, cancellationToken).ToEff()
+        let request = new RegisterRequest(userName, password, email, displayName)
+        from _ in registerService.Register(request, cancellationToken)
         select unit;
 
     private static Eff<T> CreateDomainType<T>(string repr, Action<Error> onError)

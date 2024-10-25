@@ -1,7 +1,5 @@
-﻿using Mediator;
-using SmartGrowHub.Domain.Common;
+﻿using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Commands;
 using SmartGrowHub.Maui.Application.Interfaces;
 using System.Net.Http.Headers;
 
@@ -9,7 +7,7 @@ namespace SmartGrowHub.Maui.Infrastructure.Services.DelegatingHandlers;
 
 internal sealed class TokenDelegatingHandler(
     IUserSessionProvider sessionProvider,
-    IMediator mediator)
+    IRefreshTokensService refreshTokensService)
     : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
@@ -26,7 +24,7 @@ internal sealed class TokenDelegatingHandler(
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         });
 
-    private IO<AccessToken> GetAndRefreshTokens(CancellationToken cancellationToken) =>
-        from tokens in mediator.Send(RefreshTokensCommand.Default, cancellationToken).ToIO()
+    private Eff<AccessToken> GetAndRefreshTokens(CancellationToken cancellationToken) =>
+        from tokens in refreshTokensService.RefreshTokens(cancellationToken)
         select tokens.AccessToken;
 }

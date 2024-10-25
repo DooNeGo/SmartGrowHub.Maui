@@ -1,22 +1,18 @@
-﻿using Mediator;
-using SmartGrowHub.Domain.Extensions;
-using SmartGrowHub.Maui.Application.Notifications;
+﻿using SmartGrowHub.Domain.Extensions;
+using SmartGrowHub.Maui.Application.Interfaces;
 using System.Net;
 
 namespace SmartGrowHub.Maui.Infrastructure.Services.DelegatingHandlers;
 
-internal sealed class NoAuthorizeDelegatingHandler(IMediator mediator) : DelegatingHandler
+internal sealed class NoAuthorizeDelegatingHandler(INoAuthorizeService noAuthorizeService) : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
-        base.SendAsync(request, cancellationToken).ToIO()
+        base.SendAsync(request, cancellationToken).ToEff()
             .Bind(response => HandleResponse(response, cancellationToken))
-            .RunAsync().AsTask();
+            .RunUnsafeAsync().AsTask();
 
-    private IO<HttpResponseMessage> HandleResponse(HttpResponseMessage response, CancellationToken cancellationToken) =>
+    private Eff<HttpResponseMessage> HandleResponse(HttpResponseMessage response, CancellationToken cancellationToken) =>
         response.StatusCode is HttpStatusCode.Unauthorized
-            ? SendNotification(cancellationToken).Map(_ => response)
+            ? noAuthorizeService.Handle(cancellationToken).Map(_ => response)
             : Pure(response);
-
-    private IO<Unit> SendNotification(CancellationToken cancellationToken) =>
-        mediator.Publish(NoAuthorizeNotification.Default, cancellationToken).ToIO();
 }
