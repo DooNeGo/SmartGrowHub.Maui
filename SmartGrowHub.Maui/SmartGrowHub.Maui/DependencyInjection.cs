@@ -38,7 +38,7 @@ internal static class DependencyInjection
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<INavigationService, NavigationService>()
             .AddSingleton<IUserSessionService, UserSessionService>()
-            .AddTransient<INoAuthorizeService, NoAuthorizeService>()
+            .AddTransient<IAuthorizationErrorHandler, AuthorizationErrorHandler>()
             .AddTransient<ILogInService, LogInService>()
             .AddTransient<ILogOutService, LogOutService>()
             .AddTransient<IRegisterService, RegisterService>()

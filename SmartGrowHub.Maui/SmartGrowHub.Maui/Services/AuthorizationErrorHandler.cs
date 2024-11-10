@@ -2,10 +2,10 @@
 
 namespace SmartGrowHub.Maui.Services;
 
-internal sealed class NoAuthorizeService(
+internal sealed class AuthorizationErrorHandler(
     IDialogService dialogService,
     ILogOutService logOutService)
-    : INoAuthorizeService
+    : IAuthorizationErrorHandler
 {
     public Eff<Unit> Handle(CancellationToken cancellationToken) =>
         from _1 in dialogService.PopAllAsync()

@@ -1,6 +1,6 @@
 ﻿namespace SmartGrowHub.Maui.Application.Interfaces;
 
-public interface INoAuthorizeService
+public interface IAuthorizationErrorHandler
 {
     Eff<Unit> Handle(CancellationToken cancellationToken);
 }

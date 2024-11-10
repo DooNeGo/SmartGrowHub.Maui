@@ -16,16 +16,14 @@ public static class DependencyInjection
 
     public static IServiceCollection AddInfrastructure(this IServiceCollection services) =>
         services
-            .AddTransient<IAuthService, AuthService>()
-            .AddTransient<IUserService, UserService>()
             .AddTransient<TokenDelegatingHandler>()
-            .AddTransient<NoAuthorizeDelegatingHandler>()
+            .AddTransient<AuthorizationErrorDelegatingHandler>()
             .AddHttpClients();
 
     private static IServiceCollection AddHttpClients(this IServiceCollection services)
     {
         services.AddHttpClient<IUserService, UserService>(DefaultConfiguration)
-            .AddHttpMessageHandler<NoAuthorizeDelegatingHandler>()
+            .AddHttpMessageHandler<AuthorizationErrorDelegatingHandler>()
             .AddHttpMessageHandler<TokenDelegatingHandler>();
 
         services.AddHttpClient<IAuthService, AuthService>(DefaultConfiguration);
