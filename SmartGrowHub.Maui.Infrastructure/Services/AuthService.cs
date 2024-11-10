@@ -29,7 +29,7 @@ internal sealed class AuthService(HttpClient httpClient) : IAuthService
             .PostAsync<LogOutRequestDto, LogOutResponse, ErrorDto>("auth/logout", request.ToDto(), cancellationToken)
             .Bind(either => either.Match(
                 Left: errorDto => errorDto.ToDomain(),
-                Right: response => SuccessEff(response)));
+                Right: SuccessEff));
 
     public Eff<RefreshTokensResponse> RefreshTokens(RefreshTokensRequest request, CancellationToken cancellationToken) =>
         httpClient
@@ -43,5 +43,5 @@ internal sealed class AuthService(HttpClient httpClient) : IAuthService
             .PostAsync<RegisterRequestDto, RegisterResponse, ErrorDto>("auth/register", request.ToDto(), cancellationToken)
             .Bind(either => either.Match(
                 Left: errorDto => errorDto.ToDomain(),
-                Right: response => SuccessEff(response)));
+                Right: SuccessEff));
 }

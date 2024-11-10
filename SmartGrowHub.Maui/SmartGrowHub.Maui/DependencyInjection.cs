@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Messaging;
 using Mopups.Services;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Features.AppStart.View;
@@ -33,8 +34,13 @@ internal static class DependencyInjection
             .AddSingleton(MopupService.Instance)
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<AppShell>()
-            .AddSingleton<ISecureStorageService, SecureStorageService>()
+            .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<INavigationService, NavigationService>()
-            .AddTransient<INoAuthorizeService, NoAuthorizeService>();
+            .AddSingleton<IUserSessionService, UserSessionService>()
+            .AddTransient<INoAuthorizeService, NoAuthorizeService>()
+            .AddTransient<ILogInService, LogInService>()
+            .AddTransient<ILogOutService, LogOutService>()
+            .AddTransient<IRegisterService, RegisterService>()
+            .AddTransient<IRefreshTokensService, RefreshTokensService>();
 }

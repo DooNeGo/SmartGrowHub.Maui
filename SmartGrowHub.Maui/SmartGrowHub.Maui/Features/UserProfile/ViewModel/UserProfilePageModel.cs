@@ -12,7 +12,7 @@ public sealed partial class UserProfilePageModel : ObservableObject
 {
     private readonly IUserService _userService;
     private readonly IDialogService _dialogService;
-    private readonly IUserSessionProvider _sessionProvider;
+    private readonly IUserSessionService _sessionService;
     private readonly ILogOutService _logOutService;
 
     [ObservableProperty] private User? _user;
@@ -21,13 +21,13 @@ public sealed partial class UserProfilePageModel : ObservableObject
     public UserProfilePageModel(
         IUserService userService,
         IDialogService dialogService,
-        IUserSessionProvider sessionProvider,
+        IUserSessionService sessionService,
         ILogOutService logOutService,
         IMessenger messenger)
     {
         _userService = userService;
         _dialogService = dialogService;
-        _sessionProvider = sessionProvider;
+        _sessionService = sessionService;
         _logOutService = logOutService;
 
         RegisterMessages(messenger);
@@ -70,7 +70,7 @@ public sealed partial class UserProfilePageModel : ObservableObject
     }
 
     private Eff<User> GetUser(CancellationToken cancellationToken) =>
-        from userId in _sessionProvider.GetUserId(cancellationToken)
+        from userId in _sessionService.GetUserId(cancellationToken)
         from user in _userService.GetUser(userId, cancellationToken)
         select user;
 

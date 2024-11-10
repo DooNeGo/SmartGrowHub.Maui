@@ -18,8 +18,8 @@ public static class HttpContentExtensions
                 json.ReadValue<TError>().ToEff()
                     .Map(error => (Either<TError, TResponse>)error));
 
-    private static Fin<T> ReadValue<T>(this string json) =>
-        Optional(JsonSerializer.Deserialize<T>(json, Options)).ToFin();
+    private static Option<T> ReadValue<T>(this string json) =>
+        Optional(JsonSerializer.Deserialize<T>(json, Options));
 
     private static JsonSerializerOptions CreateOptions()
     {

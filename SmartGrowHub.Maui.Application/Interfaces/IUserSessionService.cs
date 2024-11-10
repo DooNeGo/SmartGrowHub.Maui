@@ -3,7 +3,7 @@ using SmartGrowHub.Domain.Model;
 
 namespace SmartGrowHub.Maui.Application.Interfaces;
 
-public interface IUserSessionProvider
+public interface IUserSessionService
 {
     Eff<UserSession> GetUserSession(CancellationToken cancellationToken);
     Eff<Id<UserSession>> GetUserSessionId(CancellationToken cancellationToken);

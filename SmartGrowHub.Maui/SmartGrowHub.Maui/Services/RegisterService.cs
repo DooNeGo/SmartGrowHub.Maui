@@ -2,7 +2,7 @@
 using SmartGrowHub.Application.Services;
 using SmartGrowHub.Maui.Application.Interfaces;
 
-namespace SmartGrowHub.Maui.Infrastructure.Services;
+namespace SmartGrowHub.Maui.Services;
 
 internal sealed class RegisterService(IAuthService authService) : IRegisterService
 {

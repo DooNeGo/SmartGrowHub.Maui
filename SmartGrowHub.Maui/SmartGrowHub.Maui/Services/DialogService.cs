@@ -15,7 +15,7 @@ public sealed class DialogService : IDialogService
     public DialogService(IPopupNavigation popupNavigation)
     {
         _popupNavigation = popupNavigation;
-        _loadingPopup = new(this);
+        _loadingPopup = new LoadingPopup(this);
     }
 
     public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel) =>

@@ -7,7 +7,7 @@ using SmartGrowHub.Maui.Application.Interfaces;
 
 namespace SmartGrowHub.Maui.Infrastructure.Services.Mock;
 
-public sealed class MockAuthService(IUserSessionProvider sessionProvider) : IAuthService
+public sealed class MockAuthService(IUserSessionService sessionService) : IAuthService
 {
     //public Eff<LogInResponse> LogInAsync(LogInRequest request, bool remember, CancellationToken cancellationToken)
     //{

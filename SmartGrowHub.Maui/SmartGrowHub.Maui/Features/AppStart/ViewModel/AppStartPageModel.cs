@@ -7,20 +7,20 @@ namespace SmartGrowHub.Maui.Features.AppStart.ViewModel;
 public sealed partial class AppStartPageModel : ObservableObject
 {
     private readonly INavigationService _navigationService;
-    private readonly IUserSessionProvider _sessionProvider;
+    private readonly IUserSessionService _sessionService;
 
     public AppStartPageModel(
         INavigationService navigationService,
-        IUserSessionProvider sessionProvider)
+        IUserSessionService sessionService)
     {
         _navigationService = navigationService;
-        _sessionProvider = sessionProvider;
+        _sessionService = sessionService;
 
         InitializeAsync(CancellationToken.None).SafeFireAndForget();
     }
 
     private Task<Fin<Unit>> InitializeAsync(CancellationToken cancellationToken) =>
-        _sessionProvider
+        _sessionService
             .GetUserSession(cancellationToken)
             .Bind(_ => _navigationService.SetMainPageAsRoot(true, cancellationToken))
             .IfFailEff(_ => _navigationService.SetLogInAsRoot(true, cancellationToken))

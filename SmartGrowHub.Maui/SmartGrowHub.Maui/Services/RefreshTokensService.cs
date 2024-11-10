@@ -4,21 +4,21 @@ using SmartGrowHub.Domain.Common;
 using SmartGrowHub.Domain.Errors;
 using SmartGrowHub.Maui.Application.Interfaces;
 
-namespace SmartGrowHub.Maui.Infrastructure.Services;
+namespace SmartGrowHub.Maui.Services;
 
 internal sealed class RefreshTokensService(
-    IUserSessionProvider sessionProvider,
+    IUserSessionService sessionService,
     IAuthService authService,
     INoAuthorizeService noAuthorizeService)
     : IRefreshTokensService
 {
     public Eff<AuthTokens> RefreshTokens(CancellationToken cancellationToken) =>
-        from refreshToken in sessionProvider.GetRefreshToken(cancellationToken)
+        from refreshToken in sessionService.GetRefreshToken(cancellationToken)
         let request = new RefreshTokensRequest(refreshToken)
         from response in authService.RefreshTokens(request, cancellationToken)
-        | @catch(DomainErrors.SessionNotFoundError, error => noAuthorizeService
-            .Handle(cancellationToken)
-            .Bind(_ => FailEff<RefreshTokensResponse>(error)))
-        from _ in sessionProvider.UpdateTokens(response.AuthTokens, cancellationToken)
+                         | @catch(DomainErrors.SessionNotFoundError, error => noAuthorizeService
+                             .Handle(cancellationToken)
+                             .Bind(_ => FailEff<RefreshTokensResponse>(error)))
+        from _ in sessionService.UpdateTokens(response.AuthTokens, cancellationToken)
         select response.AuthTokens;
 }

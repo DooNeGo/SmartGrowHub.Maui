@@ -6,12 +6,12 @@ using System.Net.Http.Headers;
 namespace SmartGrowHub.Maui.Infrastructure.Services.DelegatingHandlers;
 
 internal sealed class TokenDelegatingHandler(
-    IUserSessionProvider sessionProvider,
+    IUserSessionService sessionService,
     IRefreshTokensService refreshTokensService)
     : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
-        sessionProvider
+        sessionService
             .GetAccessTokenIfNotExpired(cancellationToken)
             .IfFailEff(_ => GetAndRefreshTokens(cancellationToken))
             .Bind(accessToken => SetAuthorization(request, accessToken))

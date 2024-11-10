@@ -3,22 +3,23 @@ using SmartGrowHub.Application.LogOut;
 using SmartGrowHub.Application.Services;
 using SmartGrowHub.Maui.Application.Interfaces;
 using SmartGrowHub.Maui.Application.Messages;
+using SmartGrowHub.Maui.Services.Extensions;
 
-namespace SmartGrowHub.Maui.Infrastructure.Services;
+namespace SmartGrowHub.Maui.Services;
 
 internal sealed class LogOutService(
-    IUserSessionProvider sessionProvider,
+    IUserSessionService sessionService,
     IAuthService authService,
     INavigationService navigationService,
     IMessenger messenger)
     : ILogOutService
 {
     public Eff<Unit> LogOut(CancellationToken cancellationToken) =>
-        from sessionId in sessionProvider.GetUserSessionId(cancellationToken)
+        from sessionId in sessionService.GetUserSessionId(cancellationToken)
         let request = new LogOutRequest(sessionId)
         from response in authService.LogOut(request, cancellationToken)
-        from _1 in sessionProvider.RemoveSession()
+        from _1 in sessionService.RemoveSession()
         from _2 in navigationService.SetLogInAsRoot(cancellationToken: cancellationToken)
-        from _3 in liftEff(() => messenger.Send(LoggedOutMessage.Default))
+        from _3 in messenger.SendIO(LoggedOutMessage.Default)
         select unit;
 }
