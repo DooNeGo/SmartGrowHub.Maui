@@ -13,7 +13,7 @@ using SmartGrowHub.Shared.Errors.Extensions;
 using SmartGrowHub.Shared.UserSessions.Dto.RefreshTokens;
 using SmartGrowHub.Shared.UserSessions.Extensions;
 
-namespace SmartGrowHub.Maui.Infrastructure.Services;
+namespace SmartGrowHub.Maui.Infrastructure.Services.APIs;
 
 internal sealed class AuthService(HttpClient httpClient) : IAuthService
 {

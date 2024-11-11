@@ -29,7 +29,7 @@ internal static class DependencyInjection
             .AddTransientWithShellRoute<UserProfilePage, UserProfilePageModel>(nameof(UserProfilePageModel))
             .AddTransientWithShellRoute<AppStartPage, AppStartPageModel>(nameof(AppStartPageModel));
 
-    public static IServiceCollection AddServices(this IServiceCollection services) =>
+    public static IServiceCollection AddUiServices(this IServiceCollection services) =>
         services
             .AddSingleton(MopupService.Instance)
             .AddSingleton(SecureStorage.Default)

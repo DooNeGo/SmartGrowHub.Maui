@@ -7,7 +7,7 @@ using SmartGrowHub.Shared.Errors.Extensions;
 using SmartGrowHub.Shared.Users.Dto;
 using SmartGrowHub.Shared.Users.Extensions;
 
-namespace SmartGrowHub.Maui.Infrastructure.Services;
+namespace SmartGrowHub.Maui.Infrastructure.Services.APIs;
 
 internal sealed class UserService(HttpClient httpClient) : IUserService
 {
