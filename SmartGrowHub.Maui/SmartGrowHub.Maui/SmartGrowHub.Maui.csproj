@@ -32,28 +32,20 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="8.0.0" />
-		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\SmartGrowHub.Maui.Application\SmartGrowHub.Maui.Application.csproj" />
-	  <ProjectReference Include="..\..\SmartGrowHub.Maui.Infrastructure\SmartGrowHub.Maui.Infrastructure.csproj" />
-	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Application\SmartGrowHub.Application.csproj" />
-	  <ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj" />
+		<ProjectReference Include="..\..\SmartGrowHub.Maui.Application\SmartGrowHub.Maui.Application.csproj" />
+		<ProjectReference Include="..\..\SmartGrowHub.Maui.Infrastructure\SmartGrowHub.Maui.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Application\SmartGrowHub.Application.csproj" />
+		<ProjectReference Include="..\..\SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,7 +55,7 @@
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Popups\LoadingPopup.xaml.cs">
-		  <DependentUpon>LoadingPopup.xaml</DependentUpon>
+			<DependentUpon>LoadingPopup.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -79,37 +71,37 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="CustomControls\CustomImageButton.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="CustomControls\CustomSearchBar.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\AppStart\View\AppStartPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\LogIn\View\LogInPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\Main\View\MainPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\Main\View\PlantViewItem.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\Register\View\RegisterPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\Register\View\RoundImageButton.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\Start\View\StartPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Features\UserProfile\View\UserProfilePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Popups\LoadingPopup.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 
