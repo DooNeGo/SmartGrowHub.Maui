@@ -28,7 +28,7 @@ public sealed class DialogService : IDialogService
         .SafeFireAndForget()));
 
     private static Task<bool> DisplayAlertInternal(string title, string message, string accept, string cancel) =>
-        App.Current!.MainPage!.DisplayAlert(title, message, accept, cancel);
+        App.Current!.Windows[0].Page!.DisplayAlert(title, message, accept, cancel);
 
     public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
         DisplayAlertAsync(title, message, null!, cancel).Map(_ => unit);

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>SmartGrowHub.Maui</RootNamespace>
@@ -9,7 +9,12 @@
 		<Nullable>enable</Nullable>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<NeutralLanguage>en-US</NeutralLanguage>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Text.Json.Serialization.RespectRequiredConstructorParametersDefault" Value="true" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<MauiSplashScreen Include="Resources\splash_screen.svg" Color="White" />
@@ -34,13 +39,13 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.93">
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.93">
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 	</ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Graphics.Text;
-using Font = Microsoft.Maui.Graphics.Font;
+﻿using Font = Microsoft.Maui.Graphics.Font;
 
 namespace SmartGrowHub.Maui.CustomControls;
 

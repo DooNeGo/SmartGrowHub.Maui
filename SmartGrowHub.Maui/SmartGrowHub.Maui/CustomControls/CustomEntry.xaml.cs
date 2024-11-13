@@ -9,8 +9,7 @@ public sealed partial class CustomEntry
         nameof(Placeholder), typeof(string), typeof(CustomEntry), string.Empty,
         propertyChanged: (bindable, _, newValue) =>
         {
-            if (bindable is not CustomEntry entry) return;
-            if (newValue is not string value) return;
+            if (bindable is not CustomEntry entry || newValue is not string value) return;
             entry.Entry.Placeholder = value;
         });
 
@@ -18,8 +17,7 @@ public sealed partial class CustomEntry
         nameof(IconSource), typeof(string), typeof(CustomEntry), string.Empty,
         propertyChanged: (bindable, _, newValue) =>
         {
-            if (bindable is not CustomEntry entry) return;
-            if (newValue is not string value) return;
+            if (bindable is not CustomEntry entry || newValue is not string value) return;
             entry.Image.Source = value;
         });
 
@@ -27,8 +25,7 @@ public sealed partial class CustomEntry
         nameof(IsPassword), typeof(bool), typeof(CustomEntry), false,
         propertyChanged: (bindable, _, newValue) =>
         {
-            if (bindable is not CustomEntry entry) return;
-            if (newValue is not bool value) return;
+            if (bindable is not CustomEntry entry || newValue is not bool value) return;
             entry.Entry.IsPassword = value;
         });
 

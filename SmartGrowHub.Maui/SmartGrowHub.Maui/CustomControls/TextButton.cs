@@ -8,8 +8,7 @@ public sealed class TextButton : Label
         nameof(Command), typeof(ICommand), typeof(TextButton),
         propertyChanged: (bindable, _, newValue) =>
         {
-            if (bindable is not TextButton button) return;
-            if (newValue is not ICommand command) return;
+            if (bindable is not TextButton button || newValue is not ICommand command) return;
             button._gestureRecognizer.Command = command;
         });
 
@@ -18,7 +17,7 @@ public sealed class TextButton : Label
     public TextButton()
     {
         _gestureRecognizer = new TapGestureRecognizer();
-        _gestureRecognizer.Tapped += (sender, args) => Tapped?.Invoke(sender, args);
+        _gestureRecognizer.Tapped += (_, args) => Tapped?.Invoke(this, args);
         GestureRecognizers.Add(_gestureRecognizer);
     }
 

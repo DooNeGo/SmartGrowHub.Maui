@@ -15,13 +15,13 @@ public static class UserSessionStorageExtensions
         secureStorage.SaveSessionId(session.Id, cancellationToken) >>
         secureStorage.SaveUserId(session.UserId, cancellationToken) >>
         secureStorage.SaveAuthTokens(session.AuthTokens, cancellationToken);
-    
+
     public static Eff<UserSession> ReadUserSession(this ISecureStorage secureStorage, CancellationToken cancellationToken) =>
         from sessionId in secureStorage.ReadSessionId(cancellationToken)
         from userId in secureStorage.ReadUserId(cancellationToken)
         from authTokens in secureStorage.ReadAuthTokens(cancellationToken)
         select new UserSession(sessionId, userId, authTokens);
-    
+
     public static Eff<Unit> SaveUserId(this ISecureStorage secureStorage, Id<User> userId, CancellationToken cancellationToken) =>
         secureStorage.SaveDomainType(UserIdKey, userId, cancellationToken);
 
@@ -50,7 +50,7 @@ public static class UserSessionStorageExtensions
         CancellationToken cancellationToken) =>
         secureStorage.SaveAccessToken(authTokens.AccessToken, cancellationToken) >>
         secureStorage.SaveRefreshToken(authTokens.RefreshToken, cancellationToken);
-    
+
     public static Eff<AuthTokens> ReadAuthTokens(this ISecureStorage secureStorage, CancellationToken cancellationToken) =>
         from accessToken in secureStorage.ReadAccessToken(cancellationToken)
         from refreshToken in secureStorage.ReadRefreshToken(cancellationToken)

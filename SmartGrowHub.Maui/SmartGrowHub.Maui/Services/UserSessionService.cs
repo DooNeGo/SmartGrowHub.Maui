@@ -9,7 +9,7 @@ namespace SmartGrowHub.Maui.Services;
 internal sealed class UserSessionService(ISecureStorage secureStorage) : IUserSessionService
 {
     private const int TokenExpirationBufferSeconds = 3;
-    
+
     private static readonly Error AccessTokenExpiredError =
         Error.New("The access token have already expired");
 
@@ -95,7 +95,7 @@ internal sealed class UserSessionService(ISecureStorage secureStorage) : IUserSe
 
     private static bool IsTokenExpired(AccessToken token)
     {
-        var expiration = TokenHandler
+        int expiration = TokenHandler
             .ReadJsonWebToken(token.To())
             .GetPayloadValue<int>("exp");
 

@@ -6,8 +6,7 @@ public sealed partial class CustomImageButton
         nameof(ImageSource), typeof(string), typeof(CustomImageButton), string.Empty,
         propertyChanged: (bindable, oldValue, newValue) =>
         {
-            if (bindable is not CustomImageButton button) return;
-            if (newValue is not string imagePath) return;
+            if (bindable is not CustomImageButton button || newValue is not string imagePath) return;
             button.Image.Source = imagePath;
         });
 
