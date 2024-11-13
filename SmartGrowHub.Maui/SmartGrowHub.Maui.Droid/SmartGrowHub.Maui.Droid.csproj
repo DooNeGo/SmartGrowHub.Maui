@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0-android</TargetFramework>
-        <SupportedOSPlatformVersion>30.0</SupportedOSPlatformVersion>
-        <OutputType>Exe</OutputType>
-        <RootNamespace>SmartGrowHub.Maui.Droid</RootNamespace>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <UseMaui>true</UseMaui>
-        <AnalysisLevel>latest-recommended</AnalysisLevel>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0-android</TargetFramework>
+		<SupportedOSPlatformVersion>30.0</SupportedOSPlatformVersion>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>SmartGrowHub.Maui.Droid</RootNamespace>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseMaui>true</UseMaui>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <AndroidLinkTool>r8</AndroidLinkTool>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<AndroidLinkTool>r8</AndroidLinkTool>
+		<AndroidEnableMarshalMethods>true</AndroidEnableMarshalMethods>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
+	</ItemGroup>
 
 </Project>

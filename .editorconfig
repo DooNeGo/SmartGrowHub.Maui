@@ -1,4 +1,0 @@
-﻿[*.cs]
-
-# IDE0011: Добавить фигурные скобки
-dotnet_diagnostic.IDE0011.severity = none

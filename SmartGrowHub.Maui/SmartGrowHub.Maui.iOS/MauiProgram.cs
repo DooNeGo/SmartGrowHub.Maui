@@ -15,8 +15,9 @@ public static class MauiProgram
 
         builder
             .UseSharedMauiApp()
-            .ConfigureMauiHandlers(collection =>
-                collection.AddHandler<CollectionView, CollectionViewHandler2>());
+            .ConfigureMauiHandlers(collection => collection
+                .AddHandler<CollectionView, CollectionViewHandler2>()
+                .AddHandler<CarouselView, CarouselViewHandler2>());
 
         return builder.Build();
     }
