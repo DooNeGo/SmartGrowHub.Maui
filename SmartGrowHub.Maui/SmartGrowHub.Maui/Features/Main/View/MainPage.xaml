@@ -3,10 +3,8 @@
     x:Class="SmartGrowHub.Maui.Features.Main.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:common="clr-namespace:SmartGrowHub.Domain.Common;assembly=SmartGrowHub.Domain"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
-    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
-    xmlns:observable="clr-namespace:SmartGrowHub.Maui.ObservableModel"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:DataType="viewModel:MainPageModel"
@@ -26,14 +24,14 @@
                         HorizontalOptions="Start"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource Headline}"
-                        Text="{x:Static localization:Resources.YourPlants}" />
+                        Text="{x:Static localization:AppResources.YourPlants}" />
 
                     <customControls:TextButton
                         Grid.Column="1"
                         Margin="0,0,0,6"
                         FontFamily="Inter18Medium"
                         FontSize="16"
-                        Text="{x:Static localization:Resources.Edit}"
+                        Text="{x:Static localization:AppResources.Edit}"
                         TextColor="{StaticResource Primary}"
                         VerticalOptions="End" />
                 </Grid>
@@ -55,7 +53,7 @@
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="observable:GrowHubVm">
+                        <DataTemplate>
                             <Border
                                 Padding="20"
                                 BackgroundColor="White"
@@ -68,7 +66,7 @@
                                         <MenuFlyoutItem Text="Remove plant" />
                                     </MenuFlyout>
                                 </FlyoutBase.ContextFlyout>
-                                
+
                                 <Grid RowDefinitions="Auto, *" RowSpacing="5">
                                     <Label
                                         Grid.Row="0"

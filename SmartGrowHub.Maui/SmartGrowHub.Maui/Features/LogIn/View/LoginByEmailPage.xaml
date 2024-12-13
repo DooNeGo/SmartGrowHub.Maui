@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartGrowHub.Maui.Features.LogIn.View.LoginByEmailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:local="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    x:DataType="viewModel:LoginByEmailPageModel"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False"
+    Style="{StaticResource SimplePage}">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding GoBackCommand}" />
+    </Shell.BackButtonBehavior>
+
+    <ScrollView Padding="30">
+        <Grid RowDefinitions=".8*,*" RowSpacing="40">
+            <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                <Label Style="{StaticResource Headline}" Text="{x:Static localization:AppResources.LoginTitle}" />
+                <Label Style="{StaticResource Caption}" Text="{x:Static localization:AppResources.LogInToYourAccount}" />
+            </VerticalStackLayout>
+
+            <Grid Grid.Row="1" RowDefinitions="*,*,*">
+                <customControls:CustomEntry
+                    Grid.Row="0"
+                    IconSource="envelope_icon.png"
+                    Placeholder="{x:Static localization:AppResources.Email}"
+                    Text="{Binding Email}"
+                    VerticalOptions="Center" />
+
+                <Button
+                    Grid.Row="1"
+                    Command="{Binding SendOtpCommand}"
+                    HeightRequest="50"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="{x:Static localization:AppResources.SendCode}"
+                    VerticalOptions="Start"
+                    WidthRequest="200" />
+
+                <VerticalStackLayout
+                    Grid.Row="2"
+                    Spacing="20"
+                    VerticalOptions="Center">
+
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                        <BoxView Grid.Column="0" Style="{StaticResource Divider}" />
+
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="Inter18SemiBold"
+                            FontSize="13"
+                            Text="{x:Static localization:AppResources.OrContinueWith}" />
+
+                        <BoxView Grid.Column="2" Style="{StaticResource Divider}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*">
+                        <local:RoundImageButton Grid.Column="0" ImageSource="google_logo.png" />
+                        <local:RoundImageButton Grid.Column="1" ImageSource="apple_icon.png" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

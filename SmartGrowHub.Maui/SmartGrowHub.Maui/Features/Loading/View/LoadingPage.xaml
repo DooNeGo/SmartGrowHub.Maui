@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartGrowHub.Maui.Features.Loading.View.LoadingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Loading.ViewModel"
+    x:DataType="viewModel:LoadingPageModel"
+    Style="{StaticResource SimplePage}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{toolkit:AppThemeResource Key=PageBackgroundColor1}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" />
+    </ContentPage.Behaviors>
+
+    <Image
+        Aspect="AspectFit"
+        Source="appicon_foreground.png"
+        VerticalOptions="Center" />
+
+</ContentPage>

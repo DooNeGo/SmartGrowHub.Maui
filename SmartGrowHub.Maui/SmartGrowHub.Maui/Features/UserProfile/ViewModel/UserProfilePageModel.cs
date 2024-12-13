@@ -1,16 +1,10 @@
-﻿using AsyncAwaitBestPractices;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using SmartGrowHub.Domain.Model;
-using SmartGrowHub.Maui.Application.Interfaces;
-using SmartGrowHub.Maui.Application.Messages;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SmartGrowHub.Maui.Features.UserProfile.ViewModel;
 
 public sealed partial class UserProfilePageModel : ObservableObject
 {
-    private readonly IUserService _userService;
+    /*private readonly IUserService _userService;
     private readonly IDialogService _dialogService;
     private readonly IUserSessionService _sessionService;
     private readonly ILogOutService _logOutService;
@@ -29,26 +23,8 @@ public sealed partial class UserProfilePageModel : ObservableObject
         _dialogService = dialogService;
         _sessionService = sessionService;
         _logOutService = logOutService;
-
-        RegisterMessages(messenger);
+        
         RefreshWithLoadingAsync(CancellationToken.None).SafeFireAndForget();
-    }
-
-    private Unit RegisterMessages(IMessenger messenger)
-    {
-        messenger.Register<LoggedOutMessage>(this, (_, _) =>
-        {
-            User = null;
-            RefreshCommand.Cancel();
-            IsRefreshing = false;
-        });
-
-        messenger.Register<LoggedInMessage>(this, (_, _) =>
-        {
-            IsRefreshing = true;
-        });
-
-        return unit;
     }
 
     private async Task RefreshWithLoadingAsync(CancellationToken cancellationToken)
@@ -83,5 +59,5 @@ public sealed partial class UserProfilePageModel : ObservableObject
         await _dialogService.ShowLoadingAsync().RunAsync().ConfigureAwait(false);
         await _logOutService.LogOut(cancellationToken).RunAsync().ConfigureAwait(false);
         await _dialogService.Pop().RunAsync().ConfigureAwait(false);
-    }
+    }*/
 }

@@ -3,9 +3,11 @@
     x:Class="SmartGrowHub.Maui.CustomControls.CustomEntry"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Name="this"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="This"
     Padding="20,5"
-    BackgroundColor="#F2F2F7"
+    BackgroundColor="{toolkit:AppThemeResource Key=EntryColor}"
     StrokeShape="RoundRectangle 11">
     <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
         <Image
@@ -16,10 +18,11 @@
         <Entry
             x:Name="Entry"
             Grid.Column="1"
+            x:DataType="customControls:CustomEntry"
             FontFamily="Inter18Medium"
             FontSize="16"
             PlaceholderColor="{StaticResource Primary}"
             ReturnType="Next"
-            Text="{Binding Source={x:Reference this}, Path=Text}" />
+            Text="{Binding Source={x:Reference This}, Path=Text}" />
     </Grid>
 </Border>

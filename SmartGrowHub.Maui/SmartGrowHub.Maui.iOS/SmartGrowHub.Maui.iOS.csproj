@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0-ios</TargetFramework>
@@ -12,24 +12,13 @@
 		<RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<NoWarn>1701;1702;CA1711</NoWarn>
-		<EnableSGenConc>True</EnableSGenConc>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<NoWarn>1701;1702;CA1711</NoWarn>
-		<EnableSGenConc>True</EnableSGenConc>
-	</PropertyGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.21" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+		<ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
 	</ItemGroup>
 
 </Project>

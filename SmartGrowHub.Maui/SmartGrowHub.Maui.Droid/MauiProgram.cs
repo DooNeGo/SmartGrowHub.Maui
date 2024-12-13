@@ -1,6 +1,6 @@
 ﻿using Android.Content.Res;
-using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Microsoft.Maui.Handlers;
+using Color = Android.Graphics.Color;
 
 namespace SmartGrowHub.Maui.Droid;
 
@@ -11,8 +11,8 @@ public static class MauiProgram
         MauiAppBuilder builder = MauiApp.CreateBuilder();
 
         EntryHandler.Mapper.AppendToMapping("NoUnderLine", (handler, _) =>
-            handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Colors.Transparent.ToAndroid()));
-
+            handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Color.Transparent));
+        
         builder
             .UseSharedMauiApp();
 

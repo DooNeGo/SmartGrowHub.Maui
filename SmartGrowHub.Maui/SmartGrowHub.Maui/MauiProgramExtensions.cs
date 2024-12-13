@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
-using SmartGrowHub.Maui.Infrastructure;
+using SmartGrowHub.Maui.Features;
+using SmartGrowHub.Maui.Services;
 
 namespace SmartGrowHub.Maui;
 
@@ -23,10 +24,9 @@ public static class MauiProgramExtensions
             });
 
         builder.Services
-            .AddUi()
-            .AddUiServices()
-            .AddInfrastructure(false);
-
+            .AddServices()
+            .AddFeatures();
+        
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

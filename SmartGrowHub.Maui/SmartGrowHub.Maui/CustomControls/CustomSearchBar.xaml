@@ -3,9 +3,8 @@
     x:Class="SmartGrowHub.Maui.CustomControls.CustomSearchBar"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
-    Padding="{OnPlatform Default='10,0',
-                         iOS='10'}"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    Padding="{OnPlatform Default='10,0', iOS='10'}"
     BackgroundColor="White"
     StrokeShape="RoundRectangle 7">
     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">
@@ -15,7 +14,7 @@
             FontSize="15"
             MinimumHeightRequest="0"
             Opacity="0.8"
-            Placeholder="{x:Static localization:Resources.Search}"
+            Placeholder="{x:Static localization:AppResources.Search}"
             PlaceholderColor="#74767C"
             ReturnType="Search" />
     </Grid>

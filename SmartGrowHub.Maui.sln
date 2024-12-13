@@ -1,33 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.11.35222.181
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui.Droid", "SmartGrowHub.Maui\SmartGrowHub.Maui.Droid\SmartGrowHub.Maui.Droid.csproj", "{F313B941-5D65-4081-BCC2-219253E8E793}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui", "SmartGrowHub.Maui\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj", "{C5FF02A5-299A-46B5-8892-023B1B1D9C38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui.iOS", "SmartGrowHub.Maui\SmartGrowHub.Maui.iOS\SmartGrowHub.Maui.iOS.csproj", "{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Droid", "SmartGrowHub.Maui\SmartGrowHub.Maui.Droid\SmartGrowHub.Maui.Droid.csproj", "{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Maui", "SmartGrowHub.Maui\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj", "{D620AEC7-E113-4852-986F-0530A0E7AFFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.iOS", "SmartGrowHub.Maui\SmartGrowHub.Maui.iOS\SmartGrowHub.Maui.iOS.csproj", "{6B14556C-3FF6-4F91-94D1-F43D1B232B70}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Shared", "SmartGrowHub.Shared\SmartGrowHub.Shared\SmartGrowHub.Shared.csproj", "{3BD4C686-0485-4696-BA76-744AB37344C0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Domain", "SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Domain\SmartGrowHub.Domain.csproj", "{05A838F6-005D-4185-9D80-613BD2FF9C82}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGrowHub.Application", "SmartGrowHub.Shared\SmartGrowHub.Core\SmartGrowHub.Application\SmartGrowHub.Application.csproj", "{15C3DF81-316E-428F-B5B5-64E4D63F31F1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Application", "SmartGrowHub.Maui.Application\SmartGrowHub.Maui.Application.csproj", "{67D157AF-02AC-4154-9FB9-0B83537B57AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Maui.Infrastructure", "SmartGrowHub.Maui.Infrastructure\SmartGrowHub.Maui.Infrastructure.csproj", "{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D559A182-7309-4B6D-874B-CA0706A143D0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{E17D8D2E-4B5F-4241-A8A8-985D63618F5A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A671AAF5-B8FE-41CC-B1A2-CE9A6AD39750}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D9DD3F51-A490-4F5F-B508-993207D56724}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maui", "Maui", "{D2944EB6-7BA4-4618-8138-C2ED1482ECEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGrowHub.Shared", "SmartGrowHub.Shared\SmartGrowHub.Shared.csproj", "{99C82E6C-B1A5-4585-80DC-DAD35E902FA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,57 +17,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F313B941-5D65-4081-BCC2-219253E8E793}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D620AEC7-E113-4852-986F-0530A0E7AFFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BD4C686-0485-4696-BA76-744AB37344C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BD4C686-0485-4696-BA76-744AB37344C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BD4C686-0485-4696-BA76-744AB37344C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BD4C686-0485-4696-BA76-744AB37344C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05A838F6-005D-4185-9D80-613BD2FF9C82}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15C3DF81-316E-428F-B5B5-64E4D63F31F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67D157AF-02AC-4154-9FB9-0B83537B57AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5FF02A5-299A-46B5-8892-023B1B1D9C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5FF02A5-299A-46B5-8892-023B1B1D9C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5FF02A5-299A-46B5-8892-023B1B1D9C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5FF02A5-299A-46B5-8892-023B1B1D9C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CBA2EB-60F9-4B59-9201-C8471BE3DF6D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B14556C-3FF6-4F91-94D1-F43D1B232B70}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{99C82E6C-B1A5-4585-80DC-DAD35E902FA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C82E6C-B1A5-4585-80DC-DAD35E902FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C82E6C-B1A5-4585-80DC-DAD35E902FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C82E6C-B1A5-4585-80DC-DAD35E902FA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F313B941-5D65-4081-BCC2-219253E8E793} = {D2944EB6-7BA4-4618-8138-C2ED1482ECEA}
-		{5DC54178-CD68-46ED-B0D9-62283F2D0E0D} = {D2944EB6-7BA4-4618-8138-C2ED1482ECEA}
-		{D620AEC7-E113-4852-986F-0530A0E7AFFF} = {D2944EB6-7BA4-4618-8138-C2ED1482ECEA}
-		{3BD4C686-0485-4696-BA76-744AB37344C0} = {D9DD3F51-A490-4F5F-B508-993207D56724}
-		{05A838F6-005D-4185-9D80-613BD2FF9C82} = {D559A182-7309-4B6D-874B-CA0706A143D0}
-		{15C3DF81-316E-428F-B5B5-64E4D63F31F1} = {E17D8D2E-4B5F-4241-A8A8-985D63618F5A}
-		{67D157AF-02AC-4154-9FB9-0B83537B57AE} = {E17D8D2E-4B5F-4241-A8A8-985D63618F5A}
-		{E1EB5CDD-CB5F-463E-86BB-14AF686941A7} = {A671AAF5-B8FE-41CC-B1A2-CE9A6AD39750}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {01587DDB-6928-447C-8AE7-F4D7D89BF065}
 	EndGlobalSection
 EndGlobal

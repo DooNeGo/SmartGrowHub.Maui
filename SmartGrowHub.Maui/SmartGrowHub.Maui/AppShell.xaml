@@ -3,36 +3,27 @@
     x:Class="SmartGrowHub.Maui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Localization"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:start="clr-namespace:SmartGrowHub.Maui.Features.Start.View"
-    xmlns:appStart="clr-namespace:SmartGrowHub.Maui.Features.AppStart.View"
     xmlns:userProfile="clr-namespace:SmartGrowHub.Maui.Features.UserProfile.View"
+    xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Loading.View"
     Title="Smart Grow Hub"
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
-    <ShellContent
-        x:Name="AppStart"
-        Route="AppStartPage"
-        ContentTemplate="{DataTemplate appStart:AppStartPage}" />
+    <ShellContent ContentTemplate="{DataTemplate view:LoadingPage}" Route="Loading" />
 
-    <ShellContent
-        x:Name="StartPage"
-        Route="StartPage"
-        ContentTemplate="{DataTemplate start:StartPage}" />
+    <ShellContent ContentTemplate="{DataTemplate start:StartPage}" Route="StartPage" />
 
-    <TabBar
-        x:Name="MainTabBar"
-        FlyoutDisplayOptions="AsMultipleItems"
-        Route="MainTabBar">
+    <TabBar FlyoutDisplayOptions="AsMultipleItems" Route="MainTabBar">
         <ShellContent
-            Title="{x:Static localization:Resources.Plants}"
+            Title="{x:Static localization:AppResources.Plants}"
             ContentTemplate="{DataTemplate main:MainPage}"
             Icon="leaves_icon.png" />
 
         <ShellContent
-            Title="{x:Static localization:Resources.Profile}"
+            Title="{x:Static localization:AppResources.Profile}"
             ContentTemplate="{DataTemplate userProfile:UserProfilePage}"
             Icon="user_icon.png" />
     </TabBar>
