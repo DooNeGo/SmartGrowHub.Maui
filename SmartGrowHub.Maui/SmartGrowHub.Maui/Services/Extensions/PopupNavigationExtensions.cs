@@ -13,7 +13,7 @@ public static class PopupNavigationExtensions
     public static Task ShowPopupAsync<TPopupModel>(this IPopupNavigation popupNavigation, bool animate = true)
         where TPopupModel : INotifyPropertyChanged
     {
-        IServiceProvider serviceProvider = Application.Current?.Handler.MauiContext?.Services
+        IServiceProvider serviceProvider = Application.Current?.Handler?.MauiContext?.Services
             ?? throw new InvalidOperationException("Could not locate IServiceProvider");
 
         Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupModel))
