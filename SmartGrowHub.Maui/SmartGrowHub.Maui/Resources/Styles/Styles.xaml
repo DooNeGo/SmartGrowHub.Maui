@@ -186,10 +186,23 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
     </Style>
 
+    <Style x:Key="HeadlineSpan" TargetType="Span">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontFamily" Value="InterSemiBold" />
+    </Style>
+
+    <Style
+        x:Key="SubHeadlineSpan"
+        BasedOn="{StaticResource HeadlineSpan}"
+        TargetType="Span">
+        <Setter Property="FontSize" Value="22" />
+    </Style>
+
     <Style x:Key="Headline" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
         <Setter Property="FontSize" Value="32" />
-        <Setter Property="FontFamily" Value="Inter18SemiBold" />
+        <Setter Property="FontFamily" Value="InterSemiBold" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
@@ -197,16 +210,18 @@
     <Style x:Key="Caption" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource CaptionColor}, Dark={StaticResource Primary}}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Inter18SemiBold" />
+        <Setter Property="FontFamily" Value="InterSemiBold" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="SubHeadline" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
-        <Setter Property="FontSize" Value="24" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    <Style
+        x:Key="SubHeadline"
+        BasedOn="{StaticResource Headline}"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
     </Style>
 
     <Style TargetType="ListView">
@@ -415,6 +430,14 @@
         <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light=DarkContent, Dark=LightContent}" />
     </Style>
 
+    <Style
+        x:Key="DefaultPage"
+        BasedOn="{StaticResource SimplePage}"
+        TargetType="Page">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
+        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
+    </Style>
+
     <Style ApplyToDerivedTypes="True" TargetType="Shell">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
         <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}" />
@@ -444,6 +467,18 @@
     <Style x:Key="Divider" TargetType="BoxView">
         <Setter Property="HeightRequest" Value="1" />
         <Setter Property="Color" Value="Black" />
+    </Style>
+
+    <Style x:Key="SkeletonRow" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="16" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Gray100}" />
+    </Style>
+
+    <Style x:Key="DefaultBorder" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 15" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
     </Style>
 
 </ResourceDictionary>

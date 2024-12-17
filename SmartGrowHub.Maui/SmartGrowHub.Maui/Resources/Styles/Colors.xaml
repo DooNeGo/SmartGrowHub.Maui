@@ -32,6 +32,8 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
+    <Color x:Key="Sun">#FFE484</Color>
+
     <LinearGradientBrush x:Key="PrimaryLinearGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Offset="0" Color="#1d6508" />
         <GradientStop Offset="1" Color="#3cc714" />
@@ -60,7 +62,12 @@
         Light="White" />
 
     <toolkit:AppThemeColor
-        x:Key="ShadowColor"
+        x:Key="PageBackgroundColor2"
+        Dark="Black"
+        Light="#F2F2F7" />
+
+    <toolkit:AppThemeColor
+        x:Key="ContrastColor"
         Dark="White"
         Light="Black" />
 

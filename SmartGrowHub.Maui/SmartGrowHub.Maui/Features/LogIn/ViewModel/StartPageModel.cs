@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Maui.Services.Flow;
 
-namespace SmartGrowHub.Maui.Features.Start.ViewModel;
+namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 public sealed partial class StartPageModel(ILoginByEmailService loginByEmailService) : ObservableObject
 {

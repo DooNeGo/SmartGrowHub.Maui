@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="SmartGrowHub.Maui.Features.ConfigureGrowHub.View.LightControlPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel"
+    Title="Light"
+    Padding="20"
+    x:DataType="viewModel:LightControlPageModel"
+    Shell.NavBarHasShadow="False"
+    Shell.NavBarIsVisible="True"
+    Style="{StaticResource DefaultPage}">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto">
+            <Border Style="{StaticResource DefaultBorder}">
+                <Grid
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="10"
+                    RowDefinitions="Auto,Auto">
+                    <Image
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HeightRequest="25"
+                        Source="sun_icon.png">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{StaticResource Sun}" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        FontFamily="InterSemiBold"
+                        FontSize="16"
+                        Text="Intensity" />
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        FontFamily="InterSemiBold"
+                        FontSize="16"
+                        Text="{Binding Value, StringFormat='{0:0} %'}" />
+
+                    <Slider
+                        x:Name="Slider"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Margin="0,20,0,0"
+                        DragCompleted="Slider_OnDragCompleted"
+                        Maximum="100"
+                        Minimum="0"
+                        MinimumTrackColor="{StaticResource Sun}"
+                        ThumbColor="{StaticResource Sun}"
+                        Value="{Binding Value}" />
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>

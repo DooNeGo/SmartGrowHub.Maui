@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<base:BaseContentPage
     x:Class="SmartGrowHub.Maui.Features.LogIn.View.LoginByEmailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:local="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
     x:DataType="viewModel:LoginByEmailPageModel"
     Shell.NavBarIsVisible="False"
@@ -15,6 +17,10 @@
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding GoBackCommand}" />
     </Shell.BackButtonBehavior>
+
+    <base:BaseContentPage.Resources>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </base:BaseContentPage.Resources>
 
     <ScrollView Padding="30">
         <Grid RowDefinitions=".8*,*" RowSpacing="40">
@@ -26,7 +32,9 @@
             <Grid Grid.Row="1" RowDefinitions="*,*,*">
                 <customControls:CustomEntry
                     Grid.Row="0"
+                    Error="{Binding EmailError}"
                     IconSource="envelope_icon.png"
+                    Keyboard="Email"
                     Placeholder="{x:Static localization:AppResources.Email}"
                     Text="{Binding Email}"
                     VerticalOptions="Center" />
@@ -35,6 +43,7 @@
                     Grid.Row="1"
                     Command="{Binding SendOtpCommand}"
                     HeightRequest="50"
+                    IsEnabled="{Binding HasErrors, Converter={StaticResource InvertedBoolConverter}}"
                     Style="{StaticResource PrimaryButton}"
                     Text="{x:Static localization:AppResources.SendCode}"
                     VerticalOptions="Start"
@@ -50,7 +59,7 @@
 
                         <Label
                             Grid.Column="1"
-                            FontFamily="Inter18SemiBold"
+                            FontFamily="InterSemiBold"
                             FontSize="13"
                             Text="{x:Static localization:AppResources.OrContinueWith}" />
 
@@ -65,4 +74,4 @@
             </Grid>
         </Grid>
     </ScrollView>
-</ContentPage>
+</base:BaseContentPage>

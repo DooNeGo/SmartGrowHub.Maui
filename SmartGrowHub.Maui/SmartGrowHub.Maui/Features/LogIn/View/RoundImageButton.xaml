@@ -16,7 +16,7 @@
 
     <Border.Shadow>
         <Shadow
-            Brush="{toolkit:AppThemeResource Key=ShadowColor}"
+            Brush="{toolkit:AppThemeResource Key=ContrastColor}"
             Opacity="0.1"
             Radius="5"
             Offset="0,1" />

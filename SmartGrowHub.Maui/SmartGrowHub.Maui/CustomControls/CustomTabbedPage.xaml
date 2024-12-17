@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="SmartGrowHub.Maui.CustomControls.CustomTabbedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    x:Name="This"
+    x:DataType="customControls:CustomTabbedPage">
+    <Grid RowDefinitions="Auto,*">
+        <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+            <FlexLayout JustifyContent="SpaceBetween">
+                <BindableLayout.ItemsSource>
+                    <Binding Path="TabsSource" Source="{Reference This}" />
+                </BindableLayout.ItemsSource>
+                <BindableLayout.ItemTemplate>
+                    <Binding Path="TabTemplate" Source="{Reference This}" />
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -216,4 +216,61 @@
   <data name="SendCode" xml:space="preserve">
     <value>Send code</value>
   </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>Enter code</value>
+  </data>
+  <data name="CodeHasBeenSentTo" xml:space="preserve">
+    <value>The code has been sent to</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="HaveYouEnteredIncorrectData" xml:space="preserve">
+    <value>Have you entered incorrect data?</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Seedling" xml:space="preserve">
+    <value>Seedling</value>
+  </data>
+  <data name="Vegetative" xml:space="preserve">
+    <value>Vegetative</value>
+  </data>
+  <data name="Flowering" xml:space="preserve">
+    <value>Flowering</value>
+  </data>
+  <data name="MyPlan" xml:space="preserve">
+    <value>My Plan</value>
+  </data>
+  <data name="Environment" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+  <data name="Inside" xml:space="preserve">
+    <value>Inside</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Humidity</value>
+  </data>
+  <data name="Vpd" xml:space="preserve">
+    <value>VPD</value>
+  </data>
+  <data name="TemperatureShort" xml:space="preserve">
+    <value>Temp.</value>
+  </data>
+  <data name="kPa" xml:space="preserve">
+    <value>kPa</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Required field</value>
+  </data>
+  <data name="InvalidEmailAddress" xml:space="preserve">
+    <value>Invalid email address</value>
+  </data>
 </root>

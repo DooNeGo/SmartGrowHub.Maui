@@ -1,6 +1,6 @@
-using SmartGrowHub.Maui.Features.Start.ViewModel;
+using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-namespace SmartGrowHub.Maui.Features.Start.View;
+namespace SmartGrowHub.Maui.Features.LogIn.View;
 
 public sealed partial class StartPage
 {

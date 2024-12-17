@@ -1,89 +1,173 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<base:BaseContentPage
     x:Class="SmartGrowHub.Maui.Features.Main.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:growHubs="clr-namespace:SmartGrowHub.Shared.GrowHubs;assembly=SmartGrowHub.Shared"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:DataType="viewModel:MainPageModel"
-    BackgroundColor="#F2F2F7"
     Shell.NavBarIsVisible="False"
-    Shell.TabBarIsVisible="True">
+    Shell.TabBarIsVisible="False"
+    Style="{StaticResource DefaultPage}">
 
-    <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="#F2F2F7" StatusBarStyle="DarkContent" />
-    </ContentPage.Behaviors>
+    <base:BaseContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            ApplyOn="OnPageNavigatedTo"
+            StatusBarColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+            StatusBarStyle="DarkContent" />
+    </base:BaseContentPage.Behaviors>
 
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-        <ScrollView Padding="20,60,20,20">
-            <VerticalStackLayout Spacing="10">
-                <Grid ColumnDefinitions="*,Auto">
-                    <Label
-                        HorizontalOptions="Start"
-                        HorizontalTextAlignment="Start"
-                        Style="{StaticResource Headline}"
-                        Text="{x:Static localization:AppResources.YourPlants}" />
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
+        <ScrollView Padding="20,20,20,0">
+            <VerticalStackLayout Spacing="20">
+                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.Environment}" />
 
-                    <customControls:TextButton
+                <VerticalStackLayout x:Name="EnvironmentStackLayout">
+                    <Border Padding="15" Style="{StaticResource DefaultBorder}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label
+                                FontFamily="InterMedium"
+                                FontSize="16"
+                                Text="{x:Static localization:AppResources.Inside}" />
+
+                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                                <view:MetricWidget
+                                    Grid.Column="0"
+                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    MainValue="23"
+                                    MetricName="{x:Static localization:AppResources.TemperatureShort}"
+                                    ValueUnit="°C" />
+
+                                <view:MetricWidget
+                                    Grid.Column="1"
+                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    MainValue="78"
+                                    MetricName="{x:Static localization:AppResources.Humidity}"
+                                    ValueUnit="%" />
+
+                                <view:MetricWidget
+                                    Grid.Column="2"
+                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    MainValue="0.73"
+                                    MetricName="{x:Static localization:AppResources.Vpd}"
+                                    ValueUnit="{x:Static localization:AppResources.kPa}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <toolkit:StateContainer.StateViews>
+                        <Border
+                            Padding="15"
+                            toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"
+                            Style="{StaticResource DefaultBorder}">
+                            <VerticalStackLayout Spacing="10">
+                                <BoxView Style="{StaticResource SkeletonRow}" />
+                                <BoxView Style="{StaticResource SkeletonRow}" />
+                                <BoxView Style="{StaticResource SkeletonRow}" />
+                                <BoxView Style="{StaticResource SkeletonRow}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </toolkit:StateContainer.StateViews>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout x:Name="QuickSettingsStackLayout">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                        <view:QuickSetting
+                            Grid.Column="0"
+                            Command="{Binding GoToLightControlCommand}"
+                            FontFamily="InterMedium"
+                            FontSize="18"
+                            IconColor="#FFE484"
+                            IconSource="sun_icon.png"
+                            Status="OFF" />
+
+                        <view:QuickSetting
+                            Grid.Column="1"
+                            FontFamily="InterMedium"
+                            FontSize="18"
+                            IconColor="#99d9ff"
+                            IconSource="wind_icon.png"
+                            Status="30 %" />
+
+                        <view:QuickSetting
+                            Grid.Column="2"
+                            FontFamily="InterMedium"
+                            FontSize="18"
+                            IconColor="#f3903f"
+                            IconSource="heat_icon.png"
+                            Status="OFF" />
+                    </Grid>
+
+                    <toolkit:StateContainer.StateViews>
+                        <Grid
+                            toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"
+                            ColumnDefinitions="*,*,*"
+                            ColumnSpacing="10">
+                            <view:QuickSettingSkeleton Grid.Column="0" />
+                            <view:QuickSettingSkeleton Grid.Column="1" />
+                            <view:QuickSettingSkeleton Grid.Column="2" />
+                        </Grid>
+                    </toolkit:StateContainer.StateViews>
+                </VerticalStackLayout>
+
+                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.MyPlan}" />
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                    <view:QuickSetting
+                        Grid.Column="0"
+                        FontFamily="InterRegular"
+                        IconColor="Black"
+                        IconSource="seedling_icon.png"
+                        Status="{x:Static localization:AppResources.Seedling}"
+                        TextColor="{StaticResource CaptionColor}" />
+
+                    <view:QuickSetting
                         Grid.Column="1"
-                        Margin="0,0,0,6"
-                        FontFamily="Inter18Medium"
-                        FontSize="16"
-                        Text="{x:Static localization:AppResources.Edit}"
-                        TextColor="{StaticResource Primary}"
-                        VerticalOptions="End" />
+                        FontFamily="InterRegular"
+                        IconColor="Black"
+                        IconSource="vegetative_icon.png"
+                        Status="{x:Static localization:AppResources.Vegetative}"
+                        TextColor="{StaticResource CaptionColor}" />
+
+                    <view:QuickSetting
+                        Grid.Column="2"
+                        FontFamily="InterRegular"
+                        FontSize="14"
+                        IconColor="Black"
+                        IconSource="flowering_icon.png"
+                        Status="{x:Static localization:AppResources.Flowering}"
+                        TextColor="{StaticResource CaptionColor}" />
                 </Grid>
 
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                    <customControls:CustomSearchBar />
+                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.Devices}" />
 
-                    <customControls:CustomImageButton
-                        Grid.Column="1"
-                        Padding="10,0"
-                        BackgroundColor="White"
-                        ImageSource="sort_icon.png"
-                        StrokeShape="RoundRectangle 7" />
-                </Grid>
+                <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                    <VerticalStackLayout x:Name="DevicesLayout">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding GrowHubs}" Spacing="10">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="growHubs:GrowHubDto">
+                                    <view:DeviceWidget
+                                        DeviceIconSource="growhub_v2_icon.png"
+                                        DeviceName="Smart Grow Hub v2"
+                                        IsConnected="True" />
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
 
-                <CollectionView ItemsSource="{Binding GrowHubs}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Border
-                                Padding="20"
-                                BackgroundColor="White"
-                                StrokeShape="RoundRectangle 10">
-                                <FlyoutBase.ContextFlyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Text="Edit plant" />
-                                        <MenuFlyoutItem Text="About" />
-                                        <MenuFlyoutSeparator />
-                                        <MenuFlyoutItem Text="Remove plant" />
-                                    </MenuFlyout>
-                                </FlyoutBase.ContextFlyout>
-
-                                <Grid RowDefinitions="Auto, *" RowSpacing="5">
-                                    <Label
-                                        Grid.Row="0"
-                                        FontSize="20"
-                                        Text="{Binding Plant.Name}" />
-
-                                    <Label
-                                        Grid.Row="1"
-                                        FontSize="15"
-                                        Text="{Binding Name}"
-                                        TextColor="{StaticResource Gray300}" />
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                        <toolkit:StateContainer.StateViews>
+                            <HorizontalStackLayout toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}" Spacing="10">
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                            </HorizontalStackLayout>
+                        </toolkit:StateContainer.StateViews>
+                    </VerticalStackLayout>
+                </ScrollView>
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>
-</ContentPage>
+</base:BaseContentPage>

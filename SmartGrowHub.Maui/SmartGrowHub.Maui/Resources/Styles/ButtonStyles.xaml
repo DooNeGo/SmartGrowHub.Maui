@@ -5,7 +5,7 @@
         <Setter Property="BackgroundColor" Value="{OnPlatform iOS={StaticResource Primary}}" />
         <Setter Property="CornerRadius" Value="25" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="FontFamily" Value="Inter18SemiBold" />
+        <Setter Property="FontFamily" Value="InterSemiBold" />
     </Style>
 
 </ResourceDictionary>

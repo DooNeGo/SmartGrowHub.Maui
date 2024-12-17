@@ -216,4 +216,61 @@
   <data name="SendCode" xml:space="preserve">
     <value>Отправить код</value>
   </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>Введите код</value>
+  </data>
+  <data name="CodeHasBeenSentTo" xml:space="preserve">
+    <value>Код был отправлен на</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="HaveYouEnteredIncorrectData" xml:space="preserve">
+    <value>Ввели неверные данные?</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="Seedling" xml:space="preserve">
+    <value>Рассада</value>
+  </data>
+  <data name="Vegetative" xml:space="preserve">
+    <value>Вегетация</value>
+  </data>
+  <data name="Flowering" xml:space="preserve">
+    <value>Цветение</value>
+  </data>
+  <data name="MyPlan" xml:space="preserve">
+    <value>Мой План</value>
+  </data>
+  <data name="Environment" xml:space="preserve">
+    <value>Окружающая среда</value>
+  </data>
+  <data name="Inside" xml:space="preserve">
+    <value>Внутри</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Температура</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Влажность</value>
+  </data>
+  <data name="Vpd" xml:space="preserve">
+    <value>ДДП</value>
+  </data>
+  <data name="TemperatureShort" xml:space="preserve">
+    <value>Темп.</value>
+  </data>
+  <data name="kPa" xml:space="preserve">
+    <value>кПа</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Устройства</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Обязательное поле</value>
+  </data>
+  <data name="InvalidEmailAddress" xml:space="preserve">
+    <value>Неверный адрес электронной почты</value>
+  </data>
 </root>

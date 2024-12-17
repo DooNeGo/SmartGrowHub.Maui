@@ -1,8 +1,86 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<base:BaseContentPage
     x:Class="SmartGrowHub.Maui.Features.LogIn.View.CheckCodePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
-</ContentPage>
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    Padding="30,0"
+    x:DataType="viewModel:CheckCodePageModel"
+    Style="{StaticResource SimplePage}">
+
+    <base:BaseContentPage.Resources>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </base:BaseContentPage.Resources>
+
+    <Grid RowDefinitions="*,*,*,*">
+        <Label
+            Grid.Row="0"
+            Style="{StaticResource Headline}"
+            Text="{x:Static localization:AppResources.EnterCode}"
+            VerticalOptions="End" />
+
+        <VerticalStackLayout Grid.Row="1" VerticalOptions="Center">
+            <VerticalStackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="VerticalTextAlignment" Value="Center" />
+                    <Setter Property="HorizontalTextAlignment" Value="Center" />
+                </Style>
+            </VerticalStackLayout.Resources>
+
+            <Label
+                FontFamily="InterRegular"
+                Style="{StaticResource Caption}"
+                Text="{x:Static localization:AppResources.CodeHasBeenSentTo}" />
+
+            <Label
+                FontFamily="InterMedium"
+                FontSize="18"
+                Text="{Binding SentTo}"
+                TextColor="{toolkit:AppThemeResource Key=ContrastColor}" />
+        </VerticalStackLayout>
+
+        <customControls:CustomEntry
+            x:Name="Entry"
+            Grid.Row="2"
+            Error="{Binding CodeError}"
+            IconSource="lock_icon.png"
+            Keyboard="Numeric"
+            Placeholder="{x:Static localization:AppResources.Code}"
+            Text="{Binding Code}"
+            TextChanged="CustomEntry_OnTextChanged"
+            VerticalOptions="Start" />
+
+        <VerticalStackLayout Grid.Row="3" Spacing="10">
+            <Button
+                Command="{Binding CheckCodeCommand}"
+                HeightRequest="50"
+                IsEnabled="{Binding HasErrors, Converter={StaticResource InvertedBoolConverter}}"
+                Style="{StaticResource PrimaryButton}"
+                Text="{x:Static localization:AppResources.LogIn}" />
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{x:Static localization:AppResources.HaveYouEnteredIncorrectData}" TextColor="#C0B9B9" />
+                        <Span Text="  " />
+                        <Span
+                            Text="{x:Static localization:AppResources.Change}"
+                            TextColor="{StaticResource Primary}"
+                            TextDecorations="Underline">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+    </Grid>
+</base:BaseContentPage>

@@ -18,12 +18,13 @@ public static class MauiProgramExtensions
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                fonts.AddFont("Inter.ttf", "Inter");
-                fonts.AddFont("Inter-18pt-Medium.ttf", "Inter18Medium");
-                fonts.AddFont("Inter-18pt-SemiBold.ttf", "Inter18SemiBold");
+                fonts.AddFont("Inter-Regular.ttf", "InterRegular");
+                fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
+                fonts.AddFont("Inter-Medium.ttf", "InterMedium");
             });
 
         builder.Services
+            .AddSingleton<AppShell>()
             .AddServices()
             .AddFeatures();
         

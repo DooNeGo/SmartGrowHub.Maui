@@ -21,19 +21,15 @@ public sealed class NavigationService(AppShell shell, IMainThreadService mainThr
     public IO<Unit> GoToAsync(string path, CancellationToken cancellationToken = default) =>
         mainThread.InvokeOnMainThread(() => shell.GoToAsync(path).WaitAsync(cancellationToken));
 
-    public IO<Unit> SetLogInAsRootAsync(bool animate = true,
-        CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetLogInAsRootAsync(animate, cancellationToken));
+    public IO<Unit> SetLogInAsRootAsync(bool animate = true, CancellationToken cancellationToken = default) =>
+        mainThread.InvokeOnMainThread(() => shell.SetLoginAsRootAsync(animate, cancellationToken));
 
-    public IO<Unit> SetMainPageAsRootAsync(bool animate = true,
-        CancellationToken cancellationToken = default) =>
+    public IO<Unit> SetMainPageAsRootAsync(bool animate = true, CancellationToken cancellationToken = default) =>
         mainThread.InvokeOnMainThread(() => shell.SetMainAsRootAsync(animate, cancellationToken));
 
-    public IO<Unit> SetLogInAsRoot(bool animate = true,
-        CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetLogInAsRoot(animate, cancellationToken));
+    public IO<Unit> SetLogInAsRoot(bool animate = true, CancellationToken cancellationToken = default) =>
+        mainThread.InvokeOnMainThread(() => shell.SetLoginAsRoot(animate, cancellationToken));
 
-    public IO<Unit> SetMainPageAsRoot(bool animate = true,
-        CancellationToken cancellationToken = default) =>
+    public IO<Unit> SetMainPageAsRoot(bool animate = true, CancellationToken cancellationToken = default) =>
         mainThread.InvokeOnMainThread(() => shell.SetMainAsRoot(animate, cancellationToken));
 }

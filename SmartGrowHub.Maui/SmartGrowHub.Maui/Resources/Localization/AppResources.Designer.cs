@@ -87,6 +87,33 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        internal static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        internal static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code has been sent to.
+        /// </summary>
+        internal static string CodeHasBeenSentTo {
+            get {
+                return ResourceManager.GetString("CodeHasBeenSentTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create an account.
         /// </summary>
         internal static string CreateAnAccount {
@@ -101,6 +128,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string CreateYourNewAccount {
             get {
                 return ResourceManager.GetString("CreateYourNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devices.
+        /// </summary>
+        internal static string Devices {
+            get {
+                return ResourceManager.GetString("Devices", resourceCulture);
             }
         }
         
@@ -150,6 +186,24 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter code.
+        /// </summary>
+        internal static string EnterCode {
+            get {
+                return ResourceManager.GetString("EnterCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environment.
+        /// </summary>
+        internal static string Environment {
+            get {
+                return ResourceManager.GetString("Environment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to log in to your account. Log in again or check your internet connection.
         /// </summary>
         internal static string FailedLogInYourAccount {
@@ -168,11 +222,65 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flowering.
+        /// </summary>
+        internal static string Flowering {
+            get {
+                return ResourceManager.GetString("Flowering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forgot the password?.
         /// </summary>
         internal static string ForgotThePassword {
             get {
                 return ResourceManager.GetString("ForgotThePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Have you entered incorrect data?.
+        /// </summary>
+        internal static string HaveYouEnteredIncorrectData {
+            get {
+                return ResourceManager.GetString("HaveYouEnteredIncorrectData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Humidity.
+        /// </summary>
+        internal static string Humidity {
+            get {
+                return ResourceManager.GetString("Humidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inside.
+        /// </summary>
+        internal static string Inside {
+            get {
+                return ResourceManager.GetString("Inside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email address.
+        /// </summary>
+        internal static string InvalidEmailAddress {
+            get {
+                return ResourceManager.GetString("InvalidEmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kPa.
+        /// </summary>
+        internal static string kPa {
+            get {
+                return ResourceManager.GetString("kPa", resourceCulture);
             }
         }
         
@@ -218,6 +326,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string LogOut {
             get {
                 return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Plan.
+        /// </summary>
+        internal static string MyPlan {
+            get {
+                return ResourceManager.GetString("MyPlan", resourceCulture);
             }
         }
         
@@ -294,11 +411,29 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required field.
+        /// </summary>
+        internal static string RequiredField {
+            get {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seedling.
+        /// </summary>
+        internal static string Seedling {
+            get {
+                return ResourceManager.GetString("Seedling", resourceCulture);
             }
         }
         
@@ -321,6 +456,24 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        internal static string Temperature {
+            get {
+                return ResourceManager.GetString("Temperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temp..
+        /// </summary>
+        internal static string TemperatureShort {
+            get {
+                return ResourceManager.GetString("TemperatureShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User name.
         /// </summary>
         internal static string UserName {
@@ -335,6 +488,24 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vegetative.
+        /// </summary>
+        internal static string Vegetative {
+            get {
+                return ResourceManager.GetString("Vegetative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VPD.
+        /// </summary>
+        internal static string Vpd {
+            get {
+                return ResourceManager.GetString("Vpd", resourceCulture);
             }
         }
         

@@ -12,11 +12,13 @@ public interface ILogoutService
 public sealed class LogoutService(
     INavigationService navigationService,
     IAuthService authService,
-    ITokensStorage tokensStorage) : ILogoutService
+    ITokensStorage tokensStorage)
+    : ILogoutService
 {
     public Eff<Unit> LogOut(CancellationToken cancellationToken) =>
         from refreshToken in tokensStorage.GetRefreshToken(cancellationToken)
         from _ in authService.LogOut(refreshToken, cancellationToken)
-        from __ in navigationService.SetLogInAsRoot(cancellationToken: cancellationToken)
-        select _;
+        from __ in tokensStorage.RemoveTokens()
+        from ___ in navigationService.SetLogInAsRoot(cancellationToken: cancellationToken)
+        select ___;
 }
