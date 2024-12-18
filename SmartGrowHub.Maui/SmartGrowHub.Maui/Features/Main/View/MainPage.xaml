@@ -120,6 +120,7 @@
                     <view:QuickSetting
                         Grid.Column="0"
                         FontFamily="InterRegular"
+                        FontSize="14"
                         IconColor="Black"
                         IconSource="seedling_icon.png"
                         Status="{x:Static localization:AppResources.Seedling}"
@@ -128,6 +129,7 @@
                     <view:QuickSetting
                         Grid.Column="1"
                         FontFamily="InterRegular"
+                        FontSize="14"
                         IconColor="Black"
                         IconSource="vegetative_icon.png"
                         Status="{x:Static localization:AppResources.Vegetative}"

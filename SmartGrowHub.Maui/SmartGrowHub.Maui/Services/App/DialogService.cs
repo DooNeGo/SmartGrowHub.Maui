@@ -21,7 +21,6 @@ public interface IDialogService
 public sealed class DialogService : IDialogService
 {
     private readonly LoadingPopup _loadingPopup;
-    private readonly Atom<int> _loadingCount = Atom(0);
     private readonly IPopupNavigation _popupNavigation;
     private readonly IMainThreadService _mainThread;
 
@@ -45,22 +44,11 @@ public sealed class DialogService : IDialogService
     public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
         DisplayAlertAsync(title, message, null!, cancel).Map(_ => unit);
 
-    public IO<Unit> ShowLoadingAsync() =>
-        _popupNavigation.PopupStack.Contains(_loadingPopup)
-            ? unitIO : liftIO(() => _popupNavigation.PushAsync(_loadingPopup));
+    public IO<Unit> ShowLoadingAsync() => liftIO(() => _popupNavigation.PushAsync(_loadingPopup));
 
-    public IO<Unit> PopAsync() =>
-        _loadingCount
-            .SwapIO(previous => previous > 0 ? previous - 1 : 0)
-            .Bind(value => value is 0
-                ? liftIO(() => _popupNavigation.PopAsync())
-                : unitIO);
+    public IO<Unit> PopAsync() => liftIO(() => _popupNavigation.PopAsync());
 
-    public IO<Unit> PopAllAsync() =>
-        liftIO(() => _popupNavigation.PopAllAsync())
-            .Bind(_ => _loadingCount
-                .SwapIO(_ => 0)
-                .Map(_ => unit));
+    public IO<Unit> PopAllAsync() => liftIO(() => _popupNavigation.PopAllAsync());
 
     public IO<Unit> ShowLoading() =>
         lift(() => ShowLoadingAsync()
