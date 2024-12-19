@@ -12,7 +12,7 @@ public static class MauiProgram
 
         EntryHandler.Mapper.AppendToMapping("NoUnderLine", (handler, _) =>
             handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Color.Transparent));
-        
+
         builder
             .UseSharedMauiApp();
 

@@ -15,7 +15,29 @@
 		
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+		<MauiImage Update="Resources\Images\alert_icon.png" Resize="True" BaseSize="20,20" />
+		
+		<MauiImage Update="Resources\Images\apple_icon.svg" Resize="True" BaseSize="22.5,30" />
+		<MauiImage Update="Resources\Images\google_logo.svg" Resize="True" BaseSize="30,30" />
+		
+		<MauiImage Update="Resources\Images\envelope_icon.svg" Resize="True" BaseSize="17.3,15" />
+		<MauiImage Update="Resources\Images\lock_icon.svg" Resize="True" BaseSize="12.85,15" />
+		<MauiImage Update="Resources\Images\user_icon.svg" Resize="True" BaseSize="13.85,15" />
+		
+		<MauiImage Update="Resources\Images\flowering_icon.png" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\vegetative_icon.png" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\seedling_icon.svg" Resize="True" BaseSize="30,30" />
+		
+		<MauiImage Update="Resources\Images\growhub_v2_icon.png" Resize="True" BaseSize="40,40" />
+		
+		<MauiImage Update="Resources\Images\heat_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\sun_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\wind_icon.svg" Resize="True" BaseSize="30,30" />
+		
+		<MauiImage Update="Resources\Images\wifi_icon.png" Resize="True" BaseSize="20,20" />
+
+		<MauiImage Update="Resources\Images\start_app_text.svg" Resize="True" BaseSize="173.5,110" />
+		<MauiImage Update="Resources\Images\appicon_foreground.svg" Resize="True" BaseSize="114.2,110" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />

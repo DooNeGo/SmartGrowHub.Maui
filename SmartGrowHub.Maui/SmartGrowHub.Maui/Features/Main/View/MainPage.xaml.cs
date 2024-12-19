@@ -39,6 +39,6 @@ public sealed partial class MainPage
 
 	private static Task ChangeStateAsync(BindableObject bindableObject, string? state) =>
 		StateContainer.ChangeStateWithAnimation(bindableObject, state,
-			(element, token) => element.FadeTo(0, easing: Easing.SinIn).WaitAsync(token),
-			(element, token) => element.FadeTo(1, easing: Easing.SinOut).WaitAsync(token));
+			(element, token) => element.FadeTo(0, easing: Easing.Linear).WaitAsync(token),
+			(element, token) => element.FadeTo(1, easing: Easing.Linear).WaitAsync(token));
 }
