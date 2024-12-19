@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <Border
-    x:Class="SmartGrowHub.Maui.Features.Main.View.QuickSetting"
+    x:Class="SmartGrowHub.Maui.Features.Main.View.PlanWidget"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     x:Name="This"
-    x:DataType="view:QuickSetting"
+    x:DataType="view:PlanWidget"
     Style="{StaticResource DefaultBorder}">
     <Border.Behaviors>
         <toolkit:TouchBehavior
@@ -23,25 +23,18 @@
         <TapGestureRecognizer Command="{Binding Command, Source={Reference This}}" />
     </Border.GestureRecognizers>
 
-    <VerticalStackLayout Spacing="5">
+    <VerticalStackLayout Spacing="10">
         <Image HeightRequest="30" Source="{Binding IconSource, Source={Reference This}}">
             <Image.Behaviors>
-                <toolkit:IconTintColorBehavior TintColor="{Binding IconColor, Source={Reference This}}" />
+                <toolkit:IconTintColorBehavior TintColor="Black" />
             </Image.Behaviors>
         </Image>
-
-        <Label
-            FontFamily="InterMedium"
-            FontSize="18"
-            HorizontalTextAlignment="Center"
-            Text="{Binding Value, Source={Reference This}}"
-            TextColor="Black" />
 
         <Label
             FontFamily="InterRegular"
             FontSize="14"
             HorizontalTextAlignment="Center"
-            Text="{Binding Status, Source={Reference This}}"
+            Text="{Binding PlanName, Source={Reference This}}"
             TextColor="{StaticResource CaptionColor}" />
     </VerticalStackLayout>
 </Border>

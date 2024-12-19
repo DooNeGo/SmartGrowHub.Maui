@@ -26,15 +26,19 @@ public sealed partial class MainPage
 
 		string? newState = _pageModel.CurrentState;
 
+		_pageModel.CanStateChange = false;
+		
 		Task task1 = ChangeStateAsync(DevicesLayout, newState);
 		Task task2 = ChangeStateAsync(EnvironmentStackLayout, newState);
 		Task task3 = ChangeStateAsync(QuickSettingsStackLayout, newState);
 		
 		await Task.WhenAll(task1, task2, task3);
+		
+		_pageModel.CanStateChange = true;
 	}
 
 	private static Task ChangeStateAsync(BindableObject bindableObject, string? state) =>
 		StateContainer.ChangeStateWithAnimation(bindableObject, state,
-			(element, token) => element.FadeTo(0, easing: Easing.CubicIn).WaitAsync(token),
-			(element, token) => element.FadeTo(1, easing: Easing.CubicIn).WaitAsync(token));
+			(element, token) => element.FadeTo(0, easing: Easing.SinIn).WaitAsync(token),
+			(element, token) => element.FadeTo(1, easing: Easing.SinOut).WaitAsync(token));
 }

@@ -29,7 +29,9 @@ public sealed class TokensStorage(ISecureStorage secureStorage) : ITokensStorage
     private static readonly JsonWebTokenHandler TokenHandler = new();
     
     public Eff<string> GetRefreshToken(CancellationToken cancellationToken) =>
-        secureStorage.GetEff(RefreshTokenKey, cancellationToken);
+        secureStorage
+            .GetEff(RefreshTokenKey, cancellationToken)
+            .Map(value => JsonSerializer.Deserialize<RefreshTokenDto>(value).Value);
     
     public Eff<Unit> SetRefreshToken(string value, CancellationToken cancellationToken) =>
         secureStorage.SetEff(RefreshTokenKey, value, cancellationToken);

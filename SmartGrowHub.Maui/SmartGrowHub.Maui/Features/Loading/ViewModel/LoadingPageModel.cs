@@ -5,7 +5,7 @@ using SmartGrowHub.Maui.Services.Infrastructure;
 
 namespace SmartGrowHub.Maui.Features.Loading.ViewModel;
 
-public sealed partial class LoadingPageModel : ObservableObject
+public sealed class LoadingPageModel : ObservableObject
 {
     private readonly INavigationService _navigationService;
     private readonly ITokensStorage _tokensStorage;
@@ -20,7 +20,7 @@ public sealed partial class LoadingPageModel : ObservableObject
         InitializeAsync(CancellationToken.None).SafeFireAndForget();
     }
 
-    private Task InitializeAsync(CancellationToken cancellationToken) =>
+    private Task<Fin<Unit>> InitializeAsync(CancellationToken cancellationToken) =>
         _tokensStorage
             .GetAccessToken(cancellationToken)
             .Bind(_ => _navigationService.SetMainPageAsRoot(true, cancellationToken))

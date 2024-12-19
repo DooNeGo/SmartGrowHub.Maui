@@ -44,6 +44,19 @@ public sealed partial class QuickSetting
 
     #endregion
     
+    #region Value
+
+    public static readonly BindableProperty ValueProperty = BindableProperty.Create(
+        nameof(Value), typeof(string), typeof(QuickSetting), string.Empty);
+
+    public string Value
+    {
+        get => (string)GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
+    }
+
+    #endregion
+    
     #region Command
 
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(
@@ -53,45 +66,6 @@ public sealed partial class QuickSetting
     {
         get => GetValue(CommandProperty) as ICommand;
         set => SetValue(CommandProperty, value);
-    }
-
-    #endregion
-    
-    #region FontSize
-
-    public static readonly BindableProperty FontSizeProperty = BindableProperty.Create(
-        nameof(FontSize), typeof(double), typeof(QuickSetting), Font.Default.Size);
-
-    public double FontSize
-    {
-        get => (double)GetValue(FontSizeProperty);
-        set => SetValue(FontSizeProperty, value);
-    }
-
-    #endregion
-    
-    #region FontFamily
-
-    public static readonly BindableProperty FontFamilyProperty = BindableProperty.Create(
-        nameof(FontFamily), typeof(string), typeof(QuickSetting), Font.Default.Family);
-
-    public string? FontFamily
-    {
-        get => GetValue(FontFamilyProperty) as string;
-        set => SetValue(FontFamilyProperty, value);
-    }
-
-    #endregion
-    
-    #region TextColor
-
-    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
-        nameof(TextColor), typeof(Color), typeof(QuickSetting), Colors.Black);
-
-    public Color TextColor
-    {
-        get => (Color)GetValue(TextColorProperty);
-        set => SetValue(TextColorProperty, value);
     }
 
     #endregion

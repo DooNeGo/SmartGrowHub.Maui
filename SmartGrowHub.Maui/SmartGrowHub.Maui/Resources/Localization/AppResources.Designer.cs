@@ -132,6 +132,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycle.
+        /// </summary>
+        internal static string Cycle {
+            get {
+                return ResourceManager.GetString("Cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Devices.
         /// </summary>
         internal static string Devices {
@@ -326,6 +335,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string LogOut {
             get {
                 return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        internal static string Manual {
+            get {
+                return ResourceManager.GetString("Manual", resourceCulture);
             }
         }
         

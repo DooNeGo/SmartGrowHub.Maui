@@ -79,27 +79,24 @@
                         <view:QuickSetting
                             Grid.Column="0"
                             Command="{Binding GoToLightControlCommand}"
-                            FontFamily="InterMedium"
-                            FontSize="18"
                             IconColor="#FFE484"
                             IconSource="sun_icon.png"
-                            Status="OFF" />
+                            Status="{Binding LightState}"
+                            Value="{Binding LightValue}" />
 
                         <view:QuickSetting
                             Grid.Column="1"
-                            FontFamily="InterMedium"
-                            FontSize="18"
                             IconColor="#99d9ff"
                             IconSource="wind_icon.png"
-                            Status="30 %" />
+                            Status="{Binding FanState}"
+                            Value="{Binding FanValue}" />
 
                         <view:QuickSetting
                             Grid.Column="2"
-                            FontFamily="InterMedium"
-                            FontSize="18"
                             IconColor="#f3903f"
                             IconSource="heat_icon.png"
-                            Status="OFF" />
+                            Status="{Binding HeatState}"
+                            Value="{Binding HeatValue}" />
                     </Grid>
 
                     <toolkit:StateContainer.StateViews>
@@ -117,32 +114,20 @@
                 <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.MyPlan}" />
 
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                    <view:QuickSetting
+                    <view:PlanWidget
                         Grid.Column="0"
-                        FontFamily="InterRegular"
-                        FontSize="14"
-                        IconColor="Black"
                         IconSource="seedling_icon.png"
-                        Status="{x:Static localization:AppResources.Seedling}"
-                        TextColor="{StaticResource CaptionColor}" />
+                        PlanName="{x:Static localization:AppResources.Seedling}" />
 
-                    <view:QuickSetting
+                    <view:PlanWidget
                         Grid.Column="1"
-                        FontFamily="InterRegular"
-                        FontSize="14"
-                        IconColor="Black"
                         IconSource="vegetative_icon.png"
-                        Status="{x:Static localization:AppResources.Vegetative}"
-                        TextColor="{StaticResource CaptionColor}" />
+                        PlanName="{x:Static localization:AppResources.Vegetative}" />
 
-                    <view:QuickSetting
+                    <view:PlanWidget
                         Grid.Column="2"
-                        FontFamily="InterRegular"
-                        FontSize="14"
-                        IconColor="Black"
                         IconSource="flowering_icon.png"
-                        Status="{x:Static localization:AppResources.Flowering}"
-                        TextColor="{StaticResource CaptionColor}" />
+                        PlanName="{x:Static localization:AppResources.Flowering}" />
                 </Grid>
 
                 <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.Devices}" />
@@ -154,8 +139,10 @@
                                 <DataTemplate x:DataType="growHubs:GrowHubDto">
                                     <view:DeviceWidget
                                         DeviceIconSource="growhub_v2_icon.png"
-                                        DeviceName="Smart Grow Hub v2"
-                                        IsConnected="True" />
+                                        DeviceName="{Binding Name}"
+                                        IsConnected="True"
+                                        MinimumWidthRequest="140"
+                                        ModelName="{Binding Model}" />
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </HorizontalStackLayout>

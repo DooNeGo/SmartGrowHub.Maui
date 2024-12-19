@@ -10,33 +10,36 @@
     x:DataType="view:DeviceWidget"
     MinimumWidthRequest="50"
     Style="{StaticResource DefaultBorder}">
-    <Grid
-        ColumnDefinitions="*,Auto"
-        RowDefinitions="Auto,Auto"
-        RowSpacing="10">
-        <Image
-            Grid.Row="0"
-            Grid.Column="0"
-            HeightRequest="40"
-            HorizontalOptions="Start"
-            Source="{Binding DeviceIconSource, Source={Reference This}}" />
+    <VerticalStackLayout Spacing="10">
+        <Grid ColumnDefinitions="*">
+            <Image
+                HeightRequest="40"
+                HorizontalOptions="Start"
+                Source="{Binding DeviceIconSource, Source={Reference This}}" />
 
-        <Image
-            Grid.Row="0"
-            Grid.Column="1"
-            HeightRequest="20"
-            IsVisible="{Binding IsConnected, Source={Reference This}}"
-            Source="wifi_icon.png"
-            VerticalOptions="Start">
-            <Image.Behaviors>
-                <toolkit:IconTintColorBehavior TintColor="LimeGreen" />
-            </Image.Behaviors>
-        </Image>
+            <Image
+                HeightRequest="20"
+                HorizontalOptions="End"
+                IsVisible="{Binding IsConnected, Source={Reference This}}"
+                Source="wifi_icon.png"
+                VerticalOptions="Start">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="LimeGreen" />
+                </Image.Behaviors>
+            </Image>
+        </Grid>
 
-        <Label
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            FontFamily="InterMedium"
-            Text="{Binding DeviceName, Source={Reference This}}" />
-    </Grid>
+        <VerticalStackLayout>
+            <Label
+                FontFamily="InterMedium"
+                FontSize="16"
+                Text="{Binding DeviceName, Source={Reference This}}" />
+
+            <Label
+                FontFamily="InterMedium"
+                FontSize="12"
+                Text="{Binding ModelName, Source={Reference This}}"
+                TextColor="{StaticResource CaptionColor}" />
+        </VerticalStackLayout>
+    </VerticalStackLayout>
 </Border>

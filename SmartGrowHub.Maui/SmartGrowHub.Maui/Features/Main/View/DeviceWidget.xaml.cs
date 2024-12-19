@@ -15,6 +15,19 @@ public sealed partial class DeviceWidget
 
     #endregion
     
+    #region ModelName
+
+    public static readonly BindableProperty ModelNameProperty = BindableProperty.Create(
+        nameof(ModelName), typeof(string), typeof(DeviceWidget), string.Empty);
+
+    public string ModelName
+    {
+        get => (string)GetValue(ModelNameProperty);
+        set => SetValue(ModelNameProperty, value);
+    }
+
+    #endregion
+    
     #region DeviceIconSource
 
     public static readonly BindableProperty DeviceIconSourceProperty = BindableProperty.Create(

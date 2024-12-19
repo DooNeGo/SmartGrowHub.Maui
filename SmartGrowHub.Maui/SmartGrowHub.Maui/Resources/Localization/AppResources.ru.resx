@@ -273,4 +273,10 @@
   <data name="InvalidEmailAddress" xml:space="preserve">
     <value>Неверный адрес электронной почты</value>
   </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Циклично</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Вручную</value>
+  </data>
 </root>
