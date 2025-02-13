@@ -51,20 +51,18 @@
 		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-40" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
-		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.3.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.21" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+		<PackageReference Include="epj.RouteGenerator" Version="1.0.4" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-47" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.4.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 		<PackageReference Include="Ulid" Version="1.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="CustomControls\CustomEntry.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="CustomControls\CustomImageButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="CustomControls\CustomSearchBar.xaml">
@@ -74,9 +72,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\LogIn\View\LoginByEmailPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\LogIn\View\RoundImageButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Main\View\MainPage.xaml">
@@ -99,6 +94,45 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Features\LogIn\View\StartPage.xaml">
 	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Main\View\DeviceWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Main\View\MetricWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Main\View\PlanWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Main\View\QuickSetting.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Main\View\QuickSettingSkeleton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\LogIn\View\CheckCodePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Loading\View\LoadingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\ConfigureGrowHub\View\EnvironmentControlPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\ConfigureGrowHub\View\LightControlPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CustomControls\CustomTabbedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CustomControls\StatefulContentPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="App.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

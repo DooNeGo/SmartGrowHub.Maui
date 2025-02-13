@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using SmartGrowHub.Maui.Features;
 using SmartGrowHub.Maui.Services;
+#if DEBUG
+using Microsoft.Extensions.Logging;
+#endif
 
 namespace SmartGrowHub.Maui;
 

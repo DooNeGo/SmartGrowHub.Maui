@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<Border
+<ContentView
     x:Class="SmartGrowHub.Maui.Features.Main.View.QuickSettingSkeleton"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Style="{StaticResource DefaultBorder}">
-    <VerticalStackLayout Spacing="10">
-        <BoxView
-            CornerRadius="15"
-            HeightRequest="30"
-            Style="{StaticResource SkeletonRow}"
-            WidthRequest="30" />
-        <BoxView Style="{StaticResource SkeletonRow}" />
-        <BoxView Style="{StaticResource SkeletonRow}" />
-    </VerticalStackLayout>
-</Border>
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Border Style="{StaticResource DefaultBorder}">
+        <VerticalStackLayout Spacing="10">
+            <BoxView
+                CornerRadius="15"
+                HeightRequest="30"
+                Style="{StaticResource SkeletonRow}"
+                WidthRequest="30" />
+            <BoxView Style="{StaticResource SkeletonRow}" />
+            <BoxView Style="{StaticResource SkeletonRow}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

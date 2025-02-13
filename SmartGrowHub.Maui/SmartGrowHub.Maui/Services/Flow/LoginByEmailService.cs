@@ -1,30 +1,26 @@
 ﻿using Microsoft.Extensions.Logging;
-using SmartGrowHub.Maui.Features.LogIn.ViewModel;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.Extensions;
-using SmartGrowHub.Maui.Services.Infrastructure;
-using SmartGrowHub.Shared.Tokens;
 
 namespace SmartGrowHub.Maui.Services.Flow;
 
 public interface ILoginByEmailService
 {
-    IO<Unit> Start(CancellationToken cancellationToken);
+    IO<Unit> Start();
     Eff<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken);
-    Eff<Unit> CheckOtp(int otpValue, CancellationToken cancellationToken);
+    Eff<Unit> CheckOtp(int oneTimePassword, CancellationToken cancellationToken);
 }
 
 public sealed class LoginByEmailService(
     ILogger<LoginByEmailService> logger,
-    ITokensStorage tokensStorage,
+    ISecureStorage secureStorage,
     IAuthService authService,
     INavigationService navigationService,
     IDialogService dialogService)
     : ILoginByEmailService
 {
-    public IO<Unit> Start(CancellationToken cancellationToken) =>
-        navigationService.GoToAsync(nameof(LoginByEmailPageModel), cancellationToken);
+    public IO<Unit> Start() => navigationService.NavigateAsync(Routes.LoginByEmailPage);
     
     public Eff<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) =>
         from _1 in dialogService.ShowLoadingAsync()
@@ -32,20 +28,21 @@ public sealed class LoginByEmailService(
             .SendOtpToEmail(emailAddress, cancellationToken)
             .IfFailEff(OnError<Unit>)
         from _3 in dialogService.Pop()
-        from _4 in navigationService.GoToAsync(
-            $"{nameof(CheckCodePageModel)}?{nameof(CheckCodePageModel.SentTo)}={emailAddress}",
-            cancellationToken)
-        select _4;
+        from _4 in navigationService
+            .CreateBuilder()
+            .SetRoute(Routes.CheckCodePage)
+            .AddRouteParameter("SentTo", emailAddress)
+            .NavigateAsync()
+        select _3;
 
-    public Eff<Unit> CheckOtp(int otpValue, CancellationToken cancellationToken) =>
+    public Eff<Unit> CheckOtp(int oneTimePassword, CancellationToken cancellationToken) => (
         from _1 in dialogService.ShowLoadingAsync()
-        from response in authService
-            .CheckOtp(otpValue, cancellationToken)
-            .IfFailEff(OnError<AuthTokensDto>)
-        from _2 in dialogService.Pop()
-        from _3 in tokensStorage.SetAuthTokens(response, cancellationToken)
-        from _4 in navigationService.SetMainPageAsRoot(cancellationToken: cancellationToken)
-        select _4;
+        from response in authService.CheckOtp(oneTimePassword, cancellationToken)
+        from _2 in secureStorage.SetAuthTokens(response)
+        from _3 in dialogService.Pop()
+        from _4 in navigationService.NavigateAsync($"//{Routes.MainPage}")
+        select _4
+    ).Run().As().IfFailEff(OnError<Option<Unit>>).Map(_ => unit);
 
     private Eff<T> OnError<T>(Error error) =>
         from _1 in dialogService.Pop()

@@ -98,25 +98,23 @@ public sealed partial class CustomEntry
     }
     
     #endregion
+    
+    #region ReturnType
+
+    public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(
+        nameof(ReturnType), typeof(ReturnType), typeof(CustomEntry), Microsoft.Maui.ReturnType.Default);
+
+    public ReturnType ReturnType
+    {
+        get => (ReturnType)GetValue(ReturnTypeProperty);
+        set => SetValue(ReturnTypeProperty, value);
+    }
+    
+    #endregion
 
     #region Behaviors
 
-    public new static readonly BindableProperty BehaviorsProperty = BindableProperty.Create(
-        nameof(Behaviors), typeof(IList<Behavior>), typeof(CustomEntry), new List<Behavior>(),
-        propertyChanged: (bindable, _, newValue) =>
-        {
-            if (bindable is not CustomEntry entry) return;
-            if (newValue is not IList<Behavior> behaviors) return;
-            
-            entry.Entry.Behaviors.Clear();
-
-            foreach (Behavior behavior in behaviors) entry.Entry.Behaviors.Add(behavior);
-        });
-
-    public new IList<Behavior> Behaviors
-    {
-        get => (IList<Behavior>)GetValue(BehaviorsProperty);
-    }
+    public new IList<Behavior> Behaviors => Entry.Behaviors;
 
     #endregion
 

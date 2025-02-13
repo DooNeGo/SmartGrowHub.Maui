@@ -141,6 +141,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Program.
+        /// </summary>
+        internal static string DailyProgram {
+            get {
+                return ResourceManager.GetString("DailyProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Devices.
         /// </summary>
         internal static string Devices {
@@ -492,6 +501,24 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turned Off.
+        /// </summary>
+        internal static string TurnOff {
+            get {
+                return ResourceManager.GetString("TurnOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        internal static string TurnOffShort {
+            get {
+                return ResourceManager.GetString("TurnOffShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User name.
         /// </summary>
         internal static string UserName {
@@ -524,6 +551,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string Vpd {
             get {
                 return ResourceManager.GetString("Vpd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekly Program.
+        /// </summary>
+        internal static string WeeklyProgram {
+            get {
+                return ResourceManager.GetString("WeeklyProgram", resourceCulture);
             }
         }
         

@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<Border
+<ContentView
     x:Class="SmartGrowHub.Maui.Features.Main.View.PlanWidget"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
-    x:Name="This"
-    x:DataType="view:PlanWidget"
-    Style="{StaticResource DefaultBorder}">
-    <Border.Behaviors>
-        <toolkit:TouchBehavior
-            DefaultAnimationDuration="300"
-            DefaultAnimationEasing="{x:Static Easing.CubicOut}"
-            PressedAnimationDuration="200"
-            PressedAnimationEasing="{x:Static Easing.CubicOut}"
-            PressedOpacity="0.8"
-            PressedScale="0.9" />
-    </Border.Behaviors>
+    x:Name="Root"
+    x:DataType="view:PlanWidget">
+    <Border BindingContext="{Reference Root}" Style="{StaticResource DefaultBorder}">
+        <Border.Behaviors>
+            <toolkit:TouchBehavior
+                DefaultAnimationDuration="300"
+                DefaultAnimationEasing="{x:Static Easing.CubicOut}"
+                PressedAnimationDuration="200"
+                PressedAnimationEasing="{x:Static Easing.CubicOut}"
+                PressedOpacity="0.8"
+                PressedScale="0.9" />
+        </Border.Behaviors>
 
-    <Border.GestureRecognizers>
-        <TapGestureRecognizer Command="{Binding Command, Source={Reference This}}" />
-    </Border.GestureRecognizers>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Command}" />
+        </Border.GestureRecognizers>
 
-    <VerticalStackLayout Spacing="10">
-        <Image HeightRequest="30" Source="{Binding IconSource, Source={Reference This}}">
-            <Image.Behaviors>
-                <toolkit:IconTintColorBehavior TintColor="Black" />
-            </Image.Behaviors>
-        </Image>
+        <VerticalStackLayout Spacing="10">
+            <Image HeightRequest="30" Source="{Binding IconSource}">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="Black" />
+                </Image.Behaviors>
+            </Image>
 
-        <Label
-            FontFamily="InterRegular"
-            FontSize="14"
-            HorizontalTextAlignment="Center"
-            Text="{Binding PlanName, Source={Reference This}}"
-            TextColor="{StaticResource CaptionColor}" />
-    </VerticalStackLayout>
-</Border>
+            <Label
+                FontFamily="InterRegular"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                Text="{Binding PlanName}"
+                TextColor="{StaticResource CaptionColor}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

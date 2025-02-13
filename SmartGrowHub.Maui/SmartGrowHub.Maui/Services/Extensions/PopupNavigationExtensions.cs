@@ -10,29 +10,41 @@ public static class PopupNavigationExtensions
 {
     private static readonly Dictionary<Type, Type> ViewModelToViewMappings = [];
 
-    public static Task ShowPopupAsync<TPopupModel>(this IPopupNavigation popupNavigation, bool animate = true)
-        where TPopupModel : INotifyPropertyChanged
+    public static Task HidePopupAsync<TPopupViewModel>(this IPopupNavigation popupNavigation, bool animate = true)
+        where TPopupViewModel : INotifyPropertyChanged
     {
-        IServiceProvider serviceProvider = Application.Current?.Handler?.MauiContext?.Services
-            ?? throw new InvalidOperationException("Could not locate IServiceProvider");
-
-        Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupModel))
+        Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
             ?? throw new ViewNotFoundException();
 
+        PopupPage popupPage = popupNavigation.PopupStack.FirstOrDefault(page => page.GetType() == viewType)
+            ?? throw new ViewNotFoundException();
+
+        return popupNavigation.RemovePageAsync(popupPage, animate);
+    }
+
+    public static Task ShowPopupAsync<TPopupViewModel>(this IPopupNavigation popupNavigation, bool animate = true)
+        where TPopupViewModel : INotifyPropertyChanged
+    {
+        IServiceProvider serviceProvider = Application.Current?.Handler?.MauiContext?.Services 
+            ?? throw new InvalidOperationException("Could not locate IServiceProvider");
+        
+        Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
+            ?? throw new ViewNotFoundException();
+        
         PopupPage popup = serviceProvider.GetRequiredService(viewType) as PopupPage
             ?? throw new ViewNotFoundException();
 
         return popupNavigation.PushAsync(popup, animate);
     }
-
-    public static IServiceCollection AddTransientMopup<TPopupView, TPopupModel>(this IServiceCollection services)
+    
+    public static IServiceCollection AddTransientMopup<TPopupView, TPopupViewModel>(this IServiceCollection services)
         where TPopupView : PopupPage
-        where TPopupModel : class, INotifyPropertyChanged
+        where TPopupViewModel : class, INotifyPropertyChanged
     {
-        ViewModelToViewMappings.Add(typeof(TPopupModel), typeof(TPopupView));
-
+        ViewModelToViewMappings.Add(typeof(TPopupViewModel), typeof(TPopupView));
+        
         return services
             .AddTransient<TPopupView>()
-            .AddTransient<TPopupModel>();
+            .AddTransient<TPopupViewModel>();
     }
 }

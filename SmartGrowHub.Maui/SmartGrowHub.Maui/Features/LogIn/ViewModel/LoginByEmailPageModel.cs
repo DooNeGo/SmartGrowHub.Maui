@@ -8,7 +8,7 @@ using SmartGrowHub.Maui.Services.Flow;
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
 public sealed partial class LoginByEmailPageModel(ILoginByEmailService logInService)
-    : ObservableValidator, IOnAppearedAware
+    : ObservableValidator, IPageLifecycleAware
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -17,8 +17,10 @@ public sealed partial class LoginByEmailPageModel(ILoginByEmailService logInServ
     private string _email = string.Empty;
 
     [ObservableProperty] private string _emailError = string.Empty;
+    
+    public void OnAppearing() => OnEmailChanged(Email);
 
-    public void OnAppeared() => OnEmailChanged(Email);
+    public void OnDisappearing() { }
 
     partial void OnEmailChanged(string value)
     {

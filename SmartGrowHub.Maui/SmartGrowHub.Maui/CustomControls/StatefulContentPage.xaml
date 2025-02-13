@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<base:BaseContentPage
+<base:BasePage
     x:Class="SmartGrowHub.Maui.CustomControls.StatefulContentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System.ObjectModel"
     xmlns:local="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This"
-    x:DataType="local:StatefulContentPage">
+    x:DataType="local:StatefulContentPage"
+    x:TypeArguments="componentModel:INotifyPropertyChanged">
     <VerticalStackLayout toolkit:StateContainer.CurrentState="{Binding CurrentState, Source={Reference This}}">
         <toolkit:StateContainer.StateViews>
             <ContentView toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}" Content="{Binding LoadingView, Source={Reference This}}" />
             <ContentView toolkit:StateView.StateKey="{x:Static base:PageStates.Default}" Content="{Binding DefaultView, Source={Reference This}}" />
         </toolkit:StateContainer.StateViews>
     </VerticalStackLayout>
-</base:BaseContentPage>
+</base:BasePage>

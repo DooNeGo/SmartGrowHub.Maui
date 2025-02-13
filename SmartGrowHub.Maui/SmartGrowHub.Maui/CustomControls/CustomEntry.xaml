@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<VerticalStackLayout
+<ContentView
     x:Class="SmartGrowHub.Maui.CustomControls.CustomEntry"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,52 +8,54 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This"
     x:DataType="customControls:CustomEntry">
-    <Border
-        Padding="20,5"
-        BackgroundColor="{toolkit:AppThemeResource Key=EntryColor}"
-        StrokeShape="RoundRectangle 11">
-        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
-            <Image
-                HeightRequest="15"
-                HorizontalOptions="Center"
-                Source="{Binding Path=IconSource, Source={Reference This}}"
-                VerticalOptions="Center">
-                <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Primary}" />
-                </Image.Behaviors>
-            </Image>
+    <VerticalStackLayout BindingContext="{Reference This}">
+        <Border
+            Padding="20,5"
+            BackgroundColor="{toolkit:AppThemeResource Key=EntryColor}"
+            StrokeShape="{RoundRectangle CornerRadius=11}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                <Image
+                    HeightRequest="15"
+                    HorizontalOptions="Center"
+                    Source="{Binding Path=IconSource}"
+                    VerticalOptions="Center">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{StaticResource Primary}" />
+                    </Image.Behaviors>
+                </Image>
 
-            <Entry
-                x:Name="Entry"
-                Grid.Column="1"
-                FontFamily="InterMedium"
-                FontSize="16"
-                IsPassword="{Binding IsPassword, Source={Reference This}}"
-                Keyboard="{Binding Keyboard, Source={Reference This}}"
-                Placeholder="{Binding Placeholder, Source={Reference This}}"
-                PlaceholderColor="{StaticResource Primary}"
-                ReturnType="Next"
-                Text="{Binding Text, Source={Reference This}}"
-                TextChanged="Entry_OnTextChanged" />
+                <Entry
+                    x:Name="Entry"
+                    Grid.Column="1"
+                    FontFamily="InterMedium"
+                    FontSize="16"
+                    IsPassword="{Binding IsPassword}"
+                    Keyboard="{Binding Keyboard}"
+                    Placeholder="{Binding Placeholder}"
+                    PlaceholderColor="{StaticResource Primary}"
+                    ReturnType="{Binding ReturnType}"
+                    Text="{Binding Text}"
+                    TextChanged="Entry_OnTextChanged" />
 
-            <Image
-                Grid.Column="2"
-                HeightRequest="20"
-                HorizontalOptions="Center"
-                IsVisible="{Binding HasError, Source={Reference This}}"
-                Source="alert_icon.png"
-                VerticalOptions="Center">
-                <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="Firebrick" />
-                </Image.Behaviors>
-            </Image>
-        </Grid>
-    </Border>
+                <Image
+                    Grid.Column="2"
+                    HeightRequest="20"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasError}"
+                    Source="alert_icon.png"
+                    VerticalOptions="Center">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="Firebrick" />
+                    </Image.Behaviors>
+                </Image>
+            </Grid>
+        </Border>
 
-    <Label
-        Margin="10,0,0,0"
-        FontFamily="InterRegular"
-        IsVisible="{Binding HasError, Source={Reference This}}"
-        Text="{Binding Error, Source={Reference This}}"
-        TextColor="Firebrick" />
-</VerticalStackLayout>
+        <Label
+            Margin="10,0,0,0"
+            FontFamily="InterRegular"
+            IsVisible="{Binding HasError}"
+            Text="{Binding Error}"
+            TextColor="Firebrick" />
+    </VerticalStackLayout>
+</ContentView>

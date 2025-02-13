@@ -279,4 +279,16 @@
   <data name="Manual" xml:space="preserve">
     <value>Вручную</value>
   </data>
+  <data name="TurnOff" xml:space="preserve">
+    <value>Выключено</value>
+  </data>
+  <data name="TurnOffShort" xml:space="preserve">
+    <value>Выкл.</value>
+  </data>
+  <data name="DailyProgram" xml:space="preserve">
+    <value>Суточное расписание</value>
+  </data>
+  <data name="WeeklyProgram" xml:space="preserve">
+    <value>Недельное расписание</value>
+  </data>
 </root>

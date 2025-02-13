@@ -41,6 +41,19 @@ public sealed partial class MetricWidget
     
     #endregion
     
+    #region BackgroundColor
+
+    public new static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(
+        nameof(BackgroundColor), typeof(Color), typeof(MetricWidget));
+
+    public new Color? BackgroundColor
+    {
+        get => GetValue(BackgroundColorProperty) as Color;
+        set => SetValue(BackgroundColorProperty, value);
+    }
+    
+    #endregion
+    
     public MetricWidget()
     {
         InitializeComponent();

@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<Border
+<ContentView
     x:Class="SmartGrowHub.Maui.Features.Main.View.QuickSetting"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
-    x:Name="This"
-    x:DataType="view:QuickSetting"
-    Style="{StaticResource DefaultBorder}">
-    <Border.Behaviors>
-        <toolkit:TouchBehavior
-            DefaultAnimationDuration="300"
-            DefaultAnimationEasing="{x:Static Easing.CubicOut}"
-            PressedAnimationDuration="200"
-            PressedAnimationEasing="{x:Static Easing.CubicOut}"
-            PressedOpacity="0.8"
-            PressedScale="0.9" />
-    </Border.Behaviors>
+    x:Name="Root"
+    x:DataType="view:QuickSetting">
+    <Border BindingContext="{Reference Root}" Style="{StaticResource DefaultBorder}">
+        <Border.Behaviors>
+            <toolkit:TouchBehavior
+                DefaultAnimationDuration="200"
+                DefaultAnimationEasing="{x:Static Easing.CubicIn}"
+                PressedAnimationDuration="100"
+                PressedAnimationEasing="{x:Static Easing.CubicOut}"
+                PressedOpacity="0.7"
+                PressedScale="0.9" />
+        </Border.Behaviors>
 
-    <Border.GestureRecognizers>
-        <TapGestureRecognizer Command="{Binding Command, Source={Reference This}}" />
-    </Border.GestureRecognizers>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Command}" />
+        </Border.GestureRecognizers>
 
-    <VerticalStackLayout Spacing="5">
-        <Image HeightRequest="30" Source="{Binding IconSource, Source={Reference This}}">
-            <Image.Behaviors>
-                <toolkit:IconTintColorBehavior TintColor="{Binding IconColor, Source={Reference This}}" />
-            </Image.Behaviors>
-        </Image>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0.5,-4" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="{Binding IconColor}" />
+                <GradientStop Offset="1" Color="White" />
+            </LinearGradientBrush>
+        </Border.Background>
 
-        <Label
-            FontFamily="InterMedium"
-            FontSize="18"
-            HorizontalTextAlignment="Center"
-            Text="{Binding Value, Source={Reference This}}"
-            TextColor="Black" />
+        <Grid RowDefinitions="*,*,*" RowSpacing="5">
+            <Image
+                Grid.Row="0"
+                HeightRequest="30"
+                Source="{Binding IconSource}">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{Binding IconColor}" />
+                </Image.Behaviors>
+            </Image>
 
-        <Label
-            FontFamily="InterRegular"
-            FontSize="14"
-            HorizontalTextAlignment="Center"
-            Text="{Binding Status, Source={Reference This}}"
-            TextColor="{StaticResource CaptionColor}" />
-    </VerticalStackLayout>
-</Border>
+            <Label
+                Grid.Row="1"
+                FontFamily="InterMedium"
+                FontSize="18"
+                HorizontalTextAlignment="Center"
+                Text="{Binding Value}"
+                TextColor="Black" />
+
+            <Label
+                Grid.Row="2"
+                FontFamily="InterRegular"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                Text="{Binding Status}"
+                TextColor="{StaticResource Gray400}" />
+        </Grid>
+    </Border>
+</ContentView>

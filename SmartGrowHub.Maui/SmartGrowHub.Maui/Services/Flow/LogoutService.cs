@@ -1,6 +1,7 @@
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
-using SmartGrowHub.Maui.Services.Infrastructure;
+using SmartGrowHub.Maui.Services.DelegatingHandlers;
+using SmartGrowHub.Maui.Services.Extensions;
 
 namespace SmartGrowHub.Maui.Services.Flow;
 
@@ -12,13 +13,18 @@ public interface ILogoutService
 public sealed class LogoutService(
     INavigationService navigationService,
     IAuthService authService,
-    ITokensStorage tokensStorage)
+    ISecureStorage secureStorage)
     : ILogoutService
 {
     public Eff<Unit> LogOut(CancellationToken cancellationToken) =>
-        from refreshToken in tokensStorage.GetRefreshToken(cancellationToken)
+        from _1 in navigationService.NavigateAsync($"//{Routes.StartPage}")
+        from _2 in secureStorage.RemoveAllValues()
+        from _3 in LogOutFromServer(cancellationToken)
+        select _3;
+
+    private Eff<Unit> LogOutFromServer(CancellationToken cancellationToken) => (
+        from refreshToken in secureStorage.GetRefreshToken().MapT(io => io.ToEff())
         from _ in authService.LogOut(refreshToken, cancellationToken)
-        from __ in tokensStorage.RemoveTokens()
-        from ___ in navigationService.SetLogInAsRoot(cancellationToken: cancellationToken)
-        select ___;
+        select _
+    ).IfNone(unit).As();
 }

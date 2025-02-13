@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<Border
+<ContentView
     x:Class="SmartGrowHub.Maui.Features.Main.View.DeviceWidget"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
-    x:Name="This"
-    x:DataType="view:DeviceWidget"
-    MinimumWidthRequest="50"
-    Style="{StaticResource DefaultBorder}">
-    <VerticalStackLayout Spacing="10">
-        <Grid ColumnDefinitions="*">
-            <Image
-                HeightRequest="40"
-                HorizontalOptions="Start"
-                Source="{Binding DeviceIconSource, Source={Reference This}}" />
+    x:Name="Root"
+    x:DataType="view:DeviceWidget">
+    <Border
+        BindingContext="{Reference Root}"
+        MinimumWidthRequest="50"
+        Style="{StaticResource DefaultBorder}">
+        <VerticalStackLayout Spacing="10">
+            <Grid ColumnDefinitions="*">
+                <Image
+                    HeightRequest="40"
+                    HorizontalOptions="Start"
+                    Source="{Binding DeviceIconSource}" />
 
-            <Image
-                HeightRequest="20"
-                HorizontalOptions="End"
-                IsVisible="{Binding IsConnected, Source={Reference This}}"
-                Source="wifi_icon.png"
-                VerticalOptions="Start">
-                <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="LimeGreen" />
-                </Image.Behaviors>
-            </Image>
-        </Grid>
+                <Image
+                    HeightRequest="20"
+                    HorizontalOptions="End"
+                    IsVisible="{Binding IsConnected}"
+                    Source="wifi_icon.png"
+                    VerticalOptions="Start">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="LimeGreen" />
+                    </Image.Behaviors>
+                </Image>
+            </Grid>
 
-        <VerticalStackLayout>
-            <Label
-                FontFamily="InterMedium"
-                FontSize="16"
-                Text="{Binding DeviceName, Source={Reference This}}" />
+            <VerticalStackLayout>
+                <Label
+                    FontFamily="InterMedium"
+                    FontSize="16"
+                    Text="{Binding DeviceName}" />
 
-            <Label
-                FontFamily="InterMedium"
-                FontSize="12"
-                Text="{Binding ModelName, Source={Reference This}}"
-                TextColor="{StaticResource CaptionColor}" />
+                <Label
+                    FontFamily="InterMedium"
+                    FontSize="12"
+                    Text="{Binding ModelName}"
+                    TextColor="{StaticResource CaptionColor}" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
-    </VerticalStackLayout>
-</Border>
+    </Border>
+</ContentView>

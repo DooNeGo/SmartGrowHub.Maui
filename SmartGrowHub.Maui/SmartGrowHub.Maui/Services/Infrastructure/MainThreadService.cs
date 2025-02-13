@@ -29,7 +29,7 @@ public sealed class MainThreadService : IMainThreadService
         liftIO(() => MainThread.InvokeOnMainThreadAsync(func));
 
     public IO<Unit> BeginInvokeOnMainThread(Action action) =>
-        lift(() => MainThread.BeginInvokeOnMainThread(action));
+        IO.lift(() => MainThread.BeginInvokeOnMainThread(action));
 
     public IO<SynchronizationContext> GetMainThreadSynchronizationContext() =>
         liftIO(MainThread.GetMainThreadSynchronizationContextAsync);

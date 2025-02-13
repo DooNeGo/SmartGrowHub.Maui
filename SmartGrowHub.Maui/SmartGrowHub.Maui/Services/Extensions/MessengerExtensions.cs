@@ -4,6 +4,7 @@ namespace SmartGrowHub.Maui.Services.Extensions;
 
 public static class MessengerExtensions
 {
+    // ReSharper disable once InconsistentNaming
     public static IO<Unit> SendIO<T>(this IMessenger messenger, T message) where T : class =>
-        lift(() => messenger.Send(message)).Map(_ => unit);
+        IO.lift(() => messenger.Send(message)).Map(_ => unit);
 }

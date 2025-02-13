@@ -1,12 +1,9 @@
-using SmartGrowHub.Maui.Features.Loading.ViewModel;
-
 namespace SmartGrowHub.Maui.Features.Loading.View;
 
 public sealed partial class LoadingPage
 {
-	public LoadingPage(LoadingPageModel pageModel)
+	public LoadingPage()
 	{
 		InitializeComponent();
-		BindingContext = pageModel;
 	}
 }

@@ -3,6 +3,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
+    xmlns:core="clr-namespace:CommunityToolkit.Maui.Core;assembly=CommunityToolkit.Maui.Core"
     xmlns:droid="clr-namespace:CommunityToolkit.Maui.PlatformConfiguration.AndroidSpecific;assembly=CommunityToolkit.Maui"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
@@ -427,7 +429,9 @@
     <Style x:Key="SimplePage" TargetType="Page">
         <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
         <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
-        <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light=DarkContent, Dark=LightContent}" />
+        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
+        <Setter Property="behaviors:StatusBar.Style" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
+        <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light={x:Static core:NavigationBarStyle.DarkContent}, Dark={x:Static core:NavigationBarStyle.LightContent}}" />
     </Style>
 
     <Style
@@ -436,6 +440,7 @@
         TargetType="Page">
         <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
         <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
+        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
     </Style>
 
     <Style ApplyToDerivedTypes="True" TargetType="Shell">

@@ -1,35 +1,71 @@
+using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Infrastructure;
 
 namespace SmartGrowHub.Maui.Services.App;
 
 public interface INavigationService
 {
-    IO<Unit> GoBackAsync(CancellationToken cancellationToken = default);
-    IO<Unit> GoToAsync(string path, CancellationToken cancellationToken = default);
-    IO<Unit> SetLogInAsRootAsync(bool animate = true, CancellationToken cancellationToken = default);
-    IO<Unit> SetMainPageAsRootAsync(bool animate = true, CancellationToken cancellationToken = default);
-    IO<Unit> SetLogInAsRoot(bool animate = true, CancellationToken cancellationToken = default);
-    IO<Unit> SetMainPageAsRoot(bool animate = true, CancellationToken cancellationToken = default);
+    IO<Unit> InitializeRootPage(CancellationToken cancellationToken);
+    IO<Unit> NavigateAsync(string route, IDictionary<string, object>? routeParameters = null, bool animated = true);
+    IO<Unit> GoBackAsync(bool animated = true);
+    NavigationBuilder CreateBuilder();
 }
 
-
-public sealed class NavigationService(AppShell shell, IMainThreadService mainThread) : INavigationService
+public sealed class ShellNavigationService(
+    ISecureStorage secureStorage,
+    IMainThreadService mainThread,
+    AppShell shell)
+    : INavigationService
 {
-    public IO<Unit> GoBackAsync(CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.Navigation.PopAsync().WaitAsync(cancellationToken).ToUnit());
+    public IO<Unit> InitializeRootPage(CancellationToken cancellationToken) =>
+        AreAccessAndRefreshTokenExist()
+            .Match(Some: _ => Routes.MainPage, None: () => Routes.StartPage).As()
+            .Bind(route => NavigateAsync($"//{route}"));
 
-    public IO<Unit> GoToAsync(string path, CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.GoToAsync(path).WaitAsync(cancellationToken));
+    public IO<Unit> NavigateAsync(string route, IDictionary<string, object>? routeParameters = null,
+        bool animated = true) =>
+        mainThread.InvokeOnMainThread(() => routeParameters is null
+            ? shell.GoToAsync(route, animated)
+            : shell.GoToAsync(route, animated, routeParameters));
 
-    public IO<Unit> SetLogInAsRootAsync(bool animate = true, CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetLoginAsRootAsync(animate, cancellationToken));
+    public IO<Unit> GoBackAsync(bool animated = true) =>
+        mainThread.InvokeOnMainThread(() => shell.Navigation.PopAsync(animated)).Map(_ => unit);
 
-    public IO<Unit> SetMainPageAsRootAsync(bool animate = true, CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetMainAsRootAsync(animate, cancellationToken));
+    public NavigationBuilder CreateBuilder() => new(this);
 
-    public IO<Unit> SetLogInAsRoot(bool animate = true, CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetLoginAsRoot(animate, cancellationToken));
+    private OptionT<IO, Unit> AreAccessAndRefreshTokenExist() =>
+        from accessToken in secureStorage.GetAccessToken()
+        from refreshToken in secureStorage.GetRefreshToken()
+        select unit;
+}
 
-    public IO<Unit> SetMainPageAsRoot(bool animate = true, CancellationToken cancellationToken = default) =>
-        mainThread.InvokeOnMainThread(() => shell.SetMainAsRoot(animate, cancellationToken));
+public sealed class NavigationBuilder(INavigationService navigationService)
+{
+    private Dictionary<string, object>? _parameters;
+    private string _route = string.Empty;
+
+    public NavigationBuilder AddRouteParameter(string name, object value)
+    {
+        _parameters ??= [];
+        _parameters[name] = value;
+        return this;
+    }
+    
+    public NavigationBuilder SetRoute(string route)
+    {
+        _route = route;
+        return this;
+    }
+
+    public NavigationBuilder AddQueryParameter(string name, string? value)
+    {
+        _route.AppendQueryParameter(name, value);
+        return this;
+    }
+
+    public IO<Unit> NavigateAsync(bool animated = true)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(_route, nameof(_route));
+        return navigationService.NavigateAsync(_route, _parameters, animated);
+    }
 }

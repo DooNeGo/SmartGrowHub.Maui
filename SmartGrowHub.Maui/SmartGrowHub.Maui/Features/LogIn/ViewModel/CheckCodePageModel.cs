@@ -12,7 +12,7 @@ namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 public sealed partial class CheckCodePageModel(
     ILoginByEmailService loginByEmailService,
     INavigationService navigationService)
-    : ObservableValidator, IOnAppearedAware
+    : ObservableValidator, IPageLifecycleAware
 {
     [ObservableProperty] private string _sentTo = string.Empty;
     
@@ -23,7 +23,7 @@ public sealed partial class CheckCodePageModel(
     
     [ObservableProperty] private string _codeError = string.Empty;
 
-    public void OnAppeared() => OnCodeChanged(Code);
+    public void OnAppearing() => OnCodeChanged(Code);
 
     partial void OnCodeChanged(string value)
     {
@@ -34,7 +34,7 @@ public sealed partial class CheckCodePageModel(
 
     [RelayCommand]
     private Task<Unit> GoBackAsync(CancellationToken cancellationToken) =>
-        navigationService.GoBackAsync(cancellationToken).RunAsync().AsTask();
+        navigationService.GoBackAsync().RunAsync().AsTask();
 
     [RelayCommand]
     private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) =>

@@ -2,24 +2,24 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using AsyncAwaitBestPractices;
 using SmartGrowHub.Maui.Base;
-using SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
+using SmartGrowHub.Maui.Services.Extensions;
+using SmartGrowHub.Maui.Services.Infrastructure;
 using SmartGrowHub.Shared.GrowHubs;
-using SmartGrowHub.Shared.GrowHubs.Components;
-using SmartGrowHub.Shared.GrowHubs.Settings;
+using SmartGrowHub.Shared.GrowHubs.ComponentPrograms;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
-public sealed partial class MainPageModel : ObservableObject
+public sealed partial class MainPageModel(
+    INavigationService navigationService,
+    IGrowHubService growHubService,
+    ITimeProvider timeProvider)
+    : ObservableObject, IPageLifecycleAware
 {
-    private readonly INavigationService _navigationService;
-    private readonly IGrowHubService _growHubService;
-    
-    private TaskCompletionSource<bool> _stateChangeTcs = new(true);
+    private TaskCompletionSource<Unit> _stateChangeTcs = new(unit);
 
     [ObservableProperty] private bool _isRefreshing;
     
@@ -36,21 +36,7 @@ public sealed partial class MainPageModel : ObservableObject
     [ObservableProperty] private string? _currentState = PageStates.Loading;
     [ObservableProperty] private bool _canStateChange = true;
 
-    public MainPageModel(INavigationService navigationService, IGrowHubService growHubService)
-    {
-        _navigationService = navigationService;
-        _growHubService = growHubService;
-        
-        Refresh().SafeFireAndForget();
-        
-        return;
-
-        async Task Refresh()
-        {
-            await Task.Delay(500);
-            await RefreshAsync(CancellationToken.None);
-        }
-    }
+    public void Initialize() => RefreshAsync(CancellationToken.None).SafeFireAndForget();
 
     [RelayCommand]
     private async Task RefreshAsync(CancellationToken cancellationToken)
@@ -61,16 +47,17 @@ public sealed partial class MainPageModel : ObservableObject
         
         IsRefreshing = true;
         CurrentState = PageStates.Loading;
-        
-        ImmutableArray<GrowHubDto> response = await _growHubService
-            .GetGrowHubs(cancellationToken)
-            .RunUnsafeAsync()
-            .Map(enumerable => enumerable.ToImmutableArray());
-        
-        GrowHubs.Clear();
-        GrowHubs.AddRange(response);
 
-        UpdateData(response);
+        _ = await growHubService
+            .GetGrowHubs(cancellationToken)
+            .Map(enumerable => enumerable.ToImmutableArray())
+            .Bind(array => liftEff(() =>
+            {
+                GrowHubs.Clear();
+                GrowHubs.AddRange(array);
+                return UpdateData(array);
+            }))
+            .RunAsync();
 
         await WaitForStateChange();
         
@@ -78,59 +65,77 @@ public sealed partial class MainPageModel : ObservableObject
         IsRefreshing = false;
     }
 
-    private void UpdateData(ImmutableArray<GrowHubDto> response)
+    private Unit UpdateData(IEnumerable<GrowHubDto> response)
     {
-        if (response.Length is 0) return;
+        GrowHubDto? growHub = response.FirstOrDefault();
+        if (growHub is null) return unit;
         
-        foreach (IGrowHubComponentDto component in response.FirstOrDefault()!.Components)
-        {
-            if (component is LightComponentDto light)
-            {
-                LightState = GetSettingState(light.Setting);
-                LightValue = $"{GetSettingValue(light.Setting)} %";
-            }
-            else if (component is FanComponentDto fan)
-            {
-                FanState = GetSettingState(fan.Setting);
-                FanValue = $"{GetSettingValue(fan.Setting)} %";
-            }
-            else if (component is HeaterComponentDto heater)
-            {
-                HeatState = GetSettingState(heater.Setting);
-                HeatValue = $"{GetSettingValue(heater.Setting)} %";
-            }
-        }
+        LightState = GetProgramState(growHub.DayLightComponent.Program);
+        LightValue = GetProgramValue(growHub.DayLightComponent.Program);
+        
+        FanState = GetProgramState(growHub.FanComponent.Program);
+        FanValue = GetProgramValue(growHub.FanComponent.Program);
+        
+        HeatState = GetProgramState(growHub.HeaterComponent.Program);
+        HeatValue = GetProgramValue(growHub.HeaterComponent.Program);
+
+        return unit;
     }
 
-    private static string GetSettingState(ISettingDto setting) =>
-        setting.Match(_ => AppResources.Manual, _ => AppResources.Cycle);
+    private static string GetProgramState(ComponentProgramDto program) =>
+        program.Match(
+            mapManual: _ => AppResources.Manual,
+            mapCycle: _ => AppResources.Cycle,
+            mapDaily: _ => AppResources.DailyProgram,
+            mapWeekly: _ => AppResources.WeeklyProgram);
     
-    private static int GetSettingValue(ISettingDto setting) =>
-        setting.Match(manual => manual.Value, cycle => cycle.Value);
+    private string GetProgramValue(ComponentProgramDto program) =>
+        program.Match(
+            mapManual: manual => QuantityToString(manual.Quantity),
+            mapCycle: cycle => QuantityToString(cycle.CycleParameters.Quantity),
+            mapDaily: daily => MapDailyToString(daily).Run(),
+            mapWeekly: weekly => MapWeeklyToString(weekly).Run());
+
+    private IO<string> MapDailyToString(DailyProgramDto dailyProgram) =>
+        timeProvider.Now
+            .Map(TimeOnly.FromDateTime)
+            .Map(time => GetIntervalProgramCurrentQuantity(dailyProgram, time));
+    
+    private IO<string> MapWeeklyToString(WeeklyProgramDto weeklyProgram) =>
+        timeProvider.Now
+            .Map(dateTime => new WeekTimeOnlyDto(dateTime.DayOfWeek, TimeOnly.FromDateTime(dateTime)))
+            .Map(time => GetIntervalProgramCurrentQuantity(weeklyProgram, time));
+
+    private static string GetIntervalProgramCurrentQuantity<TTime>(
+        IntervalProgramDto<TTime> intervalProgram, TTime timeNow) where TTime : IComparable<TTime> =>
+        FindByTime(intervalProgram.Entries, timeNow)
+            .Map(timedQuantity => QuantityToString(timedQuantity.Quantity)).As()
+            .IfNone(() => AppResources.TurnOffShort);
+
+    private static string QuantityToString(QuantityDto quantity) => $"{quantity.Magnitude} {quantity.Unit}";
+
+    private static Option<TimedQuantityDto<TTime>> FindByTime<TTime>(
+        IEnumerable<TimedQuantityDto<TTime>> timedQuantities, TTime time) where TTime : IComparable<TTime> =>
+        Optional(timedQuantities.FirstOrDefault(timedQuantity => timedQuantity.Interval.Contains(time)));
 
     [RelayCommand]
     private Task<Unit> GoToLightControl(CancellationToken cancellationToken) =>
-        _navigationService
-            .GoToAsync(nameof(LightControlPageModel), cancellationToken)
+        navigationService
+            .NavigateAsync(Routes.LightControlPage)
             .RunAsync().AsTask();
 
-    private Task<bool> WaitForStateChange()
+    private Task<Unit> WaitForStateChange()
     {
-        _stateChangeTcs = new TaskCompletionSource<bool>();
-
-        if (CanStateChange)
-        {
-            _stateChangeTcs.TrySetResult(true);
-        }
+        if (CanStateChange) return Task.FromResult(unit);
+        
+        _stateChangeTcs = new TaskCompletionSource<Unit>();
     
         return _stateChangeTcs.Task;
     }
 
     partial void OnCanStateChangeChanged(bool value)
     {
-        if (value)
-        {
-            _stateChangeTcs.TrySetResult(true);
-        }
+        if (!value) return;
+        _stateChangeTcs.TrySetResult(unit);
     }
 }

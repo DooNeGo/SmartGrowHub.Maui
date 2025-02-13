@@ -7,11 +7,8 @@ namespace SmartGrowHub.Maui.Features.Main.View;
 
 public sealed partial class MainPage
 {
-	private readonly MainPageModel _pageModel;
-
 	public MainPage(MainPageModel pageModel) : base(pageModel)
 	{
-		_pageModel = pageModel;
 		InitializeComponent();
 		pageModel.PropertyChanged += OnPropertyChanged;
 		
@@ -24,9 +21,9 @@ public sealed partial class MainPage
 	{
 		if (e.PropertyName is not nameof(MainPageModel.CurrentState)) return;
 
-		string? newState = _pageModel.CurrentState;
+		string? newState = BindingContext.CurrentState;
 
-		_pageModel.CanStateChange = false;
+		BindingContext.CanStateChange = false;
 		
 		Task task1 = ChangeStateAsync(DevicesLayout, newState);
 		Task task2 = ChangeStateAsync(EnvironmentStackLayout, newState);
@@ -34,7 +31,7 @@ public sealed partial class MainPage
 		
 		await Task.WhenAll(task1, task2, task3);
 		
-		_pageModel.CanStateChange = true;
+		BindingContext.CanStateChange = true;
 	}
 
 	private static Task ChangeStateAsync(BindableObject bindableObject, string? state) =>

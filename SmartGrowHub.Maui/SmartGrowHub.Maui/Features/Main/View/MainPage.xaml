@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<base:BaseContentPage
+
+<base:BasePage
     x:Class="SmartGrowHub.Maui.Features.Main.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
     xmlns:growHubs="clr-namespace:SmartGrowHub.Shared.GrowHubs;assembly=SmartGrowHub.Shared"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
+    x:Name="Root"
+    behaviors:StatusBar.ApplyOn="OnPageNavigatedTo"
     x:DataType="viewModel:MainPageModel"
+    x:TypeArguments="viewModel:MainPageModel"
     Shell.NavBarIsVisible="False"
     Shell.TabBarIsVisible="False"
     Style="{StaticResource DefaultPage}">
-
-    <base:BaseContentPage.Behaviors>
-        <toolkit:StatusBarBehavior
-            ApplyOn="OnPageNavigatedTo"
-            StatusBarColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
-            StatusBarStyle="DarkContent" />
-    </base:BaseContentPage.Behaviors>
-
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
         <ScrollView Padding="20,20,20,0">
             <VerticalStackLayout Spacing="20">
@@ -37,21 +34,24 @@
                             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                                 <view:MetricWidget
                                     Grid.Column="0"
-                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    x:DataType="view:MainPage"
+                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
                                     MainValue="23"
                                     MetricName="{x:Static localization:AppResources.TemperatureShort}"
                                     ValueUnit="°C" />
 
                                 <view:MetricWidget
                                     Grid.Column="1"
-                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    x:DataType="view:MainPage"
+                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
                                     MainValue="78"
                                     MetricName="{x:Static localization:AppResources.Humidity}"
                                     ValueUnit="%" />
 
                                 <view:MetricWidget
                                     Grid.Column="2"
-                                    BackgroundColor="{toolkit:AppThemeResource Key=PageBackgroundColor2}"
+                                    x:DataType="view:MainPage"
+                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
                                     MainValue="0.73"
                                     MetricName="{x:Static localization:AppResources.Vpd}"
                                     ValueUnit="{x:Static localization:AppResources.kPa}" />
@@ -159,4 +159,4 @@
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>
-</base:BaseContentPage>
+</base:BasePage>

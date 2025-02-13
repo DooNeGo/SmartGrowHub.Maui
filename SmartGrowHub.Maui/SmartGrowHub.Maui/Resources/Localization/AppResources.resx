@@ -279,4 +279,16 @@
   <data name="Manual" xml:space="preserve">
     <value>Manual</value>
   </data>
+  <data name="TurnOff" xml:space="preserve">
+    <value>Turned Off</value>
+  </data>
+  <data name="TurnOffShort" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="DailyProgram" xml:space="preserve">
+    <value>Daily Program</value>
+  </data>
+  <data name="WeeklyProgram" xml:space="preserve">
+    <value>Weekly Program</value>
+  </data>
 </root>

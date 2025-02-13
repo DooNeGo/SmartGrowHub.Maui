@@ -6,11 +6,12 @@
     xmlns:loading="clr-namespace:SmartGrowHub.Maui.Features.Loading.View"
     xmlns:login="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
+    xmlns:maui="clr-namespace:SmartGrowHub.Maui"
     Title="Smart Grow Hub"
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
-    <ShellContent ContentTemplate="{DataTemplate loading:LoadingPage}" Route="Loading" />
-    <ShellContent ContentTemplate="{DataTemplate login:StartPage}" Route="Login" />
-    <ShellContent ContentTemplate="{DataTemplate main:MainPage}" Route="Main" />
+    <ShellContent ContentTemplate="{DataTemplate loading:LoadingPage}" Route="{x:Static maui:Routes.LoadingPage}" />
+    <ShellContent ContentTemplate="{DataTemplate login:StartPage}" Route="{x:Static maui:Routes.StartPage}" />
+    <ShellContent ContentTemplate="{DataTemplate main:MainPage}" Route="{x:Static maui:Routes.MainPage}" />
 </Shell>

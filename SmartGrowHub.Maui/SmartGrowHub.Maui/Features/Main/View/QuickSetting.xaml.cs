@@ -51,7 +51,7 @@ public sealed partial class QuickSetting
 
     public string Value
     {
-        get => (string)GetValue(ValueProperty);
+        get => GetValue(ValueProperty) as string ?? string.Empty;
         set => SetValue(ValueProperty, value);
     }
 

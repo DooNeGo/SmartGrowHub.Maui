@@ -1,15 +1,24 @@
-﻿namespace SmartGrowHub.Maui;
+﻿using epj.RouteGenerator;
+using SmartGrowHub.Maui.Services.App;
 
+namespace SmartGrowHub.Maui;
+
+[AutoRoutes("Page")]
 public sealed partial class App
 {
-    private readonly AppShell _shell;
-    
-    public App(AppShell shell)
+    private readonly INavigationService _navigationService;
+    private readonly AppShell _appShell;
+
+    public App(INavigationService navigationService, AppShell appShell)
     {
-        _shell = shell;
+        _navigationService = navigationService;
+        _appShell = appShell;
         UserAppTheme = AppTheme.Light;
         InitializeComponent();
     }
 
-    protected override Window CreateWindow(IActivationState? activationState) => new(_shell);
+    protected override Window CreateWindow(IActivationState? activationState) => new(_appShell);
+
+    protected override async void OnStart() =>
+        await _navigationService.InitializeRootPage(CancellationToken.None).RunAsync().AsTask();
 }

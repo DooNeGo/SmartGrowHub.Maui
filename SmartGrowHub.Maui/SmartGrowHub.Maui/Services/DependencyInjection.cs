@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.Text.Json;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Mopups.Services;
 using SmartGrowHub.Maui.Services.Api;
@@ -6,6 +7,8 @@ using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
 using SmartGrowHub.Maui.Services.Flow;
 using SmartGrowHub.Maui.Services.Infrastructure;
+using SmartGrowHub.Shared.SerializerContext;
+using TimeProvider = SmartGrowHub.Maui.Services.Infrastructure.TimeProvider;
 
 namespace SmartGrowHub.Maui.Services;
 
@@ -21,22 +24,22 @@ public static class DependencyInjection
     private static IServiceCollection AddApiServices(this IServiceCollection services)
     {
         services
-            .AddTransient<IAuthService, AuthService>()
-            .AddTransient<IGrowHubService, GrowHubService>()
+            .AddSingleton<IAuthService, AuthService>()
+            .AddSingleton<IGrowHubService, GrowHubService>()
             .AddTransient<TokenDelegatingHandler>()
             .AddTransient<AuthorizationErrorDelegatingHandler>();
         
-        services.AddHttpClient(Options.DefaultName, DefaultConfiguration)
+        services.AddHttpClient(Options.DefaultName, ConfigureHttpClient)
             .AddHttpMessageHandler<TokenDelegatingHandler>()
             .AddHttpMessageHandler<AuthorizationErrorDelegatingHandler>();
 
-        services.AddHttpClient<IAuthService, AuthService>(DefaultConfiguration);
+        services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
 
         return services;
 
-        static void DefaultConfiguration(HttpClient client)
+        static void ConfigureHttpClient(HttpClient client)
         {
-            client.BaseAddress = new Uri("https://ftrjftdv-7260.euw.devtunnels.ms");
+            client.BaseAddress = new Uri("https://h8sqq0wq-7260.euw.devtunnels.ms");
             client.Timeout = TimeSpan.FromSeconds(40);
         }
     }
@@ -44,7 +47,7 @@ public static class DependencyInjection
     private static IServiceCollection AddAppServices(this IServiceCollection services) =>
         services
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<INavigationService, NavigationService>()
+            .AddSingleton<INavigationService, ShellNavigationService>()
             .AddSingleton(MopupService.Instance)
             .AddSingleton(WeakReferenceMessenger.Default);
 
@@ -52,12 +55,18 @@ public static class DependencyInjection
         services
             .AddTransient<IAuthorizationErrorHandler, AuthorizationErrorHandler>()
             .AddTransient<ILoginByEmailService, LoginByEmailService>()
-            .AddTransient<ILogoutService, LogoutService>()
-            .AddTransient<IRefreshTokensService, RefreshTokensService>();
+            .AddTransient<ILogoutService, LogoutService>();
 
     private static IServiceCollection AddInfrastructureServices(this IServiceCollection services) =>
         services
+            .AddTransient<HttpService>()
+            .AddSingleton<ITimeProvider, TimeProvider>()
             .AddSingleton<IMainThreadService, MainThreadService>()
-            .AddSingleton<ITokensStorage, TokensStorage>()
-            .AddSingleton(SecureStorage.Default);
+            .AddSingleton(SecureStorage.Default)
+            .AddSingleton<IJsonSerializerService, JsonSerializerService>(_ =>
+            {
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                options.TypeInfoResolverChain.Add(SmartGrowHubSerializerContext.Default);
+                return new JsonSerializerService(options);
+            });
 }
