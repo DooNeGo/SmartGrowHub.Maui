@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<base:BasePage
     x:Class="SmartGrowHub.Maui.Features.ConfigureGrowHub.View.LightControlPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel"
+    x:Name="Root"
     Title="Light"
     Padding="20"
+    behaviors:StatusBar.Color="White"
     x:DataType="viewModel:LightControlPageModel"
+    x:TypeArguments="viewModel:LightControlPageModel"
     Shell.NavBarHasShadow="False"
     Shell.NavBarIsVisible="True"
     Style="{StaticResource DefaultPage}">
-    <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
-    </ContentPage.Behaviors>
-
     <ScrollView>
         <Grid RowDefinitions="Auto,Auto,Auto">
             <Border Style="{StaticResource DefaultBorder}">
@@ -62,4 +63,4 @@
             </Border>
         </Grid>
     </ScrollView>
-</ContentPage>
+</base:BasePage>

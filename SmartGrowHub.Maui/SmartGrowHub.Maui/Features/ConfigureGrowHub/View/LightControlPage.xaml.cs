@@ -4,10 +4,9 @@ namespace SmartGrowHub.Maui.Features.ConfigureGrowHub.View;
 
 public sealed partial class LightControlPage
 {
-    public LightControlPage(LightControlPageModel pageModel)
+    public LightControlPage(LightControlPageModel pageModel) : base(pageModel)
     {
         InitializeComponent();
-        BindingContext = pageModel;
     }
 
     private void Slider_OnDragCompleted(object? sender, EventArgs e)

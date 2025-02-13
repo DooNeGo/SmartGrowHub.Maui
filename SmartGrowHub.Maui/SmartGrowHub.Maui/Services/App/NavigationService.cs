@@ -5,7 +5,7 @@ namespace SmartGrowHub.Maui.Services.App;
 
 public interface INavigationService
 {
-    IO<Unit> InitializeRootPage(CancellationToken cancellationToken);
+    IO<Unit> InitializeRootPage();
     IO<Unit> NavigateAsync(string route, IDictionary<string, object>? routeParameters = null, bool animated = true);
     IO<Unit> GoBackAsync(bool animated = true);
     NavigationBuilder CreateBuilder();
@@ -17,7 +17,7 @@ public sealed class ShellNavigationService(
     AppShell shell)
     : INavigationService
 {
-    public IO<Unit> InitializeRootPage(CancellationToken cancellationToken) =>
+    public IO<Unit> InitializeRootPage() =>
         AreAccessAndRefreshTokenExist()
             .Match(Some: _ => Routes.MainPage, None: () => Routes.StartPage).As()
             .Bind(route => NavigateAsync($"//{route}"));

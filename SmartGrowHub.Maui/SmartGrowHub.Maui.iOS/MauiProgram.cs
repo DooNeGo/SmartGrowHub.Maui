@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Controls.Handlers.Items2;
-using Microsoft.Maui.Handlers;
+﻿using Microsoft.Maui.Handlers;
 using UIKit;
 
 namespace SmartGrowHub.Maui.iOS;
@@ -14,10 +13,7 @@ public static class MauiProgram
             handler.PlatformView.BorderStyle = UITextBorderStyle.None);
 
         builder
-            .UseSharedMauiApp()
-            .ConfigureMauiHandlers(collection => collection
-                .AddHandler<CollectionView, CollectionViewHandler2>()
-                .AddHandler<CarouselView, CarouselViewHandler2>());
+            .UseSharedMauiApp();
 
         return builder.Build();
     }

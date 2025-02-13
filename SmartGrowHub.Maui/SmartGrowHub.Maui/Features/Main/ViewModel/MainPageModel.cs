@@ -48,16 +48,17 @@ public sealed partial class MainPageModel(
         IsRefreshing = true;
         CurrentState = PageStates.Loading;
 
-        _ = await growHubService
+        Fin<ImmutableArray<GrowHubDto>> fin = await growHubService
             .GetGrowHubs(cancellationToken)
             .Map(enumerable => enumerable.ToImmutableArray())
-            .Bind(array => liftEff(() =>
-            {
-                GrowHubs.Clear();
-                GrowHubs.AddRange(array);
-                return UpdateData(array);
-            }))
             .RunAsync();
+
+        fin.IfSucc(array =>
+        {
+            GrowHubs.Clear();
+            GrowHubs.AddRange(array);
+            UpdateData(array);
+        });
 
         await WaitForStateChange();
         
@@ -109,7 +110,7 @@ public sealed partial class MainPageModel(
     private static string GetIntervalProgramCurrentQuantity<TTime>(
         IntervalProgramDto<TTime> intervalProgram, TTime timeNow) where TTime : IComparable<TTime> =>
         FindByTime(intervalProgram.Entries, timeNow)
-            .Map(timedQuantity => QuantityToString(timedQuantity.Quantity)).As()
+            .Map(timedQuantity => QuantityToString(timedQuantity.Quantity))
             .IfNone(() => AppResources.TurnOffShort);
 
     private static string QuantityToString(QuantityDto quantity) => $"{quantity.Magnitude} {quantity.Unit}";

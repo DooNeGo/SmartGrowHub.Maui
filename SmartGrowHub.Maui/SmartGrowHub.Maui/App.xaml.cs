@@ -1,4 +1,5 @@
-﻿using epj.RouteGenerator;
+﻿using AsyncAwaitBestPractices;
+using epj.RouteGenerator;
 using SmartGrowHub.Maui.Services.App;
 
 namespace SmartGrowHub.Maui;
@@ -19,6 +20,6 @@ public sealed partial class App
 
     protected override Window CreateWindow(IActivationState? activationState) => new(_appShell);
 
-    protected override async void OnStart() =>
-        await _navigationService.InitializeRootPage(CancellationToken.None).RunAsync().AsTask();
+    protected override void OnStart() =>
+        _navigationService.InitializeRootPage().RunAsync().SafeFireAndForget();
 }

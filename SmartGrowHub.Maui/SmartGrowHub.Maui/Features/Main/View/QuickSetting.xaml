@@ -11,20 +11,17 @@
     <Border BindingContext="{Reference Root}" Style="{StaticResource DefaultBorder}">
         <Border.Behaviors>
             <toolkit:TouchBehavior
-                DefaultAnimationDuration="200"
-                DefaultAnimationEasing="{x:Static Easing.CubicIn}"
-                PressedAnimationDuration="100"
+                Command="{Binding Command}"
+                DefaultAnimationDuration="300"
+                DefaultAnimationEasing="{x:Static Easing.SpringOut}"
+                PressedAnimationDuration="200"
                 PressedAnimationEasing="{x:Static Easing.CubicOut}"
                 PressedOpacity="0.7"
                 PressedScale="0.9" />
         </Border.Behaviors>
 
-        <Border.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding Command}" />
-        </Border.GestureRecognizers>
-
         <Border.Background>
-            <LinearGradientBrush StartPoint="0.5,-4" EndPoint="0.5,1">
+            <LinearGradientBrush StartPoint="0.5,-3" EndPoint="0.5,1">
                 <GradientStop Offset="0" Color="{Binding IconColor}" />
                 <GradientStop Offset="1" Color="White" />
             </LinearGradientBrush>

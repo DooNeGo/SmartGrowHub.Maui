@@ -54,7 +54,6 @@
 		<PackageReference Include="epj.RouteGenerator" Version="1.0.4" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-47" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
-		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 		<PackageReference Include="Mopups" Version="1.3.2" />

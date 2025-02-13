@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+
+<base:BasePage
     x:Class="SmartGrowHub.Maui.Features.LogIn.View.StartPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
     Padding="35"
     x:DataType="viewModel:StartPageModel"
+    x:TypeArguments="viewModel:StartPageModel"
     Shell.NavBarIsVisible="False"
     Shell.TabBarIsVisible="False"
     Style="{StaticResource SimplePage}">
@@ -27,4 +30,4 @@
             Style="{StaticResource PrimaryButton}"
             Text="{x:Static localization:AppResources.LogIn}" />
     </Grid>
-</ContentPage>
+</base:BasePage>

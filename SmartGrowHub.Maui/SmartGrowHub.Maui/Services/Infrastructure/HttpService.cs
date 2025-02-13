@@ -42,8 +42,8 @@ public sealed class HttpService(IHttpClientFactory clientFactory, IJsonSerialize
 
     private OptionT<Eff, TResponse> ExecuteAndParseResponseAsync<TResponse>(Func<Task<HttpResponseMessage>> func,
         CancellationToken cancellationToken) =>
-        from response in IO.liftAsync(func)
-        from stream in IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken))
+        from response in IO.liftAsync(func).Bracket()
+        from stream in IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken)).Bracket()
         from result in jsonSerializer.DeserializeAsync<TResponse>(stream, cancellationToken)
         select result;
 }

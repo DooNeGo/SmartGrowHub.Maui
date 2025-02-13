@@ -4,10 +4,8 @@ namespace SmartGrowHub.Maui.Features.LogIn.View;
 
 public sealed partial class StartPage
 {
-    public StartPage(StartPageModel pageModel)
+    public StartPage(StartPageModel pageModel) : base(pageModel)
     {
         InitializeComponent();
-
-        BindingContext = pageModel;
     }
 }

@@ -1,24 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net9.0-ios</TargetFramework>
-		<SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
-		<OutputType>Exe</OutputType>
-		<RootNamespace>SmartGrowHub.Maui.iOS</RootNamespace>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<UseMaui>true</UseMaui>
-		<AnalysisLevel>latest-recommended</AnalysisLevel>
-		<RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0-ios</TargetFramework>
+        <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>SmartGrowHub.Maui.iOS</RootNamespace>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseMaui>true</UseMaui>
+        <AnalysisLevel>latest-recommended</AnalysisLevel>
+        <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
+        <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj" />
+    </ItemGroup>
 
 </Project>

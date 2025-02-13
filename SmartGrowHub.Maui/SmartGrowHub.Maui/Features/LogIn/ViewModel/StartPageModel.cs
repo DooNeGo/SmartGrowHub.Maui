@@ -7,10 +7,6 @@ namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 public sealed partial class StartPageModel(ILoginByEmailService loginByEmailService) : ObservableObject
 {
     [RelayCommand]
-    private async Task<Unit> LogInByEmailAsync(CancellationToken cancellationToken)
-    {
-        await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-        await loginByEmailService.Start().RunAsync().AsTask().ConfigureAwait(false);
-        return unit;
-    }
+    private Task<Unit> LogInByEmailAsync(CancellationToken cancellationToken) =>
+        loginByEmailService.Start().RunAsync().AsTask();
 }
