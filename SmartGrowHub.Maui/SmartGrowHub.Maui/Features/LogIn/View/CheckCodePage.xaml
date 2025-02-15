@@ -21,7 +21,9 @@
     <Grid RowDefinitions="*,*,*,*">
         <Label
             Grid.Row="0"
-            Style="{StaticResource Headline}"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            Style="{StaticResource XxLargeSemiBoldPrimary}"
             Text="{x:Static localization:AppResources.EnterCode}"
             VerticalOptions="End" />
 
@@ -35,24 +37,17 @@
                 </Style>
             </VerticalStackLayout.Resources>
 
-            <Label
-                FontFamily="InterRegular"
-                Style="{StaticResource Caption}"
-                Text="{x:Static localization:AppResources.CodeHasBeenSentTo}" />
+            <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.CodeHasBeenSentTo}" />
 
-            <Label
-                FontFamily="InterMedium"
-                FontSize="18"
-                Text="{Binding SentTo}"
-                TextColor="{toolkit:AppThemeResource Key=ContrastColor}" />
+            <Label Style="{StaticResource LargeMediumContrast}" Text="{Binding SentTo}" />
         </VerticalStackLayout>
 
         <customControls:CustomEntry
             x:Name="Entry"
             Grid.Row="2"
             Error="{Binding CodeError}"
-            IconSource="lock_icon.png"
-            Keyboard="Numeric"
+            IconSource="{StaticResource LockIcon}"
+            Keyboard="{x:Static Keyboard.Numeric}"
             Placeholder="{x:Static localization:AppResources.Code}"
             Text="{Binding Code}"
             TextChanged="CustomEntry_OnTextChanged"

@@ -31,11 +31,9 @@
             </Image>
 
             <Label
-                FontFamily="InterRegular"
-                FontSize="14"
                 HorizontalTextAlignment="Center"
-                Text="{Binding PlanName}"
-                TextColor="{StaticResource CaptionColor}" />
+                Style="{StaticResource SmallRegularCaption}"
+                Text="{Binding PlanName}" />
         </VerticalStackLayout>
     </Border>
 </ContentView>

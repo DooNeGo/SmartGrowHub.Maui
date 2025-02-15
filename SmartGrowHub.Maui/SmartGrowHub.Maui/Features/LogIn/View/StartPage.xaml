@@ -19,8 +19,8 @@
             HorizontalOptions="Center"
             Spacing="35"
             VerticalOptions="Center">
-            <Image HeightRequest="110" Source="appicon_foreground.png" />
-            <Image HeightRequest="110" Source="start_app_text.png" />
+            <Image HeightRequest="110" Source="{StaticResource AppIconForeground}" />
+            <Image HeightRequest="110" Source="{StaticResource StartAppText}" />
         </HorizontalStackLayout>
 
         <Button

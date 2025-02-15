@@ -6,7 +6,7 @@ using SmartGrowHub.Shared.Tokens;
 
 namespace SmartGrowHub.Maui.Services.DelegatingHandlers;
 
-internal sealed class AuthorizationErrorDelegatingHandler(
+internal sealed class UnauthorizedDelegatingHandler(
     IAuthService authService,
     ILogoutService logoutService,
     ISecureStorage secureStorage)

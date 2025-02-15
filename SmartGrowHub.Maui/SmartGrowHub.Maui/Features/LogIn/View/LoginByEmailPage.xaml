@@ -29,14 +29,23 @@
                 Grid.Row="0"
                 Spacing="8"
                 VerticalOptions="Center">
-                <Label Style="{StaticResource Headline}" Text="{x:Static localization:AppResources.LoginTitle}" />
-                <Label Style="{StaticResource Caption}" Text="{x:Static localization:AppResources.LogInToYourAccount}" />
+                <Label
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource XxLargeSemiBoldPrimary}"
+                    Text="{x:Static localization:AppResources.LoginTitle}" />
+
+                <Label
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource SmallSemiBoldCaption}"
+                    Text="{x:Static localization:AppResources.LogInToYourAccount}" />
             </VerticalStackLayout>
 
             <customControls:CustomEntry
                 Grid.Row="1"
                 Error="{Binding EmailError}"
-                IconSource="envelope_icon.png"
+                IconSource="{StaticResource EnvelopeIcon}"
                 Keyboard="{x:Static Keyboard.Email}"
                 Placeholder="{x:Static localization:AppResources.Email}"
                 ReturnType="Done"
@@ -88,13 +97,13 @@
                     <ImageButton
                         Grid.Column="0"
                         Padding="13"
-                        Source="google_logo.png"
+                        Source="{StaticResource GoogleLogoIcon}"
                         Style="{StaticResource RoundImageButton}" />
 
                     <ImageButton
                         Grid.Column="1"
                         Padding="13"
-                        Source="apple_icon.png"
+                        Source="{StaticResource AppleLogoIcon}"
                         Style="{StaticResource RoundImageButton}" />
                 </Grid>
             </VerticalStackLayout>

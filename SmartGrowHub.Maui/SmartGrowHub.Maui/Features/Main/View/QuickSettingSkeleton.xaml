@@ -13,6 +13,7 @@
                 WidthRequest="30" />
             <BoxView Style="{StaticResource SkeletonRow}" />
             <BoxView Style="{StaticResource SkeletonRow}" />
+            <BoxView Style="{StaticResource SkeletonRow}" />
         </VerticalStackLayout>
     </Border>
 </ContentView>

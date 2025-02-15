@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <FileImageSource x:Key="DayLightIcon" File="sun_icon.png" />
+    <FileImageSource x:Key="UvLightIcon" File="sun_icon.png" />
+    <FileImageSource x:Key="WindIcon" File="wind_icon.png" />
+    <FileImageSource x:Key="HeatIcon" File="heat_icon.png" />
+
+    <FileImageSource x:Key="AlertIcon" File="alert_icon.png" />
+
+    <FileImageSource x:Key="WiFiIcon" File="wifi_icon.png" />
+
+    <FileImageSource x:Key="SeedlingIcon" File="seedling_icon.png" />
+    <FileImageSource x:Key="VegetativeIcon" File="vegetative_icon.png" />
+    <FileImageSource x:Key="FloweringIcon" File="flowering_icon.png" />
+
+    <FileImageSource x:Key="GrowHubV2Icon" File="growhub_v2_icon.png" />
+
+    <FileImageSource x:Key="LockIcon" File="lock_icon.png" />
+    <FileImageSource x:Key="EnvelopeIcon" File="envelope_icon.png" />
+
+    <FileImageSource x:Key="GoogleLogoIcon" File="google_logo.png" />
+    <FileImageSource x:Key="AppleLogoIcon" File="apple_icon.png" />
+
+    <FileImageSource x:Key="AppIconForeground" File="appicon_foreground.png" />
+    <FileImageSource x:Key="StartAppText" File="start_app_text.png" />
+</ResourceDictionary>

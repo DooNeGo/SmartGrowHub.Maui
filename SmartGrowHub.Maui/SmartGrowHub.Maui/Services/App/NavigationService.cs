@@ -34,38 +34,7 @@ public sealed class ShellNavigationService(
     public NavigationBuilder CreateBuilder() => new(this);
 
     private OptionT<IO, Unit> AreAccessAndRefreshTokenExist() =>
-        from accessToken in secureStorage.GetAccessToken()
-        from refreshToken in secureStorage.GetRefreshToken()
+        from _1 in secureStorage.GetAccessToken()
+        from _2 in secureStorage.GetRefreshToken()
         select unit;
-}
-
-public sealed class NavigationBuilder(INavigationService navigationService)
-{
-    private Dictionary<string, object>? _parameters;
-    private string _route = string.Empty;
-
-    public NavigationBuilder AddRouteParameter(string name, object value)
-    {
-        _parameters ??= [];
-        _parameters[name] = value;
-        return this;
-    }
-    
-    public NavigationBuilder SetRoute(string route)
-    {
-        _route = route;
-        return this;
-    }
-
-    public NavigationBuilder AddQueryParameter(string name, string? value)
-    {
-        _route.AppendQueryParameter(name, value);
-        return this;
-    }
-
-    public IO<Unit> NavigateAsync(bool animated = true)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(_route, nameof(_route));
-        return navigationService.NavigateAsync(_route, _parameters, animated);
-    }
 }

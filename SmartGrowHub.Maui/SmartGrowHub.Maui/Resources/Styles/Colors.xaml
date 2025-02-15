@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
+
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -14,8 +15,6 @@
     <Color x:Key="Secondary">#0e6800</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>
-
-    <Color x:Key="CaptionColor">#B5B5B5</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
@@ -32,7 +31,9 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
-    <Color x:Key="Sun">#FFE484</Color>
+    <Color x:Key="SunColor">#FFE484</Color>
+    <Color x:Key="WindColor">#99d9ff</Color>
+    <Color x:Key="HeatColor">#f3903f</Color>
 
     <LinearGradientBrush x:Key="PrimaryLinearGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Offset="0" Color="#1d6508" />
@@ -54,25 +55,37 @@
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
 
-    <Color x:Key="EntryLight">#F2F2F7</Color>
+    <Color x:Key="EntryColorLight">#F2F2F7</Color>
+    <Color x:Key="EntryColorDark">#212121</Color>
+
+    <Color x:Key="CaptionColorLight">#B5B5B5</Color>
+    <Color x:Key="CaptionColorDark">#B5B5B5</Color>
+
+    <Color x:Key="ContrastColorLight">Black</Color>
+    <Color x:Key="ContrastColorDark">White</Color>
 
     <toolkit:AppThemeColor
-        x:Key="PageBackgroundColor1"
-        Dark="Black"
-        Light="White" />
+        x:Key="SimplePageBackgroundColor"
+        Dark="{StaticResource Black}"
+        Light="{StaticResource White}" />
 
     <toolkit:AppThemeColor
-        x:Key="PageBackgroundColor2"
-        Dark="Black"
-        Light="#F2F2F7" />
+        x:Key="DefaultPageBackgroundColor"
+        Dark="{StaticResource Black}"
+        Light="{StaticResource EntryColorLight}" />
 
     <toolkit:AppThemeColor
         x:Key="ContrastColor"
-        Dark="White"
-        Light="Black" />
+        Dark="{StaticResource White}"
+        Light="{StaticResource Black}" />
 
     <toolkit:AppThemeColor
         x:Key="EntryColor"
         Dark="{StaticResource Gray900}"
-        Light="{StaticResource EntryLight}" />
+        Light="{StaticResource EntryColorLight}" />
+
+    <toolkit:AppThemeColor
+        x:Key="CaptionColor"
+        Dark="{StaticResource CaptionColorDark}"
+        Light="{StaticResource CaptionColorLight}" />
 </ResourceDictionary>

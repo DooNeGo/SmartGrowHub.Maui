@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0-ios</TargetFramework>
-        <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion>15.1</SupportedOSPlatformVersion>
         <OutputType>Exe</OutputType>
         <RootNamespace>SmartGrowHub.Maui.iOS</RootNamespace>
         <Nullable>enable</Nullable>

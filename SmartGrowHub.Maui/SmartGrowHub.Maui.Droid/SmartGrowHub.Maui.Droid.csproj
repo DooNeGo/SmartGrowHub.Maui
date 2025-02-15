@@ -6,7 +6,7 @@
         <OutputType>Exe</OutputType>
         <RootNamespace>SmartGrowHub.Maui.Droid</RootNamespace>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>true</ImplicitUsings>
         <UseMaui>true</UseMaui>
         <AnalysisLevel>latest-recommended</AnalysisLevel>
         <Platforms>AnyCPU;x64;arm64;</Platforms>

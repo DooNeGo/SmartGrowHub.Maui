@@ -23,7 +23,7 @@
                     HeightRequest="20"
                     HorizontalOptions="End"
                     IsVisible="{Binding IsConnected}"
-                    Source="wifi_icon.png"
+                    Source="{StaticResource WiFiIcon}"
                     VerticalOptions="Start">
                     <Image.Behaviors>
                         <toolkit:IconTintColorBehavior TintColor="LimeGreen" />
@@ -32,16 +32,8 @@
             </Grid>
 
             <VerticalStackLayout>
-                <Label
-                    FontFamily="InterMedium"
-                    FontSize="16"
-                    Text="{Binding DeviceName}" />
-
-                <Label
-                    FontFamily="InterMedium"
-                    FontSize="12"
-                    Text="{Binding ModelName}"
-                    TextColor="{StaticResource CaptionColor}" />
+                <Label Style="{StaticResource MediumMedium}" Text="{Binding DeviceName}" />
+                <Label Style="{StaticResource XSmallMediumCaption}" Text="{Binding ModelName}" />
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

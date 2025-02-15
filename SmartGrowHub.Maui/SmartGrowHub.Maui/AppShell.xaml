@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
     x:Class="SmartGrowHub.Maui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,7 +8,6 @@
     xmlns:login="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:main="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:maui="clr-namespace:SmartGrowHub.Maui"
-    Title="Smart Grow Hub"
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 

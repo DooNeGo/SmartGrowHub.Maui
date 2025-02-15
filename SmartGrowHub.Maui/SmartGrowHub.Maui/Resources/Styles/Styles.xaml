@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
+
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -19,7 +20,7 @@
 
     <Style TargetType="Border">
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
-        <Setter Property="StrokeShape" Value="Rectangle 11" />
+        <Setter Property="StrokeShape" Value="{RoundRectangle CornerRadius=11}" />
         <Setter Property="StrokeThickness" Value="0" />
     </Style>
 
@@ -199,31 +200,6 @@
         BasedOn="{StaticResource HeadlineSpan}"
         TargetType="Span">
         <Setter Property="FontSize" Value="22" />
-    </Style>
-
-    <Style x:Key="Headline" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
-        <Setter Property="FontSize" Value="32" />
-        <Setter Property="FontFamily" Value="InterSemiBold" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
-    </Style>
-
-    <Style x:Key="Caption" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource CaptionColor}, Dark={StaticResource Primary}}" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="InterSemiBold" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
-    </Style>
-
-    <Style
-        x:Key="SubHeadline"
-        BasedOn="{StaticResource Headline}"
-        TargetType="Label">
-        <Setter Property="FontSize" Value="22" />
-        <Setter Property="HorizontalOptions" Value="Start" />
-        <Setter Property="HorizontalTextAlignment" Value="Start" />
     </Style>
 
     <Style TargetType="ListView">
@@ -427,9 +403,9 @@
     </Style>
 
     <Style x:Key="SimplePage" TargetType="Page">
-        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
-        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
-        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SimplePageBackgroundColor}" />
+        <Setter Property="droid:NavigationBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="behaviors:StatusBar.Style" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
         <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light={x:Static core:NavigationBarStyle.DarkContent}, Dark={x:Static core:NavigationBarStyle.LightContent}}" />
     </Style>
@@ -438,9 +414,9 @@
         x:Key="DefaultPage"
         BasedOn="{StaticResource SimplePage}"
         TargetType="Page">
-        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
-        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
-        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource PageBackgroundColor2}" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
+        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
     </Style>
 
     <Style ApplyToDerivedTypes="True" TargetType="Shell">
@@ -481,9 +457,9 @@
     </Style>
 
     <Style x:Key="DefaultBorder" TargetType="Border">
-        <Setter Property="StrokeShape" Value="RoundRectangle 15" />
+        <Setter Property="StrokeShape" Value="{RoundRectangle CornerRadius=15}" />
         <Setter Property="Padding" Value="10" />
-        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor1}" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource SimplePageBackgroundColor}" />
     </Style>
 
 </ResourceDictionary>

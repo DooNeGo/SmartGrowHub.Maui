@@ -11,7 +11,7 @@
     <VerticalStackLayout BindingContext="{Reference This}">
         <Border
             Padding="20,5"
-            BackgroundColor="{toolkit:AppThemeResource Key=EntryColor}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource EntryColorLight}, Dark={StaticResource EntryColorDark}}"
             StrokeShape="{RoundRectangle CornerRadius=11}">
             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                 <Image
@@ -42,7 +42,7 @@
                     HeightRequest="20"
                     HorizontalOptions="Center"
                     IsVisible="{Binding HasError}"
-                    Source="alert_icon.png"
+                    Source="{StaticResource AlertIcon}"
                     VerticalOptions="Center">
                     <Image.Behaviors>
                         <toolkit:IconTintColorBehavior TintColor="Firebrick" />
@@ -53,8 +53,8 @@
 
         <Label
             Margin="10,0,0,0"
-            FontFamily="InterRegular"
             IsVisible="{Binding HasError}"
+            Style="{StaticResource SmallRegular}"
             Text="{Binding Error}"
             TextColor="Firebrick" />
     </VerticalStackLayout>

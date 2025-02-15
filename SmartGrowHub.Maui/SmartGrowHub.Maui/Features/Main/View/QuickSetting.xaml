@@ -11,45 +11,45 @@
     <Border BindingContext="{Reference Root}" Style="{StaticResource DefaultBorder}">
         <Border.Behaviors>
             <toolkit:TouchBehavior
-                Command="{Binding Command}"
+                Command="{Binding Command, Source={Reference Root}}"
+                CommandParameter="{Binding CommandParameter, Source={Reference Root}}"
                 DefaultAnimationDuration="300"
                 DefaultAnimationEasing="{x:Static Easing.SpringOut}"
-                PressedAnimationDuration="200"
+                PressedAnimationDuration="150"
                 PressedAnimationEasing="{x:Static Easing.CubicOut}"
                 PressedOpacity="0.7"
-                PressedScale="0.9" />
+                PressedScale="0.9"
+                TouchGestureCompleted="TouchBehavior_OnTouchGestureCompleted" />
         </Border.Behaviors>
 
         <Border.Background>
-            <LinearGradientBrush StartPoint="0.5,-3" EndPoint="0.5,1">
+            <LinearGradientBrush StartPoint="0.5,-3" EndPoint="0.5,1.1">
                 <GradientStop Offset="0" Color="{Binding IconColor}" />
                 <GradientStop Offset="1" Color="White" />
             </LinearGradientBrush>
         </Border.Background>
 
-        <Grid RowDefinitions="*,*,*" RowSpacing="5">
-            <Image
-                Grid.Row="0"
-                HeightRequest="30"
-                Source="{Binding IconSource}">
+        <Grid RowDefinitions="30,*,*" RowSpacing="5">
+            <Image Grid.Row="0" Source="{Binding IconSource}">
                 <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{Binding IconColor}" />
+                    <toolkit:IconTintColorBehavior TintColor="{Binding IconColor, Source={Reference Root}}" />
                 </Image.Behaviors>
             </Image>
 
             <Label
                 Grid.Row="1"
-                FontFamily="InterMedium"
-                FontSize="18"
+                HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
+                Style="{StaticResource XMediumMedium}"
                 Text="{Binding Value}"
-                TextColor="Black" />
+                TextColor="Black"
+                VerticalOptions="Center"
+                VerticalTextAlignment="Center" />
 
             <Label
                 Grid.Row="2"
-                FontFamily="InterRegular"
-                FontSize="14"
                 HorizontalTextAlignment="Center"
+                Style="{StaticResource SmallRegular}"
                 Text="{Binding Status}"
                 TextColor="{StaticResource Gray400}" />
         </Grid>

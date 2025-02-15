@@ -1,5 +1,6 @@
+using System.ComponentModel;
 using System.Windows.Input;
-using Font = Microsoft.Maui.Font;
+using CommunityToolkit.Maui.Core;
 
 namespace SmartGrowHub.Maui.Features.Main.View;
 
@@ -8,11 +9,12 @@ public sealed partial class QuickSetting
     #region IconSource
 
     public static readonly BindableProperty IconSourceProperty = BindableProperty.Create(
-        nameof(IconSource), typeof(string), typeof(QuickSetting), string.Empty);
+        nameof(IconSource), typeof(ImageSource), typeof(QuickSetting));
 
-    public string IconSource
+    [TypeConverter(typeof(ImageSourceConverter))]
+    public ImageSource? IconSource
     {
-        get => (string)GetValue(IconSourceProperty);
+        get => GetValue(IconSourceProperty) as ImageSource;
         set => SetValue(IconSourceProperty, value);
     }
 
@@ -70,8 +72,26 @@ public sealed partial class QuickSetting
 
     #endregion
     
+    #region CommandParameter
+
+    public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(
+        nameof(CommandParameter), typeof(object), typeof(QuickSetting));
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
+    #endregion
+    
     public QuickSetting()
     {
         InitializeComponent();
     }
+
+    public event EventHandler<TouchGestureCompletedEventArgs>? Tapped;
+
+    private void TouchBehavior_OnTouchGestureCompleted(object? sender, TouchGestureCompletedEventArgs e) =>
+        Tapped?.Invoke(this, e);
 }

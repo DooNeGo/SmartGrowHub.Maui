@@ -5,6 +5,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
+    xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
+    xmlns:components="clr-namespace:SmartGrowHub.Shared.GrowHubs.Components;assembly=SmartGrowHub.Shared"
+    xmlns:converters="clr-namespace:SmartGrowHub.Maui.Features.Main.Converters"
     xmlns:growHubs="clr-namespace:SmartGrowHub.Shared.GrowHubs;assembly=SmartGrowHub.Shared"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -16,18 +19,23 @@
     Shell.NavBarIsVisible="False"
     Shell.TabBarIsVisible="False"
     Style="{StaticResource DefaultPage}">
+
+    <behaviors:StatusBar.ApplyOn>
+        <OnPlatform x:TypeArguments="toolkit:StatusBarApplyOn">
+            <On Platform="Android" Value="OnPageNavigatedTo" />
+            <On Platform="iOS" Value="OnBehaviorAttachedTo" />
+        </OnPlatform>
+    </behaviors:StatusBar.ApplyOn>
+
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
         <ScrollView Padding="20,20,20,0">
             <VerticalStackLayout Spacing="20">
-                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.Environment}" />
+                <Label Style="{StaticResource XLargeSemiBoldPrimary}" Text="{x:Static localization:AppResources.Environment}" />
 
                 <VerticalStackLayout x:Name="EnvironmentStackLayout">
                     <Border Padding="15" Style="{StaticResource DefaultBorder}">
                         <VerticalStackLayout Spacing="10">
-                            <Label
-                                FontFamily="InterMedium"
-                                FontSize="16"
-                                Text="{x:Static localization:AppResources.Inside}" />
+                            <Label Style="{StaticResource MediumMedium}" Text="{x:Static localization:AppResources.Inside}" />
 
                             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                                 <view:MetricWidget
@@ -62,9 +70,11 @@
                             Padding="15"
                             toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"
                             Style="{StaticResource DefaultBorder}">
-                            <VerticalStackLayout Spacing="10">
-                                <BoxView Style="{StaticResource SkeletonRow}" />
-                                <BoxView Style="{StaticResource SkeletonRow}" />
+                            <VerticalStackLayout Spacing="15">
+                                <BoxView
+                                    HorizontalOptions="Start"
+                                    Style="{StaticResource SkeletonRow}"
+                                    WidthRequest="100" />
                                 <BoxView Style="{StaticResource SkeletonRow}" />
                                 <BoxView Style="{StaticResource SkeletonRow}" />
                             </VerticalStackLayout>
@@ -73,29 +83,40 @@
                 </VerticalStackLayout>
 
                 <VerticalStackLayout x:Name="QuickSettingsStackLayout">
-                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                        <view:QuickSetting
-                            Grid.Column="0"
-                            Command="{Binding GoToLightControlCommand}"
-                            IconColor="#FFE484"
-                            IconSource="sun_icon.png"
-                            Status="{Binding LightState}"
-                            Value="{Binding LightValue}" />
+                    <VerticalStackLayout.Resources>
+                        <converters:ComponentToColorConverter x:Key="ComponentToColorConverter" />
+                        <converters:ComponentToIconConverter x:Key="ComponentToIconConverter" />
+                        <converters:ProgramToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
+                        <converters:ProgramToTitleConverter x:Key="ProgramToTitleConverter" />
+                    </VerticalStackLayout.Resources>
 
-                        <view:QuickSetting
-                            Grid.Column="1"
-                            IconColor="#99d9ff"
-                            IconSource="wind_icon.png"
-                            Status="{Binding FanState}"
-                            Value="{Binding FanValue}" />
+                    <CollectionView ItemsSource="{Binding Components}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout
+                                HorizontalItemSpacing="10"
+                                Orientation="Vertical"
+                                Span="3"
+                                VerticalItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
 
-                        <view:QuickSetting
-                            Grid.Column="2"
-                            IconColor="#f3903f"
-                            IconSource="heat_icon.png"
-                            Status="{Binding HeatState}"
-                            Value="{Binding HeatValue}" />
-                    </Grid>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="components:GrowHubComponentDto">
+                                <view:QuickSetting
+                                    CommandParameter="{Binding .}"
+                                    IconColor="{Binding ., Converter={StaticResource ComponentToColorConverter}}"
+                                    IconSource="{Binding ., Converter={StaticResource ComponentToIconConverter}}"
+                                    Status="{Binding Program, Converter={StaticResource ProgramToTitleConverter}}"
+                                    Value="{Binding Program, Converter={StaticResource ProgramToCurrentValueConverter}}">
+                                    <view:QuickSetting.Command>
+                                        <Binding
+                                            x:DataType="view:MainPage"
+                                            Path="BindingContext.GoToComponentsControlCommand"
+                                            Source="{Reference Root}" />
+                                    </view:QuickSetting.Command>
+                                </view:QuickSetting>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
                     <toolkit:StateContainer.StateViews>
                         <Grid
@@ -109,26 +130,26 @@
                     </toolkit:StateContainer.StateViews>
                 </VerticalStackLayout>
 
-                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.MyPlan}" />
+                <Label Style="{StaticResource XLargeSemiBoldPrimary}" Text="{x:Static localization:AppResources.MyPlan}" />
 
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                     <view:PlanWidget
                         Grid.Column="0"
-                        IconSource="seedling_icon.png"
+                        IconSource="{StaticResource SeedlingIcon}"
                         PlanName="{x:Static localization:AppResources.Seedling}" />
 
                     <view:PlanWidget
                         Grid.Column="1"
-                        IconSource="vegetative_icon.png"
+                        IconSource="{StaticResource VegetativeIcon}"
                         PlanName="{x:Static localization:AppResources.Vegetative}" />
 
                     <view:PlanWidget
                         Grid.Column="2"
-                        IconSource="flowering_icon.png"
+                        IconSource="{StaticResource FloweringIcon}"
                         PlanName="{x:Static localization:AppResources.Flowering}" />
                 </Grid>
 
-                <Label Style="{StaticResource SubHeadline}" Text="{x:Static localization:AppResources.Devices}" />
+                <Label Style="{StaticResource XLargeSemiBoldPrimary}" Text="{x:Static localization:AppResources.Devices}" />
 
                 <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
                     <VerticalStackLayout x:Name="DevicesLayout">
@@ -136,7 +157,7 @@
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="growHubs:GrowHubDto">
                                     <view:DeviceWidget
-                                        DeviceIconSource="growhub_v2_icon.png"
+                                        DeviceIconSource="{StaticResource GrowHubV2Icon}"
                                         DeviceName="{Binding Name}"
                                         IsConnected="True"
                                         MinimumWidthRequest="140"

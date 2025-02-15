@@ -27,11 +27,11 @@ public static class DependencyInjection
             .AddSingleton<IAuthService, AuthService>()
             .AddSingleton<IGrowHubService, GrowHubService>()
             .AddTransient<TokenDelegatingHandler>()
-            .AddTransient<AuthorizationErrorDelegatingHandler>();
+            .AddTransient<UnauthorizedDelegatingHandler>();
         
         services.AddHttpClient(Options.DefaultName, ConfigureHttpClient)
             .AddHttpMessageHandler<TokenDelegatingHandler>()
-            .AddHttpMessageHandler<AuthorizationErrorDelegatingHandler>();
+            .AddHttpMessageHandler<UnauthorizedDelegatingHandler>();
 
         services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
 

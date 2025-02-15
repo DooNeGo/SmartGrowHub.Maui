@@ -134,9 +134,9 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Cycle.
         /// </summary>
-        internal static string Cycle {
+        internal static string CycleProgram {
             get {
-                return ResourceManager.GetString("Cycle", resourceCulture);
+                return ResourceManager.GetString("CycleProgram", resourceCulture);
             }
         }
         
@@ -146,6 +146,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string DailyProgram {
             get {
                 return ResourceManager.GetString("DailyProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day light.
+        /// </summary>
+        internal static string DayLight {
+            get {
+                return ResourceManager.GetString("DayLight", resourceCulture);
             }
         }
         
@@ -240,6 +249,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fan.
+        /// </summary>
+        internal static string Fan {
+            get {
+                return ResourceManager.GetString("Fan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flowering.
         /// </summary>
         internal static string Flowering {
@@ -263,6 +281,15 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         internal static string HaveYouEnteredIncorrectData {
             get {
                 return ResourceManager.GetString("HaveYouEnteredIncorrectData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heater.
+        /// </summary>
+        internal static string Heater {
+            get {
+                return ResourceManager.GetString("Heater", resourceCulture);
             }
         }
         
@@ -350,9 +377,9 @@ namespace SmartGrowHub.Maui.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Manual.
         /// </summary>
-        internal static string Manual {
+        internal static string ManualProgram {
             get {
-                return ResourceManager.GetString("Manual", resourceCulture);
+                return ResourceManager.GetString("ManualProgram", resourceCulture);
             }
         }
         

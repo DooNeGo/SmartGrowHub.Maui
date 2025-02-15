@@ -7,6 +7,7 @@
 		<RootNamespace>SmartGrowHub.Maui</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 	</PropertyGroup>
 
@@ -33,6 +34,7 @@
 		<MauiImage Update="Resources\Images\heat_icon.svg" Resize="True" BaseSize="30,30" />
 		<MauiImage Update="Resources\Images\sun_icon.svg" Resize="True" BaseSize="30,30" />
 		<MauiImage Update="Resources\Images\wind_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\uv_light_icon.png" Resize="True" BaseSize="30,30" />
 		
 		<MauiImage Update="Resources\Images\wifi_icon.png" Resize="True" BaseSize="20,20" />
 
@@ -49,10 +51,10 @@
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="9.0.0" />
 		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="epj.RouteGenerator" Version="1.0.4" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-47" />
+		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-48" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
@@ -64,9 +66,6 @@
 	  <MauiXaml Update="CustomControls\CustomEntry.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="CustomControls\CustomSearchBar.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Features\AppStart\View\LoadingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -74,9 +73,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Main\View\MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\UserProfile\View\UserProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\LoadingPopup.xaml">
@@ -92,7 +88,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\LogIn\View\StartPage.xaml">
-	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Main\View\DeviceWidget.xaml">
@@ -128,10 +123,10 @@
 	  <MauiXaml Update="CustomControls\StatefulContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="App.xaml">
+	  <MauiXaml Update="AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AppShell.xaml">
+	  <MauiXaml Update="App.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
@@ -145,10 +140,6 @@
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>AppResources.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Features\LogIn\View\StartPage.xaml.cs">
-	    <DependentUpon>StartPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
 	  </Compile>
 	</ItemGroup>
 

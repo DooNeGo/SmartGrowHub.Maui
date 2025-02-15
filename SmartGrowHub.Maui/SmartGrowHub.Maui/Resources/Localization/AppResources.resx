@@ -273,10 +273,10 @@
   <data name="InvalidEmailAddress" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
-  <data name="Cycle" xml:space="preserve">
+  <data name="CycleProgram" xml:space="preserve">
     <value>Cycle</value>
   </data>
-  <data name="Manual" xml:space="preserve">
+  <data name="ManualProgram" xml:space="preserve">
     <value>Manual</value>
   </data>
   <data name="TurnOff" xml:space="preserve">
@@ -290,5 +290,14 @@
   </data>
   <data name="WeeklyProgram" xml:space="preserve">
     <value>Weekly Program</value>
+  </data>
+  <data name="DayLight" xml:space="preserve">
+    <value>Day light</value>
+  </data>
+  <data name="Fan" xml:space="preserve">
+    <value>Fan</value>
+  </data>
+  <data name="Heater" xml:space="preserve">
+    <value>Heater</value>
   </data>
 </root>
