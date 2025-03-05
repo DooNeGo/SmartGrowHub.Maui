@@ -7,15 +7,13 @@ namespace SmartGrowHub.Maui.Services.Api;
 
 public interface IGrowHubService
 {
-    Eff<IEnumerable<GrowHubDto>> GetGrowHubs(CancellationToken cancellationToken);
+    IO<IEnumerable<GrowHubDto>> GetGrowHubs(CancellationToken cancellationToken);
 }
 
 public sealed class GrowHubService(HttpService httpService) : IGrowHubService
 {
-    public Eff<IEnumerable<GrowHubDto>> GetGrowHubs(CancellationToken cancellationToken) =>
+    public IO<IEnumerable<GrowHubDto>> GetGrowHubs(CancellationToken cancellationToken) =>
         httpService.GetAsync<Result<IEnumerable<GrowHubDto>>>(
             "/api/growHubs", cancellationToken
-        ).Run().As().Bind(option => option.Match(
-            Some: result => result.ToEff(),
-            None: () => Pure(Enumerable.Empty<GrowHubDto>())));
+        ).Bind(result => result.ToOptionTIO()).ToFailIO(Error.New("Failed to get grow hubs"));
 }

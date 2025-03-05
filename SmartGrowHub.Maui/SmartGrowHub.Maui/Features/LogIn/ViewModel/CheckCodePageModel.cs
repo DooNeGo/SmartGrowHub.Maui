@@ -4,24 +4,25 @@ using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Maui.Base;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
+using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Flow;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-[QueryProperty(nameof(SentTo), nameof(SentTo))]
+[QueryProperty("SentTo", "SentTo")]
 public sealed partial class CheckCodePageModel(
     ILoginByEmailService loginByEmailService,
     INavigationService navigationService)
     : ObservableValidator, IPageLifecycleAware
 {
-    [ObservableProperty] private string _sentTo = string.Empty;
+    [ObservableProperty] public partial string SentTo { get; set; } = string.Empty;
     
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessageResourceName = nameof(AppResources.RequiredField), ErrorMessageResourceType = typeof(AppResources))]
-    private string _code = string.Empty;
+    public partial string Code { get; set; } = string.Empty;
     
-    [ObservableProperty] private string _codeError = string.Empty;
+    [ObservableProperty] public partial string CodeError { get; set; } = string.Empty;
 
     public void OnAppearing() => OnCodeChanged(Code);
 
@@ -39,10 +40,11 @@ public sealed partial class CheckCodePageModel(
     [RelayCommand]
     private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) =>
         loginByEmailService
-            .CheckOtp(int.Parse(Code), cancellationToken)
-            .IfFailEff(DisplayError)
-            .RunAsync();
+            .CheckOtp(Code, cancellationToken)
+            .IfFail(DisplayError)
+            .RunSafeAsync()
+            .AsTask();
     
-    private Eff<Unit> DisplayError(Error error) =>
-        liftEff(() => CodeError = error.Message).Map(_ => unit);
+    private IO<Unit> DisplayError(Error error) =>
+        IO.lift(() => CodeError = error.Message).ToUnit();
 }

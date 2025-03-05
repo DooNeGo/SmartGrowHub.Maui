@@ -14,10 +14,10 @@ public sealed partial class LoginByEmailPageModel(ILoginByEmailService logInServ
     [NotifyDataErrorInfo]
     [Required(ErrorMessageResourceName = nameof(AppResources.RequiredField), ErrorMessageResourceType = typeof(AppResources))]
     [EmailAddress(ErrorMessageResourceName = nameof(AppResources.InvalidEmailAddress), ErrorMessageResourceType = typeof(AppResources))]
-    private string _email = string.Empty;
+    public partial string Email { get; set; } = string.Empty;
 
-    [ObservableProperty] private string _emailError = string.Empty;
-    
+    [ObservableProperty] public partial string EmailError { get; set; } = string.Empty;
+
     public void OnAppearing() => OnEmailChanged(Email);
 
     public void OnDisappearing() { }
@@ -33,12 +33,13 @@ public sealed partial class LoginByEmailPageModel(ILoginByEmailService logInServ
     private Task<Fin<Unit>> SendOtpAsync(CancellationToken cancellationToken) =>
         logInService
             .SendOtpToEmail(Email, cancellationToken)
-            .IfFailEff(DisplayError)
-            .RunAsync();
+            .IfFail(DisplayError)
+            .RunSafeAsync()
+            .AsTask();
 
     [RelayCommand]
     private void OnGoBack() => SendOtpCommand.Cancel();
 
-    private Eff<Unit> DisplayError(Error error) =>
-        liftEff(() => EmailError = error.Message).Map(_ => unit);
+    private IO<Unit> DisplayError(Error error) =>
+        IO.lift(() => EmailError = error.Message).Map(_ => unit);
 }

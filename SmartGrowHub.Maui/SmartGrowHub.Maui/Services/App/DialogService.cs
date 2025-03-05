@@ -35,11 +35,11 @@ public sealed class DialogService : IDialogService
     public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
         DisplayAlertAsync(title, message, null!, cancel).Map(_ => unit);
 
-    public IO<Unit> ShowLoadingAsync() => liftIO(() => _popupNavigation.PushAsync(_loadingPopup));
+    public IO<Unit> ShowLoadingAsync() => IO.liftAsync(() => _popupNavigation.PushAsync(_loadingPopup).ToUnit());
 
-    public IO<Unit> PopAsync() => liftIO(() => _popupNavigation.PopAsync());
+    public IO<Unit> PopAsync() => IO.liftAsync(() => _popupNavigation.PopAsync().ToUnit());
 
-    public IO<Unit> PopAllAsync() => liftIO(() => _popupNavigation.PopAllAsync());
+    public IO<Unit> PopAllAsync() => IO.liftAsync(() => _popupNavigation.PopAllAsync().ToUnit());
 
     private Page GetCurrentPage() => _application.Windows[0].Content as Page ?? throw new InvalidOperationException();
 }

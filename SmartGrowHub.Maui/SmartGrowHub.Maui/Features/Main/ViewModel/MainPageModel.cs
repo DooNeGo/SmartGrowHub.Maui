@@ -43,7 +43,7 @@ public sealed partial class MainPageModel(
         Fin<ImmutableArray<GrowHubDto>> fin = await growHubService
             .GetGrowHubs(cancellationToken)
             .Map(enumerable => enumerable.ToImmutableArray())
-            .RunAsync();
+            .RunSafeAsync();
 
         fin.IfSucc(array =>
         {
@@ -63,7 +63,7 @@ public sealed partial class MainPageModel(
     private Task<Unit> GoToComponentsControlAsync(GrowHubComponentDto? component) =>
         component is DayLightComponentDto
             ? GoToLightControlAsync()
-            : Task.FromResult(unit);
+            : Task.FromResult(Unit.Default);
 
     private Task<Unit> GoToLightControlAsync() =>
         navigationService

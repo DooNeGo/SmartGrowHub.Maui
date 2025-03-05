@@ -29,15 +29,19 @@ internal sealed class UnauthorizedDelegatingHandler(
 
     private IO<Unit> RefreshTokens(CancellationToken cancellationToken) => (
         from refreshToken in secureStorage.GetRefreshToken()
-        from authTokens in RefreshTokens(refreshToken, cancellationToken).ToIO()
+            .ToFailIO(Error.Empty)
+            .TapOnFail(_ => logoutService.LogOut(cancellationToken))
+        from authTokens in RefreshTokens(refreshToken, cancellationToken)
         from _ in secureStorage.SetAuthTokens(authTokens)
         select _
-    ).IfNone(unit).As().ToEff().IfFail(_ => unit).RunIO();
+    ).ToFailIO(Error.New("Failed to refresh tokens"));
 
-    private OptionT<Eff, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
-        OptionT<Eff, AuthTokensDto>.Lift(authService.RefreshTokens(refreshToken, cancellationToken).Run().As()
-            | @catch(error => error.Code is 3, error =>
-                logoutService.LogOut(cancellationToken).Bind(_ => FailEff<Option<AuthTokensDto>>(error))));
+    private OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
+        authService.RefreshTokens(refreshToken, cancellationToken).Run().As()
+            .TapOnFail(error => error.Code is 3
+                ? logoutService.LogOut(cancellationToken)
+                : IO.pure(Unit.Default))
+            .Retry(Schedule.Once);
     
     private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request, CancellationToken cancellationToken) =>
         IO.liftAsync(() => base.SendAsync(request, cancellationToken));

@@ -1,49 +1,46 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Json;
+﻿using System.Text;
 
 namespace SmartGrowHub.Maui.Services.Infrastructure;
 
-
-public sealed class HttpService(IHttpClientFactory clientFactory, IJsonSerializerService jsonSerializer)
+public interface IHttpService
 {
+    string ClientName { get; set; }
+
+    OptionT<IO, T> SendJsonAsync<T, TRequest>(HttpMethod method, Uri? uri, TRequest request,
+        CancellationToken cancellationToken);
+    
+    OptionT<IO, T> SendAsync<T>(HttpMethod method, Uri? uri, HttpContent? content,
+        CancellationToken cancellationToken);
+}
+
+public sealed class HttpService(IHttpClientFactory clientFactory, IJsonSerializer jsonSerializer) : IHttpService
+{
+    private const string MediaType = "application/json";
+
+    private HttpClient HttpClient => clientFactory.CreateClient(ClientName);
+
     public string ClientName { get; set; } = string.Empty;
 
-    private HttpClient HttpClient => string.IsNullOrEmpty(ClientName)
-        ? clientFactory.CreateClient()
-        : clientFactory.CreateClient(ClientName);
-    
-    public OptionT<Eff, TResponse> GetAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri,
+    public OptionT<IO, T> SendJsonAsync<T, TRequest>(HttpMethod method, Uri? uri, TRequest request,
         CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() => HttpClient.GetAsync(uri, cancellationToken), cancellationToken);
+        from json in IO.pure(jsonSerializer.Serialize(request))
+        let content = new StringContent(json, Encoding.UTF8, MediaType)
+        from response in SendAsync<T>(method, uri, content, cancellationToken)
+        select response;
 
-    public OptionT<Eff, TResponse> PutJsonAsync<TResponse, TValue>([StringSyntax(StringSyntaxAttribute.Uri)] string uri,
-        TValue request, CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() =>
-            HttpClient.PutAsJsonAsync(uri, request, cancellationToken), cancellationToken);
+    public OptionT<IO, T> SendAsync<T>(HttpMethod method, Uri? uri, HttpContent? content,
+        CancellationToken cancellationToken) => (
+        from request in IO.pure(CreateHttpRequest(method, uri, content))
+        from response in IO.liftAsync(() => HttpClient.SendAsync(request, cancellationToken))
+        from stream in IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken))
+        from result in jsonSerializer.DeserializeAsync<T>(stream, cancellationToken)
+        select result
+    ).Run().As().Bracket();
 
-    public OptionT<Eff, TResponse> PutAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri,
-        HttpContent? content, CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() =>
-            HttpClient.PutAsync(uri, content, cancellationToken), cancellationToken);
-
-    public OptionT<Eff, TResponse> PostJsonAsync<TResponse, TRequest>(
-        [StringSyntax(StringSyntaxAttribute.Uri)] string uri, TRequest request, CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() =>
-            HttpClient.PostAsJsonAsync(uri, request, cancellationToken), cancellationToken);
-
-    public OptionT<Eff, TResponse> PostAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri,
-        HttpContent? content, CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() =>
-            HttpClient.PostAsync(uri, content, cancellationToken), cancellationToken);
-
-    public OptionT<Eff, TResponse> DeleteAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri,
-        CancellationToken cancellationToken) =>
-        ExecuteAndParseResponseAsync<TResponse>(() => HttpClient.DeleteAsync(uri, cancellationToken), cancellationToken);
-
-    private OptionT<Eff, TResponse> ExecuteAndParseResponseAsync<TResponse>(Func<Task<HttpResponseMessage>> func,
-        CancellationToken cancellationToken) =>
-        from response in IO.liftAsync(func).Bracket()
-        from stream in IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken)).Bracket()
-        from result in jsonSerializer.DeserializeAsync<TResponse>(stream, cancellationToken)
-        select result;
+    private static HttpRequestMessage CreateHttpRequest(HttpMethod method, Uri? uri, HttpContent? content)
+    {
+        var request = new HttpRequestMessage(method, uri);
+        request.Content = content;
+        return request;
+    }
 }

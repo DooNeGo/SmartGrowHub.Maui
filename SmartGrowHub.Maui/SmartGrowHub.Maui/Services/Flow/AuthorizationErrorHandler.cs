@@ -5,7 +5,7 @@ namespace SmartGrowHub.Maui.Services.Flow;
 
 public interface IAuthorizationErrorHandler
 {
-    Eff<Unit> Handle(CancellationToken cancellationToken);
+    IO<Unit> Handle(CancellationToken cancellationToken);
 }
 
 public sealed class AuthorizationErrorHandler(
@@ -13,7 +13,7 @@ public sealed class AuthorizationErrorHandler(
     ILogoutService logoutService)
     : IAuthorizationErrorHandler
 {
-    public Eff<Unit> Handle(CancellationToken cancellationToken) =>
+    public IO<Unit> Handle(CancellationToken cancellationToken) =>
         from _1 in dialogService.PopAllAsync()
         from _2 in DisplayAuthorizationError()
         from _3 in logoutService.LogOut(cancellationToken)

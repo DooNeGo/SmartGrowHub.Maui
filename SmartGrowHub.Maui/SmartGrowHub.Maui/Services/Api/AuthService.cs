@@ -8,10 +8,10 @@ namespace SmartGrowHub.Maui.Services.Api;
 
 public interface IAuthService
 {
-    OptionT<Eff, AuthTokensDto> CheckOtp(int otp, CancellationToken cancellationToken);
-    OptionT<Eff, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken);
-    Eff<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken);
-    Eff<Unit> LogOut(string refreshToken, CancellationToken cancellationToken);
+    OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken);
+    OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken);
+    IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken);
+    IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken);
 }
 
 public sealed class AuthService : IAuthService
@@ -24,27 +24,25 @@ public sealed class AuthService : IAuthService
         _httpService.ClientName = nameof(IAuthService);
     }
 
-    public Eff<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) =>
-        _httpService.PostJsonAsync<Result, LogInByEmailRequest>(
-            "/api/auth/login/email", new LogInByEmailRequest(emailAddress), cancellationToken
-        ).Run().As().Bind(option => option.Match(
-            Some: result => result.ToEff(),
-            None: () => Pure(unit)));
+    public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) => (
+        from response in _httpService.PostAsJsonAsync<Result, LogInByEmailRequest>(
+            "/api/auth/login/email", new LogInByEmailRequest(emailAddress), cancellationToken)
+        from _ in response.ToIO()
+        select _
+    ).ToFailIO(Error.Empty);
 
-    public OptionT<Eff, AuthTokensDto> CheckOtp(int otp, CancellationToken cancellationToken) =>
-        _httpService.PostJsonAsync<Result<AuthTokensDto>, CheckOtpRequest>(
+    public OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken) =>
+        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, CheckOtpRequest>(
             "/api/auth/login/check", new CheckOtpRequest(otp), cancellationToken
-        ).Bind(result => OptionT.lift(result.ToEff()));
+        ).Bind(result => result.ToOptionTIO());
 
-    public OptionT<Eff, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
-        _httpService.PostJsonAsync<Result<AuthTokensDto>, RefreshTokensRequest>(
+    public OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
+        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, RefreshTokensRequest>(
             "/api/auth/refresh", new RefreshTokensRequest(refreshToken), cancellationToken
-        ).Bind(result => OptionT.lift(result.ToEff()));
+        ).Bind(result => result.ToOptionTIO());
 
-    public Eff<Unit> LogOut(string refreshToken, CancellationToken cancellationToken) =>
-        _httpService.PostJsonAsync<Result, LogoutRequest>(
+    public IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken) =>
+        _httpService.PostAsJsonAsync<Result, LogoutRequest>(
             "/api/auth/logout", new LogoutRequest(refreshToken), cancellationToken
-        ).Run().As().Bind(option => option.Match(
-            Some: result => result.ToEff(),
-            None: () => Pure(unit)));
+        ).Bind(result => result.ToIO()).ToFailIO(Error.Empty);
 }

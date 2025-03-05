@@ -63,10 +63,10 @@ public static class DependencyInjection
             .AddSingleton<ITimeProvider, TimeProvider>()
             .AddSingleton<IMainThreadService, MainThreadService>()
             .AddSingleton(SecureStorage.Default)
-            .AddSingleton<IJsonSerializerService, JsonSerializerService>(_ =>
+            .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
             {
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 options.TypeInfoResolverChain.Add(SmartGrowHubSerializerContext.Default);
-                return new JsonSerializerService(options);
+                return new SystemJsonSerializer(options);
             });
 }
