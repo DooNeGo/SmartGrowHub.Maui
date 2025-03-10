@@ -1,15 +1,11 @@
 using LanguageExt.UnsafeValueAccess;
 using MPowerKit;
-using MPowerKit.Navigation;
-using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Infrastructure;
 
 namespace SmartGrowHub.Maui.Services.App;
 
 public interface INavigationService
 {
-    IO<Unit> InitializeRootPage();
-
     IO<Unit> NavigateAsync(string route, Option<IDictionary<string, object>> parameters = default, bool modal = false,
         bool animated = true);
 
@@ -19,75 +15,33 @@ public interface INavigationService
     NavigationBuilder CreateBuilder();
 }
 
-public sealed class MPowerKitNavigationService(MPowerKit.Navigation.Interfaces.INavigationService navigationService)
+public sealed class MPowerKitNavigationService(
+    MPowerKit.Navigation.Interfaces.INavigationService navigationService,
+    IMainThread mainThread)
     : INavigationService
 {
-    public IO<Unit> InitializeRootPage()
-    {
-        throw new NotImplementedException();
-    }
-
     public IO<Unit> NavigateAsync(string route, Option<IDictionary<string, object>> parameters = default,
         bool modal = false, bool animated = true)
     {
-        NavigationParameters? s = parameters
-            .Map(objects => new NavigationParameters(objects))
-            .ValueUnsafe();
-
-        return IO.liftAsync(async () =>
-        {
-            return await MainThread.InvokeOnMainThreadAsync(async () =>
-            {
-                NavigationResult result = await navigationService.NavigateAsync(route, s, modal, animated);
-                return Unit.Default;
-            });
-        });
+        NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
+        
+        return mainThread.InvokeOnMainThread(() =>
+            navigationService.NavigateAsync(route, navigationParameters, modal, animated)
+                .AsTask().ToUnit());
     }
 
     public IO<Unit> GoBackAsync(Option<IDictionary<string, object>> parameters = default, bool modal = false,
         bool animated = true)
     {
-        NavigationParameters? s = parameters
-            .Map(dictionary => new NavigationParameters(dictionary))
-            .ValueUnsafe();
+        NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
         
-        return IO.liftAsync(() =>
-            MainThread.InvokeOnMainThreadAsync(() =>
-                navigationService.GoBackAsync(s, modal, animated).AsTask())).ToUnit();
+        return mainThread.InvokeOnMainThread(() =>
+            navigationService.GoBackAsync(navigationParameters, modal, animated)
+                .AsTask().ToUnit());
     }
 
     public NavigationBuilder CreateBuilder() => new(this);
-}
-
-public sealed class ShellNavigationService(
-    ISecureStorage secureStorage,
-    IMainThreadService mainThread,
-    AppShell shell)
-    : INavigationService
-{
-    public IO<Unit> InitializeRootPage() =>
-        AreAccessAndRefreshTokenExist()
-            .Match(Some: _ => Routes.MainPage, None: () => Routes.StartPage).As()
-            .Bind(route => NavigateAsync($"//{route}"));
-
-    public IO<Unit> NavigateAsync(string route, Option<IDictionary<string, object>> parameters = default,
-        bool modal = false, bool animated = true) =>
-        mainThread.InvokeOnMainThread(() => parameters.Match(
-            Some: dictionary => shell.GoToAsync(route, animated, dictionary),
-            None: () => shell.GoToAsync(route, animated)));
-
-    public IO<Unit> GoBackAsync(Option<IDictionary<string, object>> parameters = default, bool modal = false,
-        bool animated = true) =>
-        mainThread
-            .InvokeOnMainThread(() => modal
-                ? shell.Navigation.PopModalAsync(animated)
-                : shell.Navigation.PopAsync(animated))
-            .ToUnit();
-
-    public NavigationBuilder CreateBuilder() => new(this);
-
-    private OptionT<IO, Unit> AreAccessAndRefreshTokenExist() =>
-        from _1 in secureStorage.GetAccessToken()
-        from _2 in secureStorage.GetRefreshToken()
-        select unit;
+    
+    private static NavigationParameters ToNavigationParameters(IDictionary<string, object> parameters) =>
+        new(parameters);
 }

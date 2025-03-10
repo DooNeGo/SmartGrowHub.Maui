@@ -3,6 +3,7 @@
 namespace SmartGrowHub.Maui;
 
 [AutoRoutes("Page")]
+[ExtraRoute(nameof(NavigationPage), typeof(NavigationPage))]
 public sealed partial class App
 {
     public App()
@@ -10,7 +11,4 @@ public sealed partial class App
         UserAppTheme = AppTheme.Light;
         InitializeComponent();
     }
-
-    //protected override void OnStart() =>
-      //  _navigationService.InitializeRootPage().RunAsync().SafeFireAndForget();
 }

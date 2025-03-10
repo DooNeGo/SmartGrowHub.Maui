@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using Mopups.Hosting;
 using MPowerKit.Navigation;
-using MPowerKit.Popups;
+using MPowerKit.Navigation.Popups;
 using MPowerKit.Regions;
 using SmartGrowHub.Maui.Features;
 using SmartGrowHub.Maui.Services;
@@ -17,12 +16,18 @@ public static class MauiProgramExtensions
 {
     public static MauiAppBuilder UseSharedMauiApp(this MauiAppBuilder builder)
     {
+#pragma warning disable CA1416
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+#pragma warning restore CA1416
             .UseMPowerKitNavigation(mvvmBuilder => mvvmBuilder
-                .ConfigureServices(collection => collection.AddFeatures().AddServices())
-                .OnAppStart(async (provider, navigation) =>
+                .ConfigureServices(collection => collection
+                    .AddFeatures()
+                    .AddServices())
+                .UsePopupNavigation()
+                .UsePageEventsInRegions()
+                .OnAppStart(async (provider, _) =>
                 {
                     var navigationService = provider.GetRequiredService<INavigationService>();
                     var secureStorage = provider.GetRequiredService<ISecureStorage>();
@@ -30,14 +35,12 @@ public static class MauiProgramExtensions
                     await secureStorage
                         .GetRefreshToken()
                         .Match(
-                            Some: _ => $"/NavigationPage/{Routes.LoginByEmailPage}",
-                            None: () => $"/NavigationPage/{Routes.LoginByEmailPage}").As()
+                            Some: _ => $"{Routes.NavigationPage}/{Routes.StartPage}",
+                            None: () => $"{Routes.NavigationPage}/{Routes.StartPage}").As()
                         .Bind(route => navigationService.NavigateAsync(route))
                         .RunAsync();
                 }))
-            .UseMPowerKitPopups()
             .UseMPowerKitRegions()
-            .ConfigureMopups()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

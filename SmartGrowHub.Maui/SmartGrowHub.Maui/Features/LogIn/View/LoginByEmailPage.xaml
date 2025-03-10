@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<base:BasePage
+<ContentPage
     x:Class="SmartGrowHub.Maui.Features.LogIn.View.LoginByEmailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:local="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
@@ -12,16 +11,11 @@
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
     x:Name="Root"
     x:DataType="viewModel:LoginByEmailPageModel"
-    x:TypeArguments="viewModel:LoginByEmailPageModel"
     Style="{StaticResource SimplePage}">
 
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior Command="{Binding GoBackCommand}" />
-    </Shell.BackButtonBehavior>
-
-    <base:BasePage.Resources>
+    <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-    </base:BasePage.Resources>
+    </ContentPage.Resources>
 
     <ScrollView Padding="30">
         <Grid RowDefinitions="2*,*,*,*">
@@ -97,7 +91,7 @@
                     <ImageButton
                         Grid.Column="0"
                         Padding="13"
-                        Source="{StaticResource GoogleLogoIcon}"
+                        Source="google_logo.png"
                         Style="{StaticResource RoundImageButton}" />
 
                     <ImageButton
@@ -109,4 +103,4 @@
             </VerticalStackLayout>
         </Grid>
     </ScrollView>
-</base:BasePage>
+</ContentPage>

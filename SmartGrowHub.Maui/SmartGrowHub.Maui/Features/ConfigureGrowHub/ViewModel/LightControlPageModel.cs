@@ -4,5 +4,5 @@ namespace SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel;
 
 public sealed partial class LightControlPageModel : ObservableObject
 {
-    [ObservableProperty] private double _value;
+    [ObservableProperty] public partial double Value { get; set; }
 }

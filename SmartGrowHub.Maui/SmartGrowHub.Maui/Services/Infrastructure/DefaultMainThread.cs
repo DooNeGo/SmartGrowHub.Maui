@@ -1,6 +1,6 @@
 ﻿namespace SmartGrowHub.Maui.Services.Infrastructure;
 
-public interface IMainThreadService
+public interface IMainThread
 {
     bool IsMainThread { get; }
 
@@ -12,25 +12,25 @@ public interface IMainThreadService
     IO<SynchronizationContext> GetMainThreadSynchronizationContext();
 }
 
-public sealed class MainThreadService : IMainThreadService
+public sealed class DefaultMainThread : IMainThread
 {
     public bool IsMainThread => MainThread.IsMainThread;
 
     public IO<Unit> InvokeOnMainThread(Action action) =>
-        liftIO(() => MainThread.InvokeOnMainThreadAsync(action));
+        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(action).ToUnit());
 
     public IO<T> InvokeOnMainThread<T>(Func<T> func) =>
-        liftIO(() => MainThread.InvokeOnMainThreadAsync(func));
+        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func));
 
     public IO<T> InvokeOnMainThread<T>(Func<Task<T>> func) =>
-        liftIO(() => MainThread.InvokeOnMainThreadAsync(func));
+        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func));
 
     public IO<Unit> InvokeOnMainThread(Func<Task> func) =>
-        liftIO(() => MainThread.InvokeOnMainThreadAsync(func));
+        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func).ToUnit());
 
     public IO<Unit> BeginInvokeOnMainThread(Action action) =>
         IO.lift(() => MainThread.BeginInvokeOnMainThread(action));
 
     public IO<SynchronizationContext> GetMainThreadSynchronizationContext() =>
-        liftIO(MainThread.GetMainThreadSynchronizationContextAsync);
+        IO.liftAsync(MainThread.GetMainThreadSynchronizationContextAsync);
 }

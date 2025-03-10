@@ -18,11 +18,5 @@ public static class DependencyInjection
             .RegisterForNavigation<MainPage, MainPageModel>(Routes.MainPage)
             .RegisterForNavigation<LoginByEmailPage, LoginByEmailPageModel>(Routes.LoginByEmailPage)
             .RegisterForNavigation<CheckCodePage, CheckCodePageModel>(Routes.CheckCodePage)
-            .RegisterForNavigation<LightControlPage, LightControlPageModel>(Routes.LightControlPage)
-            .AddTransient<LoadingPage>()
-            .AddTransient<StartPage, StartPageModel>()
-            .AddTransient<MainPage, MainPageModel>()
-            .AddTransientWithShellRoute<LoginByEmailPage, LoginByEmailPageModel>(Routes.LoginByEmailPage)
-            .AddTransientWithShellRoute<CheckCodePage, CheckCodePageModel>(Routes.CheckCodePage)
-            .AddTransientWithShellRoute<LightControlPage, LightControlPageModel>(Routes.LightControlPage);
+            .RegisterForNavigation<LightControlPage, LightControlPageModel>(Routes.LightControlPage);
 }

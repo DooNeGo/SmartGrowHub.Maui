@@ -1,10 +1,8 @@
-using SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel;
-
 namespace SmartGrowHub.Maui.Features.ConfigureGrowHub.View;
 
 public sealed partial class LightControlPage
 {
-    public LightControlPage(LightControlPageModel pageModel) : base(pageModel)
+    public LightControlPage()
     {
         InitializeComponent();
     }
