@@ -47,7 +47,7 @@ public static class DependencyInjection
     private static IServiceCollection AddAppServices(this IServiceCollection services) =>
         services
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<INavigationService, ShellNavigationService>()
+            .AddSingleton<INavigationService, MPowerKitNavigationService>()
             .AddSingleton(MopupService.Instance)
             .AddSingleton(WeakReferenceMessenger.Default);
 

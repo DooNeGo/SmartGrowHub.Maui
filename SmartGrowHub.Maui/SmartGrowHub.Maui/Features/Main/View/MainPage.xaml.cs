@@ -9,23 +9,36 @@ namespace SmartGrowHub.Maui.Features.Main.View;
 
 public sealed partial class MainPage
 {
-	public MainPage(MainPageModel pageModel) : base(pageModel)
+	public MainPage()
 	{
 		InitializeComponent();
-		pageModel.PropertyChanged += OnPropertyChanged;
 		
 		StateContainer.SetCurrentState(DevicesLayout, PageStates.Loading);
 		StateContainer.SetCurrentState(EnvironmentStackLayout, PageStates.Loading);
 		StateContainer.SetCurrentState(QuickSettingsStackLayout, PageStates.Loading);
 	}
+	
+	private MainPageModel? ViewModel { get; set; }
+
+	protected override void OnBindingContextChanged()
+	{
+		base.OnBindingContextChanged();
+		
+		if (BindingContext is not MainPageModel viewModel) return;
+		if (ViewModel is not null) ViewModel.PropertyChanged -= OnPropertyChanged;
+
+		ViewModel = viewModel;
+		ViewModel.PropertyChanged += OnPropertyChanged;
+	}
 
 	private async void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
 	{
 		if (e.PropertyName is not nameof(MainPageModel.CurrentState)) return;
+		if (ViewModel is null) return;
 
-		string? newState = BindingContext.CurrentState;
+		string? newState = ViewModel.CurrentState;
 
-		BindingContext.CanStateChange = false;
+		ViewModel.CanStateChange = false;
 		
 		Task task1 = ChangeStateAsync(DevicesLayout, newState);
 		Task task2 = ChangeStateAsync(EnvironmentStackLayout, newState);
@@ -33,7 +46,7 @@ public sealed partial class MainPage
 		
 		await Task.WhenAll(task1, task2, task3);
 		
-		BindingContext.CanStateChange = true;
+		ViewModel.CanStateChange = true;
 	}
 
 	private static Task ChangeStateAsync(BindableObject bindableObject, string? state) =>

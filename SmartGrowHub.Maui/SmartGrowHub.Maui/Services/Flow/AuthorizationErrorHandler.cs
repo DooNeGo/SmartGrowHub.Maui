@@ -14,7 +14,6 @@ public sealed class AuthorizationErrorHandler(
     : IAuthorizationErrorHandler
 {
     public IO<Unit> Handle(CancellationToken cancellationToken) =>
-        from _1 in dialogService.PopAllAsync()
         from _2 in DisplayAuthorizationError()
         from _3 in logoutService.LogOut(cancellationToken)
         select unit;

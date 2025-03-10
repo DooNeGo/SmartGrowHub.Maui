@@ -10,7 +10,6 @@
         <UseMaui>true</UseMaui>
         <AnalysisLevel>latest-recommended</AnalysisLevel>
         <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
-        <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
     </PropertyGroup>
 
     <ItemGroup>

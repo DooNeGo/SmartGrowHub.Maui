@@ -14,7 +14,4 @@ public static class DialogExtensions
 
     public static IO<Unit> Pop(this IDialogService dialogService) =>
         IO.lift(() => dialogService.PopAsync().RunAsync().SafeFireAndForget());
-    
-    public static IO<Unit> PopAll(this IDialogService dialogService) =>
-        IO.lift(() => dialogService.PopAllAsync().RunAsync().SafeFireAndForget());
 }

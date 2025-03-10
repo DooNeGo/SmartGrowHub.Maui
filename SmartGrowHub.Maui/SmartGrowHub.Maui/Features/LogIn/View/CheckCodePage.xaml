@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<base:BasePage
+<ContentPage
     x:Class="SmartGrowHub.Maui.Features.LogIn.View.CheckCodePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
     Padding="30,0"
     x:DataType="viewModel:CheckCodePageModel"
-    x:TypeArguments="viewModel:CheckCodePageModel"
     Style="{StaticResource SimplePage}">
 
-    <base:BasePage.Resources>
+    <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-    </base:BasePage.Resources>
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="*,*,*,*">
         <Label
@@ -79,4 +77,4 @@
             </Label>
         </VerticalStackLayout>
     </Grid>
-</base:BasePage>
+</ContentPage>

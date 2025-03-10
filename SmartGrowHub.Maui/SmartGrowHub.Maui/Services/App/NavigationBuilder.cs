@@ -26,9 +26,9 @@ public sealed class NavigationBuilder(INavigationService navigationService)
         return this;
     }
 
-    public IO<Unit> NavigateAsync(bool animated = true)
+    public IO<Unit> NavigateAsync(bool modal = false, bool animated = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(_route, nameof(_route));
-        return navigationService.NavigateAsync(_route, _parameters, animated);
+        return navigationService.NavigateAsync(_route, _parameters, modal, animated);
     }
 }

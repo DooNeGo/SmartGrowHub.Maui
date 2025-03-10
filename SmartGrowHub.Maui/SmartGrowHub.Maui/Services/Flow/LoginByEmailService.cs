@@ -40,7 +40,7 @@ public sealed class LoginByEmailService(
         from response in authService.CheckOtp(oneTimePassword, cancellationToken)
         from _2 in secureStorage.SetAuthTokens(response)
         from _3 in dialogService.Pop()
-        from _4 in navigationService.NavigateAsync($"//{Routes.MainPage}")
+        from _4 in navigationService.NavigateAsync($"/NavigationPage/{Routes.MainPage}")
         select _4
     ).Run().As().TapOnFail(OnError).ToUnit();
 
