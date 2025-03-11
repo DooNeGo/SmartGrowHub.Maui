@@ -87,7 +87,7 @@
                         <converters:ProgramToTitleConverter x:Key="ProgramToTitleConverter" />
                     </VerticalStackLayout.Resources>
 
-                    <CollectionView ItemsSource="{x:Bind Components, IsItemsSource=True}">
+                    <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{x:Bind Components, IsItemsSource=True}">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout
                                 HorizontalItemSpacing="10"

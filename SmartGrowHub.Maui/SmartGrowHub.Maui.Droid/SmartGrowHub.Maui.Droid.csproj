@@ -39,8 +39,4 @@
         <ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <AndroidResource Remove="Resources\drawable-xhdpi\dotnet_bot_devices.png"/>
-    </ItemGroup>
-
 </Project>
