@@ -17,7 +17,7 @@ internal sealed class UnauthorizedDelegatingHandler(
         from response in SendRequest(request, cancellationToken)
         from handledResponse in response.StatusCode is HttpStatusCode.Unauthorized
             ? HandleUnauthorizedResponse(request, cancellationToken)
-            : Pure(response)
+            : IO.pure(response)
         select handledResponse
     ).RunAsync().AsTask();
     

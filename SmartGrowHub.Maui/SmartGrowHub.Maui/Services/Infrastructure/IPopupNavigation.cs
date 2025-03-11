@@ -12,19 +12,16 @@ public interface IPopupNavigation
     IO<Unit> HidePopupAsync(PopupPage page, bool animated = true);
 }
 
-public sealed class MPowerKitPopupNavigation(
-    INavigationPopupService popupService,
-    IMainThread mainThread)
-    : IPopupNavigation
+public sealed class MPowerKitPopupNavigation(INavigationPopupService popupService) : IPopupNavigation
 {
     public IReadOnlyList<PopupPage> PopupStack => popupService.PopupStack;
 
     public IO<Unit> ShowPopupAsync(PopupPage page, bool animated = true) =>
-        mainThread.InvokeOnMainThread(() => popupService.ShowPopupAsync(page, animated).AsTask());
+        IO.liftVAsync(() => popupService.ShowPopupAsync(page, animated).ToUnit());
 
     public IO<Unit> HidePopupAsync(bool animated = true) =>
-        mainThread.InvokeOnMainThread(() => popupService.HidePopupAsync(animated).AsTask());
+        IO.liftVAsync(() => popupService.HidePopupAsync(animated).ToUnit());
 
     public IO<Unit> HidePopupAsync(PopupPage page, bool animated = true) =>
-        mainThread.InvokeOnMainThread(() => popupService.HidePopupAsync(page, animated).AsTask());
+        IO.liftVAsync(() => popupService.HidePopupAsync(page, animated).ToUnit());
 }

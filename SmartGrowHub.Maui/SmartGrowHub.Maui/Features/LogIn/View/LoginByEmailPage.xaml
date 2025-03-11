@@ -91,7 +91,7 @@
                     <ImageButton
                         Grid.Column="0"
                         Padding="13"
-                        Source="google_logo.png"
+                        Source="{StaticResource GoogleLogoIcon}"
                         Style="{StaticResource RoundImageButton}" />
 
                     <ImageButton

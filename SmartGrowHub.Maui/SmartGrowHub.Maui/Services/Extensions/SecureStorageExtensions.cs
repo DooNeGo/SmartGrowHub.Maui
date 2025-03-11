@@ -30,7 +30,7 @@ public static class SecureStorageExtensions
         secureStorage.SetValue(RefreshTokenKey, refreshToken);
 
     public static OptionT<IO, string> GetValue(this ISecureStorage secureStorage, string key) =>
-        IO.liftAsync(() => secureStorage.GetAsync(key).Map(Optional));
+        IO.liftAsync(() => secureStorage.GetAsync(key).Map(Prelude.Optional));
 
     public static IO<bool> RemoveValue(this ISecureStorage secureStorage, string key) =>
         IO.lift(() => secureStorage.Remove(key));

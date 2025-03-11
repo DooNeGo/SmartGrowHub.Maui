@@ -8,5 +8,5 @@ public sealed partial class StartPageModel(INavigationService navigationService)
 {
     [RelayCommand]
     private Task<Unit> LogInByEmailAsync() =>
-        navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.LoginByEmailPage}").RunAsync().AsTask();
+        navigationService.NavigateAsync(Routes.LoginByEmailPage).RunAsync().AsTask();
 }

@@ -19,7 +19,7 @@ internal sealed class TokenDelegatingHandler(ISecureStorage secureStorage) : Del
         from accessToken in secureStorage.GetAccessToken()
         from _ in request.SetAccessToken(accessToken)
         select _
-    ).IfNone(unit).As();
+    ).IfNone(Unit.Default).As();
 }
 
 public static class HttpRequestMessageExtension
@@ -27,6 +27,6 @@ public static class HttpRequestMessageExtension
     private const string BearerScheme = "Bearer";
     
     public static IO<Unit> SetAccessToken(this HttpRequestMessage request, string accessToken) =>
-        IO.lift(() => request.Headers.Authorization = new AuthenticationHeaderValue(BearerScheme, accessToken))
-            .Map(_ => unit);
+        IO.lift(() =>request.Headers.Authorization = new AuthenticationHeaderValue(BearerScheme, accessToken))
+            .ToUnit();
 }

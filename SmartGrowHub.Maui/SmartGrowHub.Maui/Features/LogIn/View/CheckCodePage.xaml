@@ -37,7 +37,10 @@
 
             <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.CodeHasBeenSentTo}" />
 
-            <Label Style="{StaticResource LargeMediumContrast}" Text="{Binding SentTo}" />
+            <Label
+                x:DataType="viewModel:CheckCodePageModel"
+                Style="{StaticResource LargeMediumContrast}"
+                Text="{Binding SentTo}" />
         </VerticalStackLayout>
 
         <customControls:CustomEntry

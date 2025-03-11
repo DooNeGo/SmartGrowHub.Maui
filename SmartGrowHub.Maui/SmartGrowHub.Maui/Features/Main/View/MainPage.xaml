@@ -15,9 +15,6 @@
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:Name="Root"
     x:DataType="viewModel:MainPageModel"
-    NavigationPage.HasNavigationBar="False"
-    Shell.NavBarIsVisible="False"
-    Shell.TabBarIsVisible="False"
     Style="{StaticResource DefaultPage}">
 
     <behaviors:StatusBar.ApplyOn>
@@ -90,7 +87,7 @@
                         <converters:ProgramToTitleConverter x:Key="ProgramToTitleConverter" />
                     </VerticalStackLayout.Resources>
 
-                    <CollectionView ItemsSource="{Binding Components}">
+                    <CollectionView ItemsSource="{x:Bind Components, IsItemsSource=True}">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout
                                 HorizontalItemSpacing="10"
@@ -153,7 +150,7 @@
 
                 <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
                     <VerticalStackLayout x:Name="DevicesLayout">
-                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding GrowHubs}" Spacing="10">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{x:Bind GrowHubs, IsItemsSource=True}" Spacing="10">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="growHubs:GrowHubDto">
                                     <view:DeviceWidget

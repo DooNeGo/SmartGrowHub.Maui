@@ -39,10 +39,13 @@ public sealed partial class LoginByEmailPageModel(
         from _1 in dialogService.ShowLoadingAsync()
         from _2 in logInService
             .SendOtpToEmail(Email, cancellationToken)
-            .IfFail(DisplayError)
-        from _3 in dialogService.HideLoadingAsync()
-        from _4 in navigationService.NavigateAsync(Routes.CheckCodePage)
-        select _4
+            .TapOnFail(DisplayError)
+            .Finally(dialogService.HideLoading())
+        from _3 in navigationService
+            .CreateBuilder(Routes.CheckCodePage)
+            .AddRouteParameter(nameof(CheckCodePageModel.SentTo), Email)
+            .NavigateAsync()
+        select _3
     ).RunSafeAsync().AsTask();
 
     private IO<Unit> DisplayError(Error error) =>

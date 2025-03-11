@@ -13,8 +13,7 @@
     Padding="20"
     behaviors:StatusBar.Color="White"
     x:DataType="viewModel:LightControlPageModel"
-    Shell.NavBarHasShadow="False"
-    Shell.NavBarIsVisible="True"
+    NavigationPage.HasNavigationBar="True"
     Style="{StaticResource DefaultPage}">
     <ScrollView>
         <Grid RowDefinitions="Auto,Auto,Auto">

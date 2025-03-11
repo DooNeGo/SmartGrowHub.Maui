@@ -404,6 +404,7 @@
 
     <Style x:Key="SimplePage" TargetType="Page">
         <Setter Property="BackgroundColor" Value="{StaticResource SimplePageBackgroundColor}" />
+        <Setter Property="NavigationPage.HasNavigationBar" Value="False" />
         <Setter Property="droid:NavigationBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="behaviors:StatusBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="behaviors:StatusBar.Style" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
@@ -434,13 +435,13 @@
 
     <Style TargetType="NavigationPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
-        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
     </Style>
 
     <Style TargetType="TabbedPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>

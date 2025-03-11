@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+using AsyncAwaitBestPractices;
 using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
 using SmartGrowHub.Maui.Base;
@@ -15,9 +16,9 @@ namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 public sealed partial class MainPageModel(
     INavigationService navigationService,
     IGrowHubService growHubService)
-    : ObservableObject, IInitializeAsyncAware
+    : ObservableObject, IInitializeAware
 {
-    private TaskCompletionSource<Unit> _stateChangeTcs = new(unit);
+    private TaskCompletionSource<Unit> _stateChangeTcs = new(Unit.Default);
 
     [ObservableProperty] public partial bool IsRefreshing { get; set; }
 
@@ -29,7 +30,8 @@ public sealed partial class MainPageModel(
 
     public ObservableCollection<GrowHubComponentDto> Components { get; } = [];
 
-    public Task InitializeAsync(INavigationParameters parameters) => RefreshAsync(CancellationToken.None);
+    public void Initialize(INavigationParameters parameters) =>
+        RefreshAsync(CancellationToken.None).SafeFireAndForget();
 
     [RelayCommand]
     private async Task RefreshAsync(CancellationToken cancellationToken)
@@ -83,6 +85,6 @@ public sealed partial class MainPageModel(
     partial void OnCanStateChangeChanged(bool value)
     {
         if (!value) return;
-        _stateChangeTcs.TrySetResult(unit);
+        _stateChangeTcs.TrySetResult(Unit.Default);
     }
 }

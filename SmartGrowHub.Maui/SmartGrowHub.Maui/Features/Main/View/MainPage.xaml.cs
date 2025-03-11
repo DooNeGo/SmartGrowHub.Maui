@@ -1,9 +1,7 @@
 using System.ComponentModel;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Layouts;
 using SmartGrowHub.Maui.Base;
 using SmartGrowHub.Maui.Features.Main.ViewModel;
-using SmartGrowHub.Shared.GrowHubs.Components;
 
 namespace SmartGrowHub.Maui.Features.Main.View;
 

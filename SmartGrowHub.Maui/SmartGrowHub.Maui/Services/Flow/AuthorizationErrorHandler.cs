@@ -16,7 +16,7 @@ public sealed class AuthorizationErrorHandler(
     public IO<Unit> Handle(CancellationToken cancellationToken) =>
         from _2 in DisplayAuthorizationError()
         from _3 in logoutService.LogOut(cancellationToken)
-        select unit;
+        select _3;
 
     private IO<Unit> DisplayAuthorizationError() =>
         dialogService.DisplayAlertAsync(
