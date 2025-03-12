@@ -38,10 +38,10 @@ internal sealed class UnauthorizedDelegatingHandler(
 
     private OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
         authService.RefreshTokens(refreshToken, cancellationToken).Run().As()
+            .Retry(Schedule.Once)
             .TapOnFail(error => error.Code is 3
                 ? logoutService.LogOut(cancellationToken)
-                : IO.pure(Unit.Default))
-            .Retry(Schedule.Once);
+                : IO.pure(Unit.Default));
     
     private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request, CancellationToken cancellationToken) =>
         IO.liftAsync(() => base.SendAsync(request, cancellationToken));
