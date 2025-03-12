@@ -13,16 +13,14 @@ public interface IJsonSerializer
 
 public sealed class SystemJsonSerializer(JsonSerializerOptions options) : IJsonSerializer
 {
-    public Option<T> Deserialize<T>(string json) =>
-        Optional(JsonSerializer.Deserialize<T>(json, options));
+    public Option<T> Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, options);
 
-    public Option<T> Deserialize<T>(Stream stream) =>
-        Optional(JsonSerializer.Deserialize<T>(stream, options));
+    public Option<T> Deserialize<T>(Stream stream) => JsonSerializer.Deserialize<T>(stream, options);
 
     public OptionT<IO, T> DeserializeAsync<T>(Stream stream, CancellationToken cancellationToken) =>
         IO.liftVAsync(() => JsonSerializer
             .DeserializeAsync<T>(stream, options, cancellationToken)
-            .Map(Optional));
+            .Map(Prelude.Optional));
     
     public string Serialize<T>(T value) => JsonSerializer.Serialize(value, options);
     

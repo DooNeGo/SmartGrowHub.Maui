@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
-using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
-using Mopups.Services;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
@@ -47,9 +45,8 @@ public static class DependencyInjection
     private static IServiceCollection AddAppServices(this IServiceCollection services) =>
         services
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<INavigationService, ShellNavigationService>()
-            .AddSingleton(MopupService.Instance)
-            .AddSingleton(WeakReferenceMessenger.Default);
+            .AddSingleton<IPopupNavigation, MPowerKitPopupNavigation>()
+            .AddScoped<INavigationService, MPowerKitNavigationService>();
 
     private static IServiceCollection AddFlowServices(this IServiceCollection services) =>
         services
@@ -61,7 +58,7 @@ public static class DependencyInjection
         services
             .AddTransient<HttpService>()
             .AddSingleton<ITimeProvider, TimeProvider>()
-            .AddSingleton<IMainThreadService, MainThreadService>()
+            .AddSingleton<IMainThread, DefaultMainThread>()
             .AddSingleton(SecureStorage.Default)
             .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
             {

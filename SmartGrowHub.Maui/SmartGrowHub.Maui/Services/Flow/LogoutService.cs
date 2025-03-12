@@ -16,7 +16,7 @@ public sealed class LogoutService(
     : ILogoutService
 {
     public IO<Unit> LogOut(CancellationToken cancellationToken) =>
-        from _1 in navigationService.NavigateAsync($"//{Routes.StartPage}")
+        from _1 in navigationService.NavigateAsync($"/NavigationPage/{Routes.StartPage}")
         from _2 in secureStorage.RemoveAllValues()
         from _3 in LogOutFromServer(cancellationToken)
         select _3;

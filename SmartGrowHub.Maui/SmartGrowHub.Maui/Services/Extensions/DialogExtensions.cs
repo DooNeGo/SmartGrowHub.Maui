@@ -12,9 +12,6 @@ public static class DialogExtensions
         this IDialogService dialogService, string title, string message, string cancel) =>
         IO.lift(() => dialogService.DisplayAlertAsync(title, message, cancel).RunAsync().SafeFireAndForget());
 
-    public static IO<Unit> Pop(this IDialogService dialogService) =>
-        IO.lift(() => dialogService.PopAsync().RunAsync().SafeFireAndForget());
-    
-    public static IO<Unit> PopAll(this IDialogService dialogService) =>
-        IO.lift(() => dialogService.PopAllAsync().RunAsync().SafeFireAndForget());
+    public static IO<Unit> HideLoading(this IDialogService dialogService) =>
+        IO.lift(() => dialogService.HideLoadingAsync().RunAsync().SafeFireAndForget());
 }

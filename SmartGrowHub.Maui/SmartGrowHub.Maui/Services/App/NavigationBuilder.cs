@@ -1,34 +1,18 @@
-﻿using SmartGrowHub.Maui.Services.Extensions;
+﻿namespace SmartGrowHub.Maui.Services.App;
 
-namespace SmartGrowHub.Maui.Services.App;
-
-public sealed class NavigationBuilder(INavigationService navigationService)
+public sealed class NavigationBuilder(string route, INavigationService navigationService)
 {
-    private Dictionary<string, object>? _parameters;
-    private string _route = string.Empty;
+    private readonly Dictionary<string, object> _parameters = [];
 
     public NavigationBuilder AddRouteParameter(string name, object value)
     {
-        _parameters ??= [];
         _parameters[name] = value;
         return this;
     }
-    
-    public NavigationBuilder SetRoute(string route)
-    {
-        _route = route;
-        return this;
-    }
 
-    public NavigationBuilder AddQueryParameter(string name, string? value)
+    public IO<Unit> NavigateAsync(bool modal = false, bool animated = true)
     {
-        _route.AppendQueryParameter(name, value);
-        return this;
-    }
-
-    public IO<Unit> NavigateAsync(bool animated = true)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(_route, nameof(_route));
-        return navigationService.NavigateAsync(_route, _parameters, animated);
+        ArgumentException.ThrowIfNullOrWhiteSpace(route, nameof(route));
+        return navigationService.NavigateAsync(route, _parameters, modal, animated);
     }
 }

@@ -7,30 +7,30 @@ namespace SmartGrowHub.Maui.Services.Extensions;
 public static class ResultExtensions
 {
     public static Fin<Unit> ToFin(this Result result) =>
-        result.IsSuccess ? FinSucc(unit)
-            : FinFail<Unit>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
+        result.IsSuccess ? Fin<Unit>.Succ(Unit.Default)
+            : Fin<Unit>.Fail(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
 
     public static Eff<Unit> ToEff(this Result result) =>
-        result.IsSuccess ? SuccessEff(unit)
-            : FailEff<Unit>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
+        result.IsSuccess ? Eff<Unit>.Pure(Unit.Default)
+            : Eff<Unit>.Fail(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
     
     public static IO<Unit> ToIO(this Result result) =>
-        result.IsSuccess ? IO.pure(unit)
+        result.IsSuccess ? IO.pure(Unit.Default)
             : IO.fail<Unit>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
 
     public static Fin<T> ToFin<T>(this Result<T> result) =>
         result.IsSuccess
             ? result.Data is not null
-                ? FinSucc(result.Data)
-                : FinFail<T>(Error.New("Null response error"))
-            : FinFail<T>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
+                ? Fin<T>.Succ(result.Data)
+                : Fin<T>.Fail(Error.New("Null response error"))
+            : Fin<T>.Fail(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
 
     public static Eff<T> ToEff<T>(this Result<T> result) =>
         result.IsSuccess
             ? result.Data is not null
-                ? SuccessEff(result.Data)
-                : FailEff<T>(Error.New("Null response error"))
-            : FailEff<T>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
+                ? Eff<T>.Pure(result.Data)
+                : Eff<T>.Fail(Error.New("Null response error"))
+            : Eff<T>.Fail(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
 
     public static OptionT<IO, T> ToOptionTIO<T>(this Result<T> result) =>
         result.IsSuccess

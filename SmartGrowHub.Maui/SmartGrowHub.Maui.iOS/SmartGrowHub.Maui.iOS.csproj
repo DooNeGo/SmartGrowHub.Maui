@@ -10,12 +10,11 @@
         <UseMaui>true</UseMaui>
         <AnalysisLevel>latest-recommended</AnalysisLevel>
         <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
-        <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>

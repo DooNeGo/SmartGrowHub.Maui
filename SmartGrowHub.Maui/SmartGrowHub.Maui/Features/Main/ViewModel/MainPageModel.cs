@@ -1,22 +1,24 @@
 ﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+using AsyncAwaitBestPractices;
+using MPowerKit.Navigation.Awares;
+using MPowerKit.Navigation.Interfaces;
 using SmartGrowHub.Maui.Base;
 using SmartGrowHub.Maui.Services.Api;
-using SmartGrowHub.Maui.Services.App;
-using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Shared.GrowHubs;
 using SmartGrowHub.Shared.GrowHubs.Components;
+using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
 public sealed partial class MainPageModel(
     INavigationService navigationService,
     IGrowHubService growHubService)
-    : ObservableObject, IPageLifecycleAware
+    : ObservableObject, IInitializeAware
 {
-    private TaskCompletionSource<Unit> _stateChangeTcs = new(unit);
+    private TaskCompletionSource<Unit> _stateChangeTcs = new(Unit.Default);
 
     [ObservableProperty] public partial bool IsRefreshing { get; set; }
 
@@ -28,7 +30,8 @@ public sealed partial class MainPageModel(
 
     public ObservableCollection<GrowHubComponentDto> Components { get; } = [];
 
-    public void Initialize() => RefreshAsync(CancellationToken.None).SafeFireAndForget();
+    public void Initialize(INavigationParameters parameters) =>
+        RefreshAsync(CancellationToken.None).SafeFireAndForget();
 
     [RelayCommand]
     private async Task RefreshAsync(CancellationToken cancellationToken)
@@ -72,7 +75,7 @@ public sealed partial class MainPageModel(
 
     private Task<Unit> WaitForStateChangeAsync()
     {
-        if (CanStateChange) return Task.FromResult(unit);
+        if (CanStateChange) return Task.FromResult(Unit.Default);
         
         _stateChangeTcs = new TaskCompletionSource<Unit>();
     
@@ -82,6 +85,6 @@ public sealed partial class MainPageModel(
     partial void OnCanStateChangeChanged(bool value)
     {
         if (!value) return;
-        _stateChangeTcs.TrySetResult(unit);
+        _stateChangeTcs.TrySetResult(Unit.Default);
     }
 }

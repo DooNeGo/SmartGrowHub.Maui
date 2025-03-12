@@ -26,17 +26,17 @@
         <AndroidEnableMarshalMethods>true</AndroidEnableMarshalMethods>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\SmartGrowHub.Maui\SmartGrowHub.Maui.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <AndroidResource Remove="Resources\drawable-xhdpi\dotnet_bot_devices.png"/>
     </ItemGroup>
 
 </Project>
