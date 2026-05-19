@@ -29,13 +29,15 @@ public sealed class HttpService(IHttpClientFactory clientFactory, IJsonSerialize
         select response;
 
     public OptionT<IO, T> SendAsync<T>(HttpMethod method, Uri? uri, HttpContent? content,
-        CancellationToken cancellationToken) => (
-        from request in IO.pure(CreateHttpRequest(method, uri, content))
-        from response in IO.liftAsync(() => HttpClient.SendAsync(request, cancellationToken))
-        from stream in IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken))
+        CancellationToken cancellationToken) =>
+        from request in Prelude.use(IO.pure(CreateHttpRequest(method, uri, content)))
+        from response in Prelude.use(IO.liftAsync(() => HttpClient.SendAsync(request, cancellationToken)))
+        from stream in Prelude.useAsync(IO.liftAsync(() => response.Content.ReadAsStreamAsync(cancellationToken)))
         from result in jsonSerializer.DeserializeAsync<T>(stream, cancellationToken)
-        select result
-    ).Run().As().Bracket();
+        from _1 in Prelude.release(stream)
+        from _2 in Prelude.release(request)
+        from _3 in Prelude.release(response)
+        select result;
 
     private static HttpRequestMessage CreateHttpRequest(HttpMethod method, Uri? uri, HttpContent? content)
     {

@@ -2,13 +2,11 @@
 using MPowerKit.Navigation;
 using MPowerKit.Navigation.Popups;
 using MPowerKit.Regions;
+using Serilog;
 using SmartGrowHub.Maui.Features;
 using SmartGrowHub.Maui.Services;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.Extensions;
-#if DEBUG
-using Microsoft.Extensions.Logging;
-#endif
 
 namespace SmartGrowHub.Maui;
 
@@ -22,24 +20,10 @@ public static class MauiProgramExtensions
             .UseMauiCommunityToolkit()
 #pragma warning restore CA1416
             .UseMPowerKitNavigation(mvvmBuilder => mvvmBuilder
-                .ConfigureServices(collection => collection
-                    .AddFeatures()
-                    .AddServices())
+                .ConfigureServices(ConfigureServices)
                 .UsePopupNavigation()
                 .UsePageEventsInRegions()
-                .OnAppStart(async (provider, _) =>
-                {
-                    var navigationService = provider.GetRequiredService<INavigationService>();
-                    var secureStorage = provider.GetRequiredService<ISecureStorage>();
-
-                    await secureStorage
-                        .GetRefreshToken()
-                        .Match(
-                            Some: _ => $"{Routes.NavigationPage}/{Routes.StartPage}",
-                            None: () => $"{Routes.NavigationPage}/{Routes.StartPage}").As()
-                        .Bind(route => navigationService.NavigateAsync(route))
-                        .RunAsync();
-                }))
+                .OnAppStart(OnAppStarted))
             .UseMPowerKitRegions()
             .ConfigureFonts(fonts =>
             {
@@ -49,11 +33,33 @@ public static class MauiProgramExtensions
                 fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
                 fonts.AddFont("Inter-Medium.ttf", "InterMedium");
             });
-        
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
 
         return builder;
+    }
+
+    private static void ConfigureServices(IServiceCollection collection)
+    {
+        collection
+            .AddFeatures()
+            .AddServices()
+            .AddSerilog(configuration =>
+            {
+#if DEBUG
+                configuration.WriteTo.Debug();
+#endif
+            });
+    }
+
+    private static async ValueTask OnAppStarted(IServiceProvider provider, MPowerKit.Navigation.Interfaces.INavigationService _1)
+    {
+        var navigationService = provider.GetRequiredService<INavigationService>();
+        var secureStorage = provider.GetRequiredService<ISecureStorage>();
+
+        _ = await secureStorage.GetRefreshToken()
+            .Match(
+                Some: _ => $"{Routes.NavigationPage}/{Routes.MainPage}",
+                None: () => $"{Routes.NavigationPage}/{Routes.StartPage}")
+            .Bind(route => navigationService.NavigateAsync(route))
+            .RunAsync();
     }
 }

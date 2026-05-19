@@ -17,17 +17,15 @@ public sealed class DialogService : IDialogService
 {
     private readonly IApplication _application;
     private readonly IPopupNavigation _popupNavigation;
-    private readonly IMainThread _mainThread;
 
-    public DialogService(IApplication application, IPopupNavigation popupNavigation, IMainThread mainThread)
+    public DialogService(IApplication application, IPopupNavigation popupNavigation)
     {
         _application = application;
         _popupNavigation = popupNavigation;
-        _mainThread = mainThread;
     }
 
     public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel) =>
-        _mainThread.InvokeOnMainThread(() => GetCurrentPage().DisplayAlert(title, message, accept, cancel));
+        IO.liftAsync(() => GetCurrentPage().DisplayAlert(title, message, accept, cancel)).Post();
 
     public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
         DisplayAlertAsync(title, message, null!, cancel).ToUnit();

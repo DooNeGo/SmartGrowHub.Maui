@@ -48,6 +48,8 @@ public sealed partial class MainPageModel(
             .Map(enumerable => enumerable.ToImmutableArray())
             .RunSafeAsync();
 
+        fin.ThrowIfFail();
+
         fin.IfSucc(array =>
         {
             GrowHubs.Clear();

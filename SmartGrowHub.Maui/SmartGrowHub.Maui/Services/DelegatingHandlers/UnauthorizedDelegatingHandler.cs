@@ -29,12 +29,12 @@ internal sealed class UnauthorizedDelegatingHandler(
 
     private IO<Unit> RefreshTokens(CancellationToken cancellationToken) => (
         from refreshToken in secureStorage.GetRefreshToken()
-            .ToFailIO(Error.Empty)
+            .ToIOOrFail(Error.Empty)
             .TapOnFail(_ => logoutService.LogOut(cancellationToken))
         from authTokens in RefreshTokens(refreshToken, cancellationToken)
         from _ in secureStorage.SetAuthTokens(authTokens)
         select _
-    ).ToFailIO(Error.New("Failed to refresh tokens"));
+    ).ToIOOrFail("Failed to refresh tokens");
 
     private OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
         authService.RefreshTokens(refreshToken, cancellationToken).Run().As()

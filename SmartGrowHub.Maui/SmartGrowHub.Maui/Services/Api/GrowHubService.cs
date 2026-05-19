@@ -15,5 +15,5 @@ public sealed class GrowHubService(HttpService httpService) : IGrowHubService
     public IO<IEnumerable<GrowHubDto>> GetGrowHubs(CancellationToken cancellationToken) =>
         httpService.GetAsync<Result<IEnumerable<GrowHubDto>>>(
             "/api/growHubs", cancellationToken
-        ).Bind(result => result.ToOptionTIO()).ToFailIO(Error.New("Failed to get grow hubs"));
+        ).Bind(result => result.ToOptionTIO()).ToIOOrFail("Failed to get grow hubs");
 }

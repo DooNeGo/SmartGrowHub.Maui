@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Serilog;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.Extensions;
 
@@ -11,7 +11,7 @@ public interface ILoginByEmailService
 }
 
 public sealed class LoginByEmailService(
-    ILogger<LoginByEmailService> logger,
+    ILogger logger,
     ISecureStorage secureStorage,
     IAuthService authService)
     : ILoginByEmailService
@@ -19,11 +19,11 @@ public sealed class LoginByEmailService(
     public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) =>
         authService
             .SendOtpToEmail(emailAddress, cancellationToken)
-            .TapOnFail(logger.LogErrorIO);
+            .TapOnFail(error => IO.lift(() => logger.Error(error.ToException(), "Failed to send otp to email")));
 
     public IO<Unit> CheckOtp(string oneTimePassword, CancellationToken cancellationToken) => (
         from response in authService.CheckOtp(oneTimePassword, cancellationToken)
         from _ in secureStorage.SetAuthTokens(response)
         select _
-    ).Run().As().TapOnFail(logger.LogErrorIO).ToUnit();
+    ).Run().As().TapOnFail(error => IO.lift(() => logger.Error(error.ToException(), "Failed to check otp"))).ToUnit();
 }

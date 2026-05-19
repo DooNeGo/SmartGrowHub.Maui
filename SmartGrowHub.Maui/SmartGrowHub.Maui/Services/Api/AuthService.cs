@@ -29,7 +29,7 @@ public sealed class AuthService : IAuthService
             "/api/auth/login/email", new LogInByEmailRequest(emailAddress), cancellationToken)
         from _ in response.ToIO()
         select _
-    ).ToFailIO(Error.Empty);
+    ).ToIOOrFail("Failed to send otp to email");
 
     public OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken) =>
         _httpService.PostAsJsonAsync<Result<AuthTokensDto>, CheckOtpRequest>(
@@ -44,5 +44,5 @@ public sealed class AuthService : IAuthService
     public IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken) =>
         _httpService.PostAsJsonAsync<Result, LogoutRequest>(
             "/api/auth/logout", new LogoutRequest(refreshToken), cancellationToken
-        ).Bind(result => result.ToIO()).ToFailIO(Error.Empty);
+        ).Bind(result => result.ToIO()).ToIOOrFail(Error.Empty);
 }

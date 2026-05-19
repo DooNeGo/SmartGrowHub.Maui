@@ -27,6 +27,6 @@ public static class HttpRequestMessageExtension
     private const string BearerScheme = "Bearer";
     
     public static IO<Unit> SetAccessToken(this HttpRequestMessage request, string accessToken) =>
-        IO.lift(() =>request.Headers.Authorization = new AuthenticationHeaderValue(BearerScheme, accessToken))
+        IO.lift(() => request.Headers.Authorization = new AuthenticationHeaderValue(BearerScheme, accessToken))
             .ToUnit();
 }
