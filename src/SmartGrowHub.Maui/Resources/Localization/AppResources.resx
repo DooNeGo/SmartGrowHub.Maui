@@ -273,23 +273,20 @@
   <data name="InvalidEmailAddress" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
-  <data name="CycleProgram" xml:space="preserve">
-    <value>Cycle</value>
-  </data>
   <data name="ManualProgram" xml:space="preserve">
     <value>Manual</value>
   </data>
-  <data name="TurnOff" xml:space="preserve">
+  <data name="TurnedOff" xml:space="preserve">
     <value>Turned Off</value>
   </data>
-  <data name="TurnOffShort" xml:space="preserve">
+  <data name="TurnedOffShort" xml:space="preserve">
     <value>Off</value>
   </data>
-  <data name="DailyProgram" xml:space="preserve">
-    <value>Daily Program</value>
+  <data name="DailySchedule" xml:space="preserve">
+    <value>Daily schedule</value>
   </data>
-  <data name="WeeklyProgram" xml:space="preserve">
-    <value>Weekly Program</value>
+  <data name="WeeklySchedule" xml:space="preserve">
+    <value>Weekly schedule</value>
   </data>
   <data name="DayLight" xml:space="preserve">
     <value>Day light</value>
@@ -299,5 +296,14 @@
   </data>
   <data name="Heater" xml:space="preserve">
     <value>Heater</value>
+  </data>
+  <data name="TurnedOnShort" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="DisabledSchedule" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="EnabledSchedule" xml:space="preserve">
+    <value>Enabled schedule</value>
   </data>
 </root>

@@ -6,10 +6,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
-    xmlns:components="clr-namespace:SmartGrowHub.Shared.GrowHubs.Components;assembly=SmartGrowHub.Shared"
     xmlns:converters="clr-namespace:SmartGrowHub.Maui.Features.Main.Converters"
-    xmlns:growHubs="clr-namespace:SmartGrowHub.Shared.GrowHubs;assembly=SmartGrowHub.Shared"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:model="clr-namespace:SmartGrowHub.Shared.GrowHubs.Model;assembly=SmartGrowHub.Shared"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
@@ -82,9 +81,9 @@
                 <VerticalStackLayout x:Name="QuickSettingsStackLayout">
                     <VerticalStackLayout.Resources>
                         <converters:ComponentToColorConverter x:Key="ComponentToColorConverter" />
-                        <converters:ComponentToIconConverter x:Key="ComponentToIconConverter" />
-                        <converters:ProgramToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
-                        <converters:ProgramToTitleConverter x:Key="ProgramToTitleConverter" />
+                        <converters:ModuleToIconConverter x:Key="ComponentToIconConverter" />
+                        <converters:ScheduleToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
+                        <converters:ScheduleToTitleConverter x:Key="ProgramToTitleConverter" />
                     </VerticalStackLayout.Resources>
 
                     <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{x:Bind Components, IsItemsSource=True}">
@@ -97,13 +96,13 @@
                         </CollectionView.ItemsLayout>
 
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="components:GrowHubComponentDto">
+                            <DataTemplate x:DataType="model:GrowHubModuleDto">
                                 <view:QuickSetting
                                     CommandParameter="{Binding .}"
                                     IconColor="{Binding ., Converter={StaticResource ComponentToColorConverter}}"
                                     IconSource="{Binding ., Converter={StaticResource ComponentToIconConverter}}"
-                                    Status="{Binding Program, Converter={StaticResource ProgramToTitleConverter}}"
-                                    Value="{Binding Program, Converter={StaticResource ProgramToCurrentValueConverter}}">
+                                    Status="{Binding Schedule, Converter={StaticResource ProgramToTitleConverter}}"
+                                    Value="{Binding Schedule, Converter={StaticResource ProgramToCurrentValueConverter}}">
                                     <view:QuickSetting.Command>
                                         <Binding
                                             x:DataType="view:MainPage"
@@ -152,7 +151,7 @@
                     <VerticalStackLayout x:Name="DevicesLayout">
                         <HorizontalStackLayout BindableLayout.ItemsSource="{x:Bind GrowHubs, IsItemsSource=True}" Spacing="10">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="growHubs:GrowHubDto">
+                                <DataTemplate x:DataType="model:GrowHubDto">
                                     <view:DeviceWidget
                                         DeviceIconSource="{StaticResource GrowHubV2Icon}"
                                         DeviceName="{Binding Name}"

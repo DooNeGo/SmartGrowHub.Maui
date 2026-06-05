@@ -3,26 +3,24 @@ using SmartGrowHub.Shared.GrowHubs.Model;
 
 namespace SmartGrowHub.Maui.Features.Main.Converters;
 
-public sealed class ComponentToColorConverter : IValueConverter
+public sealed class ModuleToIconConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not GrowHubModuleDto module) return value;
 
-        string colorAsHex = module.Type switch
+        return module.Type switch
         {
-            ModuleTypeDto.DayLight => "#FFE484",
-            ModuleTypeDto.UvLight => "#8206ff",
-            ModuleTypeDto.Heater => "#f3903f",
-            ModuleTypeDto.Fan => "#99d9ff",
-            ModuleTypeDto.Led => "#ffffff",
-            ModuleTypeDto.Humidifier => "#a0d2eb",
-            ModuleTypeDto.WaterPump => "#4b70b8",
-            ModuleTypeDto.AirFlap => "#50c878",
+            ModuleTypeDto.DayLight => "sun_icon.png",
+            ModuleTypeDto.UvLight => "uv_light_icon.png",
+            ModuleTypeDto.Heater => "heat_icon.png",
+            ModuleTypeDto.Fan => "wind_icon.png",
+            ModuleTypeDto.Led => "led_icon.png",
+            ModuleTypeDto.Humidifier => "humidifier_icon.png",
+            ModuleTypeDto.WaterPump => "water_pump_icon.png",
+            ModuleTypeDto.AirFlap => "air_flap_icon.png",
             _ => throw new ArgumentOutOfRangeException(nameof(value), module.Type, null)
         };
-
-        return Color.FromArgb(colorAsHex);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

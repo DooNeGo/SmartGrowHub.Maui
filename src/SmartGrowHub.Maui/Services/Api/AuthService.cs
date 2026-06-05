@@ -25,15 +25,15 @@ public sealed class AuthService : IAuthService
     }
 
     public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) => (
-        from response in _httpService.PostAsJsonAsync<Result, LogInByEmailRequest>(
-            "/api/auth/login/email", new LogInByEmailRequest(emailAddress), cancellationToken)
+        from response in _httpService.PostAsJsonAsync<Result, RequestOtpToEmailRequest>(
+            "/api/auth/login/email", new RequestOtpToEmailRequest(emailAddress), cancellationToken)
         from _ in response.ToIO()
         select _
     ).ToIOOrFail("Failed to send otp to email");
 
     public OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken) =>
-        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, CheckOtpRequest>(
-            "/api/auth/login/check", new CheckOtpRequest(otp), cancellationToken
+        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, VerifyOtpRequest>(
+            "/api/auth/login/check", new VerifyOtpRequest(otp), cancellationToken
         ).Bind(result => result.ToOptionTIO());
 
     public OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>

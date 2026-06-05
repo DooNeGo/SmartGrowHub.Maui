@@ -1,18 +1,18 @@
 ﻿using System.Globalization;
 using SmartGrowHub.Maui.Resources.Localization;
-using SmartGrowHub.Shared.GrowHubs.ComponentPrograms;
+using SmartGrowHub.Shared.GrowHubs.Model;
 
 namespace SmartGrowHub.Maui.Features.Main.Converters;
 
-public sealed class ProgramToTitleConverter : IValueConverter
+public sealed class ScheduleToTitleConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        value is ComponentProgramDto program
+        value is ScheduleDto program
             ? program.Match(
-                mapManual: _ => AppResources.ManualProgram,
-                mapCycle: _ => AppResources.CycleProgram,
-                mapDaily: _ => AppResources.DailyProgram,
-                mapWeekly: _ => AppResources.WeeklyProgram)
+                mapDisabled: _ => AppResources.DisabledSchedule,
+                mapEnabled: _ => AppResources.EnabledSchedule,
+                mapDaily: _ => AppResources.DailySchedule,
+                mapWeekly: _ => AppResources.WeeklySchedule)
             : value;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

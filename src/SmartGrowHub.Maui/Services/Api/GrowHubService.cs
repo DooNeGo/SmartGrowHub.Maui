@@ -1,6 +1,6 @@
 using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Infrastructure;
-using SmartGrowHub.Shared.GrowHubs;
+using SmartGrowHub.Shared.GrowHubs.Model;
 using SmartGrowHub.Shared.Results;
 
 namespace SmartGrowHub.Maui.Services.Api;

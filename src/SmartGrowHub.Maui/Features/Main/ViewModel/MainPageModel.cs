@@ -7,8 +7,7 @@ using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
 using SmartGrowHub.Maui.Base;
 using SmartGrowHub.Maui.Services.Api;
-using SmartGrowHub.Shared.GrowHubs;
-using SmartGrowHub.Shared.GrowHubs.Components;
+using SmartGrowHub.Shared.GrowHubs.Model;
 using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
@@ -28,7 +27,7 @@ public sealed partial class MainPageModel(
     
     public ObservableCollection<GrowHubDto> GrowHubs { get; } = [];
 
-    public ObservableCollection<GrowHubComponentDto> Components { get; } = [];
+    public ObservableCollection<GrowHubModuleDto> Components { get; } = [];
 
     public void Initialize(INavigationParameters parameters) =>
         RefreshAsync(CancellationToken.None).SafeFireAndForget();
@@ -55,7 +54,7 @@ public sealed partial class MainPageModel(
             GrowHubs.Clear();
             Components.Clear();
             GrowHubs.AddRange(array);
-            Components.AddRange(GrowHubs.FirstOrDefault()?.Components ?? []);
+            Components.AddRange(GrowHubs.FirstOrDefault()?.Modules ?? []);
         });
 
         await WaitForStateChangeAsync();
@@ -65,8 +64,8 @@ public sealed partial class MainPageModel(
     }
 
     [RelayCommand]
-    private Task<Unit> GoToComponentsControlAsync(GrowHubComponentDto? component) =>
-        component is DayLightComponentDto
+    private Task<Unit> GoToComponentsControlAsync(GrowHubModuleDto? module) =>
+        module?.Type is ModuleTypeDto.DayLight
             ? GoToLightControlAsync()
             : Task.FromResult(Unit.Default);
 
