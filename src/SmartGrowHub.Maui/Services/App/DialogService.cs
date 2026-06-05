@@ -6,10 +6,10 @@ namespace SmartGrowHub.Maui.Services.App;
 
 public interface IDialogService
 {
-    IO<Unit> DisplayAlertAsync(string title, string message, string cancel);
-    IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel);
-    IO<Unit> ShowLoadingAsync();
-    IO<Unit> HideLoadingAsync();
+    IO<Unit> DisplayAlert(string title, string message, string cancel);
+    IO<bool> DisplayAlert(string title, string message, string accept, string cancel);
+    IO<Unit> ShowLoading();
+    IO<Unit> HideLoading();
 }
 
 
@@ -24,15 +24,15 @@ public sealed class DialogService : IDialogService
         _popupNavigation = popupNavigation;
     }
 
-    public IO<bool> DisplayAlertAsync(string title, string message, string accept, string cancel) =>
-        IO.liftAsync(() => GetCurrentPage().DisplayAlert(title, message, accept, cancel)).Post();
+    public IO<bool> DisplayAlert(string title, string message, string accept, string cancel) =>
+        IO.liftAsync(() => GetCurrentPage().DisplayAlertAsync(title, message, accept, cancel));
 
-    public IO<Unit> DisplayAlertAsync(string title, string message, string cancel) =>
-        DisplayAlertAsync(title, message, null!, cancel).ToUnit();
+    public IO<Unit> DisplayAlert(string title, string message, string cancel) =>
+        DisplayAlert(title, message, null!, cancel).ToUnit();
 
-    public IO<Unit> ShowLoadingAsync() => _popupNavigation.ShowPopupAsync(new LoadingPopup());
+    public IO<Unit> ShowLoading() => _popupNavigation.ShowPopup(new LoadingPopup());
 
-    public IO<Unit> HideLoadingAsync() => _popupNavigation.HidePopupAsync();
+    public IO<Unit> HideLoading() => _popupNavigation.HidePopup();
 
     private Page GetCurrentPage() => _application.Windows[0].Content as Page ?? throw new InvalidOperationException();
 }

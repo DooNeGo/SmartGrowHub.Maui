@@ -8,41 +8,41 @@ namespace SmartGrowHub.Maui.Services.Api;
 
 public interface IAuthService
 {
-    OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken);
-    OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken);
-    IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken);
-    IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken);
+    IO<AuthTokensDto> VerifyOtp(string otp);
+    IO<AuthTokensDto> RefreshTokens(string refreshToken);
+    IO<Unit> RequestOtpToEmail(string emailAddress);
+    IO<Unit> LogOut(string refreshToken);
 }
 
 public sealed class AuthService : IAuthService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
 
-    public AuthService(HttpService httpService)
+    public AuthService(IHttpService httpService)
     {
         _httpService = httpService;
         _httpService.ClientName = nameof(IAuthService);
     }
 
-    public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) => (
+    public IO<Unit> RequestOtpToEmail(string emailAddress) => (
         from response in _httpService.PostAsJsonAsync<Result, RequestOtpToEmailRequest>(
-            "/api/auth/login/email", new RequestOtpToEmailRequest(emailAddress), cancellationToken)
+            "/api/auth/otp/email", new RequestOtpToEmailRequest(emailAddress))
         from _ in response.ToIO()
         select _
-    ).ToIOOrFail("Failed to send otp to email");
+    ).ToIOOrFail("Response was null");
 
-    public OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken) =>
+    public IO<AuthTokensDto> VerifyOtp(string otp) =>
         _httpService.PostAsJsonAsync<Result<AuthTokensDto>, VerifyOtpRequest>(
-            "/api/auth/login/check", new VerifyOtpRequest(otp), cancellationToken
-        ).Bind(result => result.ToOptionTIO());
+            "/api/auth/otp/verify", new VerifyOtpRequest(otp)
+        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 
-    public OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken) =>
+    public IO<AuthTokensDto> RefreshTokens(string refreshToken) =>
         _httpService.PostAsJsonAsync<Result<AuthTokensDto>, RefreshTokensRequest>(
-            "/api/auth/refresh", new RefreshTokensRequest(refreshToken), cancellationToken
-        ).Bind(result => result.ToOptionTIO());
+            "/api/auth/tokens/refresh", new RefreshTokensRequest(refreshToken)
+        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 
-    public IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken) =>
+    public IO<Unit> LogOut(string refreshToken) =>
         _httpService.PostAsJsonAsync<Result, LogoutRequest>(
-            "/api/auth/logout", new LogoutRequest(refreshToken), cancellationToken
-        ).Bind(result => result.ToIO()).ToIOOrFail(Error.Empty);
+            "/api/auth/logout", new LogoutRequest(refreshToken)
+        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 }

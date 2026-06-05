@@ -20,7 +20,7 @@ public static class PopupNavigationExtensions
         PopupPage popupPage = popupNavigation.PopupStack.FirstOrDefault(page => page.GetType() == viewType)
             ?? throw new ViewNotFoundException();
 
-        return popupNavigation.HidePopupAsync(popupPage, animate);
+        return popupNavigation.HidePopup(popupPage, animate);
     }
 
     public static IO<Unit> ShowPopupAsync<TPopupViewModel>(this IPopupNavigation popupNavigation, bool animate = true)
@@ -35,7 +35,7 @@ public static class PopupNavigationExtensions
         PopupPage popup = serviceProvider.GetRequiredService(viewType) as PopupPage
             ?? throw new ViewNotFoundException();
 
-        return popupNavigation.ShowPopupAsync(popup, animate);
+        return popupNavigation.ShowPopup(popup, animate);
     }
     
     public static IServiceCollection AddTransientPopup<TPopupView, TPopupViewModel>(this IServiceCollection services)

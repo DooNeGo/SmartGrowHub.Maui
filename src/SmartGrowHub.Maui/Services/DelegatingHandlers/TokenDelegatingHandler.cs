@@ -8,12 +8,12 @@ internal sealed class TokenDelegatingHandler(ISecureStorage secureStorage) : Del
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken) => (
         from _ in SetAuthorization(request)
-        from response in SendRequest(request, cancellationToken)
+        from response in SendRequest(request)
         select response
-    ).RunAsync().AsTask();
+    ).RunAsync(cancellationToken).AsTask();
 
-    private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request, CancellationToken cancellationToken) =>
-        IO.liftAsync(() => base.SendAsync(request, cancellationToken));
+    private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request) =>
+        IO.liftAsync(env => base.SendAsync(request, env.Token));
 
     private IO<Unit> SetAuthorization(HttpRequestMessage request) => (
         from accessToken in secureStorage.GetAccessToken()

@@ -12,7 +12,7 @@ public sealed class NavigationBuilder(string route, INavigationService navigatio
 
     public IO<Unit> NavigateAsync(bool modal = false, bool animated = true)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(route, nameof(route));
+        ArgumentException.ThrowIfNullOrWhiteSpace(route);
         return navigationService.NavigateAsync(route, _parameters, modal, animated);
     }
 }

@@ -6,6 +6,7 @@
     xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
     xmlns:core="clr-namespace:CommunityToolkit.Maui.Core;assembly=CommunityToolkit.Maui.Core"
     xmlns:droid="clr-namespace:CommunityToolkit.Maui.PlatformConfiguration.AndroidSpecific;assembly=CommunityToolkit.Maui"
+    xmlns:styles="clr-namespace:SmartGrowHub.Maui.Resources.Styles"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <Style TargetType="ActivityIndicator">
@@ -30,7 +31,7 @@
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryDarkText}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="BorderWidth" Value="0" />
         <Setter Property="CornerRadius" Value="8" />
@@ -74,7 +75,7 @@
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -95,7 +96,7 @@
     <Style TargetType="Editor">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="MinimumHeightRequest" Value="44" />
@@ -117,7 +118,7 @@
     <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="MinimumHeightRequest" Value="44" />
@@ -161,7 +162,7 @@
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -184,7 +185,7 @@
     <Style x:Key="HeadlineSpan" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
         <Setter Property="FontSize" Value="32" />
-        <Setter Property="FontFamily" Value="InterSemiBold" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.SemiBold}" />
     </Style>
 
     <Style
@@ -194,16 +195,11 @@
         <Setter Property="FontSize" Value="22" />
     </Style>
 
-    <Style TargetType="ListView">
-        <Setter Property="SeparatorColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
-        <Setter Property="RefreshControlColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
-    </Style>
-
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -241,7 +237,7 @@
     <Style TargetType="RadioButton">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -268,7 +264,7 @@
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="CancelButtonColor" Value="{StaticResource Gray500}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -291,7 +287,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -371,7 +367,7 @@
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Regular}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -398,8 +394,9 @@
         <Setter Property="BackgroundColor" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="NavigationPage.HasNavigationBar" Value="False" />
         <Setter Property="droid:NavigationBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
-        <Setter Property="behaviors:StatusBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
-        <Setter Property="behaviors:StatusBar.Style" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
+        <Setter Property="behaviors:StatusBar.StatusBarApplyOn" Value="OnPageNavigatedTo" />
+        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{StaticResource SimplePageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.StatusBarStyle" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
         <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light={x:Static core:NavigationBarStyle.DarkContent}, Dark={x:Static core:NavigationBarStyle.LightContent}}" />
     </Style>
 
@@ -409,7 +406,7 @@
         TargetType="Page">
         <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
         <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
-        <Setter Property="behaviors:StatusBar.Color" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
     </Style>
 
     <Style x:Key="Divider" TargetType="BoxView">

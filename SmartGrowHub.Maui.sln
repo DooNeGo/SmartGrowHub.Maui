@@ -45,6 +45,7 @@ Global
 		{72305E57-E090-4108-BF0B-F708C0D8AB0C}.Release|Android-arm64.Build.0 = Release|Any CPU
 		{72305E57-E090-4108-BF0B-F708C0D8AB0C}.Release|Android-x64.ActiveCfg = Release|Any CPU
 		{72305E57-E090-4108-BF0B-F708C0D8AB0C}.Release|Android-x64.Build.0 = Release|Any CPU
+		{72305E57-E090-4108-BF0B-F708C0D8AB0C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{4C30526C-78C9-42A6-9C55-E20BFA245799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C30526C-78C9-42A6-9C55-E20BFA245799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C30526C-78C9-42A6-9C55-E20BFA245799}.Debug|Android-arm64.ActiveCfg = Debug|Any CPU

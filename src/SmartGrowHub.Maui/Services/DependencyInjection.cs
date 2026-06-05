@@ -1,10 +1,12 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
 using SmartGrowHub.Maui.Services.Flow;
 using SmartGrowHub.Maui.Services.Infrastructure;
+using SmartGrowHub.Shared.GrowHubs.Model;
 using SmartGrowHub.Shared.SerializerContext;
 using TimeProvider = SmartGrowHub.Maui.Services.Infrastructure.TimeProvider;
 
@@ -12,58 +14,61 @@ namespace SmartGrowHub.Maui.Services;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddServices(this IServiceCollection services) =>
-        services
-            .AddApiServices()
-            .AddAppServices()
-            .AddFlowServices()
-            .AddInfrastructureServices();
-
-    private static IServiceCollection AddApiServices(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services
-            .AddSingleton<IAuthService, AuthService>()
-            .AddSingleton<IGrowHubService, GrowHubService>()
-            .AddTransient<TokenDelegatingHandler>()
-            .AddTransient<UnauthorizedDelegatingHandler>();
-        
-        services.AddHttpClient(Options.DefaultName, ConfigureHttpClient)
-            .AddHttpMessageHandler<TokenDelegatingHandler>()
-            .AddHttpMessageHandler<UnauthorizedDelegatingHandler>();
+        public IServiceCollection AddServices() =>
+            services
+                .AddApiServices()
+                .AddAppServices()
+                .AddFlowServices()
+                .AddInfrastructureServices();
 
-        services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
-
-        return services;
-
-        static void ConfigureHttpClient(HttpClient client)
+        private IServiceCollection AddApiServices()
         {
-            client.BaseAddress = new Uri("https://h8sqq0wq-7260.euw.devtunnels.ms");
-            client.Timeout = TimeSpan.FromSeconds(40);
-        }
-    }
+            services
+                .AddSingleton<IAuthService, AuthService>()
+                .AddSingleton<IGrowHubService, GrowHubService>()
+                .AddTransient<TokenDelegatingHandler>()
+                .AddTransient<UnauthorizedDelegatingHandler>();
+        
+            services.AddHttpClient(string.Empty, ConfigureHttpClient)
+                .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
+                .AddHttpMessageHandler<TokenDelegatingHandler>();
 
-    private static IServiceCollection AddAppServices(this IServiceCollection services) =>
-        services
-            .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<IPopupNavigation, MPowerKitPopupNavigation>()
-            .AddScoped<INavigationService, MPowerKitNavigationService>();
+            services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
 
-    private static IServiceCollection AddFlowServices(this IServiceCollection services) =>
-        services
-            .AddTransient<IAuthorizationErrorHandler, AuthorizationErrorHandler>()
-            .AddTransient<ILoginByEmailService, LoginByEmailService>()
-            .AddTransient<ILogoutService, LogoutService>();
+            return services;
 
-    private static IServiceCollection AddInfrastructureServices(this IServiceCollection services) =>
-        services
-            .AddTransient<HttpService>()
-            .AddSingleton<ITimeProvider, TimeProvider>()
-            .AddSingleton<IMainThread, DefaultMainThread>()
-            .AddSingleton(SecureStorage.Default)
-            .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
+            static void ConfigureHttpClient(HttpClient client)
             {
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                options.TypeInfoResolverChain.Add(SmartGrowHubSerializerContext.Default);
-                return new SystemJsonSerializer(options);
-            });
+                client.BaseAddress = new Uri("https://rants-unheard-seizing.ngrok-free.dev");
+                client.Timeout = TimeSpan.FromSeconds(40);
+            }
+        }
+
+        private IServiceCollection AddAppServices() =>
+            services
+                .AddSingleton<IDialogService, DialogService>()
+                .AddSingleton<IPopupNavigation, MPowerKitPopupNavigation>()
+                .AddScoped<INavigationService, MPowerKitNavigationService>();
+
+        private IServiceCollection AddFlowServices() =>
+            services
+                .AddTransient<IAuthorizationErrorHandler, AuthorizationErrorHandler>()
+                .AddTransient<ILoginByEmailService, LoginByEmailService>()
+                .AddTransient<ILogoutService, LogoutService>();
+
+        private IServiceCollection AddInfrastructureServices() =>
+            services
+                .AddTransient<IHttpService, HttpService>()
+                .AddSingleton<ITimeProvider, TimeProvider>()
+                .AddSingleton<IMainThread, DefaultMainThread>()
+                .AddSingleton(SecureStorage.Default)
+                .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
+                {
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    options.TypeInfoResolverChain.Add(SmartGrowHubSerializerContext.Default);
+                    return new SystemJsonSerializer(options);
+                });
+    }
 }

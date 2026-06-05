@@ -5,7 +5,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
-    xmlns:behaviors="clr-namespace:SmartGrowHub.Maui.Behaviors"
     xmlns:converters="clr-namespace:SmartGrowHub.Maui.Features.Main.Converters"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:model="clr-namespace:SmartGrowHub.Shared.GrowHubs.Model;assembly=SmartGrowHub.Shared"
@@ -14,15 +13,8 @@
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:Name="Root"
     x:DataType="viewModel:MainPageModel"
+    SafeAreaEdges="All"
     Style="{StaticResource DefaultPage}">
-
-    <behaviors:StatusBar.ApplyOn>
-        <OnPlatform x:TypeArguments="toolkit:StatusBarApplyOn">
-            <On Platform="Android" Value="OnPageNavigatedTo" />
-            <On Platform="iOS" Value="OnBehaviorAttachedTo" />
-        </OnPlatform>
-    </behaviors:StatusBar.ApplyOn>
-
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
         <ScrollView Padding="20,20,20,0">
             <VerticalStackLayout Spacing="20">
@@ -33,31 +25,27 @@
                         <VerticalStackLayout Spacing="10">
                             <Label Style="{StaticResource MediumMedium}" Text="{x:Static localization:AppResources.Inside}" />
 
-                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                                <view:MetricWidget
-                                    Grid.Column="0"
-                                    x:DataType="view:MainPage"
-                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
-                                    MainValue="23"
-                                    MetricName="{x:Static localization:AppResources.TemperatureShort}"
-                                    ValueUnit="°C" />
+                            <CollectionView ItemsSource="{Binding Measurements}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                                </CollectionView.ItemsLayout>
 
-                                <view:MetricWidget
-                                    Grid.Column="1"
-                                    x:DataType="view:MainPage"
-                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
-                                    MainValue="78"
-                                    MetricName="{x:Static localization:AppResources.Humidity}"
-                                    ValueUnit="%" />
-
-                                <view:MetricWidget
-                                    Grid.Column="2"
-                                    x:DataType="view:MainPage"
-                                    BackgroundColor="{Binding BackgroundColor, Source={Reference Root}}"
-                                    MainValue="0.73"
-                                    MetricName="{x:Static localization:AppResources.Vpd}"
-                                    ValueUnit="{x:Static localization:AppResources.kPa}" />
-                            </Grid>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:SensorMeasurementDto">
+                                        <view:MetricWidget
+                                            MainValue="{Binding Quantity.Magnitude}"
+                                            MetricName="{Binding Type}"
+                                            ValueUnit="{Binding Quantity.Unit}">
+                                            <view:MetricWidget.BackgroundColor>
+                                                <Binding
+                                                    x:DataType="view:MainPage"
+                                                    Path="BackgroundColor"
+                                                    Source="{Reference Root}" />
+                                            </view:MetricWidget.BackgroundColor>
+                                        </view:MetricWidget>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </VerticalStackLayout>
                     </Border>
 
@@ -80,13 +68,13 @@
 
                 <VerticalStackLayout x:Name="QuickSettingsStackLayout">
                     <VerticalStackLayout.Resources>
-                        <converters:ComponentToColorConverter x:Key="ComponentToColorConverter" />
+                        <converters:ModuleToColorConverter x:Key="ComponentToColorConverter" />
                         <converters:ModuleToIconConverter x:Key="ComponentToIconConverter" />
                         <converters:ScheduleToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
                         <converters:ScheduleToTitleConverter x:Key="ProgramToTitleConverter" />
                     </VerticalStackLayout.Resources>
 
-                    <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{x:Bind Components, IsItemsSource=True}">
+                    <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{Binding Modules}">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout
                                 HorizontalItemSpacing="10"
@@ -105,9 +93,9 @@
                                     Value="{Binding Schedule, Converter={StaticResource ProgramToCurrentValueConverter}}">
                                     <view:QuickSetting.Command>
                                         <Binding
-                                            x:DataType="view:MainPage"
-                                            Path="BindingContext.GoToComponentsControlCommand"
-                                            Source="{Reference Root}" />
+                                            x:DataType="viewModel:MainPageModel"
+                                            Path="GoToComponentsControlCommand"
+                                            Source="{RelativeSource AncestorType={Type viewModel:MainPageModel}}" />
                                     </view:QuickSetting.Command>
                                 </view:QuickSetting>
                             </DataTemplate>
@@ -149,7 +137,7 @@
 
                 <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
                     <VerticalStackLayout x:Name="DevicesLayout">
-                        <HorizontalStackLayout BindableLayout.ItemsSource="{x:Bind GrowHubs, IsItemsSource=True}" Spacing="10">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding GrowHubs}" Spacing="10">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:GrowHubDto">
                                     <view:DeviceWidget

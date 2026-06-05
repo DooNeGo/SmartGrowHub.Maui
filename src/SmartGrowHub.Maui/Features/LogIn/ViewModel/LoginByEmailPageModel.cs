@@ -9,12 +9,22 @@ using SmartGrowHub.Maui.Services.Flow;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-public sealed partial class LoginByEmailPageModel(
-    ILoginByEmailService logInService,
-    IDialogService dialogService,
-    INavigationService navigationService)
-    : ObservableValidator, IPageLifecycleAware
+public sealed partial class LoginByEmailPageModel : ObservableValidator, IPageLifecycleAware
 {
+    private readonly ILoginByEmailService _logInService;
+    private readonly IDialogService _dialogService;
+    private readonly INavigationService _navigationService;
+    
+    public LoginByEmailPageModel(
+        ILoginByEmailService logInService,
+        IDialogService dialogService,
+        INavigationService navigationService)
+    {
+        _logInService = logInService;
+        _dialogService = dialogService;
+        _navigationService = navigationService;
+    }
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessageResourceName = nameof(AppResources.RequiredField), ErrorMessageResourceType = typeof(AppResources))]
@@ -25,7 +35,7 @@ public sealed partial class LoginByEmailPageModel(
 
     public void OnAppearing() => OnEmailChanged(Email);
 
-    public void OnDisappearing() => SendOtpCommand.Cancel();
+    public void OnDisappearing() { }
 
     partial void OnEmailChanged(string value)
     {
@@ -36,17 +46,17 @@ public sealed partial class LoginByEmailPageModel(
 
     [RelayCommand]
     private Task<Fin<Unit>> SendOtpAsync(CancellationToken cancellationToken) => (
-        from _1 in dialogService.ShowLoadingAsync()
-        from _2 in logInService
-            .SendOtpToEmail(Email, cancellationToken)
+        from _1 in _dialogService.ShowLoading()
+        from _2 in _logInService
+            .SendOtpToEmail(Email)
             .TapOnFail(DisplayError)
-            .Finally(dialogService.HideLoading())
-        from _3 in navigationService
+            .Finally(_dialogService.HideLoading())
+        from _3 in _navigationService
             .CreateBuilder(Routes.CheckCodePage)
             .AddRouteParameter(nameof(CheckCodePageModel.SentTo), Email)
             .NavigateAsync()
         select _3
-    ).RunSafeAsync().AsTask();
+    ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
 
     private IO<Unit> DisplayError(Error error) =>
         IO.lift(() => EmailError = error.Message).ToUnit();

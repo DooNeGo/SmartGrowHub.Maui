@@ -4,77 +4,63 @@ using CommunityToolkit.Maui.Core;
 
 namespace SmartGrowHub.Maui.Behaviors;
 
-[SuppressMessage("Interoperability", "CA1416:Проверка совместимости платформы")]
+[SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 public static class StatusBar
 {
-    #region Color
+    #region StatusBarColor
 
-    public static readonly BindableProperty ColorProperty = BindableProperty.CreateAttached(
-        "Color", typeof(Color), typeof(StatusBar), Colors.Transparent,
-        propertyChanged: (bindable, _, newValue) =>
-        {
-            if (bindable is not Page page) return;
-            if (newValue is not Color color) return;
+    public static readonly BindableProperty StatusBarColorProperty = BindableProperty.CreateAttached(
+        "StatusBarColor", typeof(Color), typeof(StatusBar), null, propertyChanged: OnStatusBarColorChanged);
 
-            StatusBarBehavior behavior = GetOrCreateBehavior(page);
-            behavior.StatusBarColor = color;
-        });
-    
-    public static Color GetColor(BindableObject bindable) => (Color)bindable.GetValue(ColorProperty);
-    
-    public static void SetColor(BindableObject bindable, Color color) => bindable.SetValue(ColorProperty, color);
-
-    #endregion
-
-    #region Style
-
-    public static readonly BindableProperty StyleProperty = BindableProperty.CreateAttached(
-        "Style", typeof(StatusBarStyle), typeof(StatusBar), StatusBarStyle.Default,
-        propertyChanged: (bindable, _, newValue) =>
-        {
-            if (bindable is not Page page) return;
-            if (newValue is not StatusBarStyle style) return;
-
-            StatusBarBehavior behavior = GetOrCreateBehavior(page);
-            behavior.StatusBarStyle = style;
-        });
-
-    public static StatusBarStyle GetStyle(BindableObject bindable) => (StatusBarStyle)bindable.GetValue(StyleProperty);
-
-    public static void SetStyle(BindableObject bindable, StatusBarStyle style) =>
-        bindable.SetValue(StyleProperty, style);
-
-    #endregion
-    
-    #region ApplyOn
-
-    public static readonly BindableProperty ApplyOnProperty = BindableProperty.CreateAttached(
-        "ApplyOn", typeof(StatusBarApplyOn), typeof(StatusBar), StatusBarApplyOn.OnBehaviorAttachedTo,
-        propertyChanged: (bindable, _, newValue) =>
-        {
-            if (bindable is not Page page) return;
-            if (newValue is not StatusBarApplyOn applyOn) return;
-
-            StatusBarBehavior behavior = GetOrCreateBehavior(page);
-            behavior.ApplyOn = applyOn;
-        });
-    
-    public static StatusBarApplyOn GetApplyOn(BindableObject bindable) =>
-        (StatusBarApplyOn)bindable.GetValue(ApplyOnProperty);
-    
-    public static void SetApplyOn(BindableObject bindable, StatusBarApplyOn style) =>
-        bindable.SetValue(ApplyOnProperty, style);
-
-    #endregion
-    
-    private static StatusBarBehavior GetOrCreateBehavior(Page page)
+    private static void OnStatusBarColorChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        var behavior = (StatusBarBehavior?)page.Behaviors.FirstOrDefault(b => b is StatusBarBehavior);
-        if (behavior is not null) return behavior;
-        
-        behavior = new StatusBarBehavior();
-        page.Behaviors.Add(behavior);
-
-        return behavior;
+        if ((bindable, newValue) is not (Page page, Color color)) return;
+        page.GetOrAddBehavior<StatusBarBehavior>().StatusBarColor = color;  
     }
+
+    public static Color? GetStatusBarColor(Page page) => page.GetValue(StatusBarColorProperty) as Color;
+
+    public static void SetStatusBarColor(Page page, Color? value) => page.SetValue(StatusBarColorProperty, value);
+    
+    #endregion
+    
+    #region StatusBarStyle
+
+    public static readonly BindableProperty StatusBarStyleProperty = BindableProperty.CreateAttached(
+        "StatusBarStyle", typeof(StatusBarStyle), typeof(StatusBar), StatusBarStyle.Default,
+        propertyChanged: OnStatusBarStyleChanged);
+
+    private static void OnStatusBarStyleChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if ((bindable, newValue) is not (Page page, StatusBarStyle style)) return;
+        page.GetOrAddBehavior<StatusBarBehavior>().StatusBarStyle = style;
+    }
+
+    public static StatusBarStyle GetStatusBarStyle(Page page) =>
+        (StatusBarStyle)page.GetValue(StatusBarStyleProperty);
+
+    public static void SetStatusBarStyle(Page page, StatusBarStyle value) =>
+        page.SetValue(StatusBarStyleProperty, value);
+    
+    #endregion
+    
+    #region StatusBarApplyOn
+
+    public static readonly BindableProperty StatusBarApplyOnProperty = BindableProperty.CreateAttached(
+        "StatusBarApplyOn", typeof(StatusBarApplyOn), typeof(StatusBar), default(StatusBarApplyOn),
+        propertyChanged: OnStatusBarApplyOnChanged);
+
+    private static void OnStatusBarApplyOnChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if ((bindable, newValue) is not (Page page, StatusBarApplyOn applyOn)) return;
+        page.GetOrAddBehavior<StatusBarBehavior>().ApplyOn = applyOn;
+    }
+
+    public static StatusBarApplyOn GetStatusBarApplyOn(Page page) =>
+        (StatusBarApplyOn)page.GetValue(StatusBarApplyOnProperty);
+
+    public static void SetStatusBarApplyOn(Page page, StatusBarApplyOn value) =>
+        page.SetValue(StatusBarApplyOnProperty, value);
+    
+    #endregion
 }

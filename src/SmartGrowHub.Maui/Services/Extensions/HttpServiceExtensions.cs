@@ -7,44 +7,38 @@ public static class HttpServiceExtensions
 {
     private const UriKind DefaultUriKind = UriKind.RelativeOrAbsolute;
 
-    public static OptionT<IO, TResponse> GetAsync<TResponse>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, CancellationToken cancellationToken) =>
-        httpService.SendAsync<TResponse>(HttpMethod.Get, uri, null, cancellationToken);
+    extension(IHttpService httpService)
+    {
+        public OptionT<IO, TResponse> GetAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri) =>
+            httpService.SendAsync<TResponse>(HttpMethod.Get, uri, null);
 
-    public static OptionT<IO, TResponse> PutAsync<TResponse>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, HttpContent? content, CancellationToken cancellationToken) =>
-        httpService.SendAsync<TResponse>(HttpMethod.Put, uri, content, cancellationToken);
+        public OptionT<IO, TResponse> PutAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, HttpContent? content) =>
+            httpService.SendAsync<TResponse>(HttpMethod.Put, uri, content);
 
-    public static OptionT<IO, TResponse> PostAsync<TResponse>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, HttpContent? content, CancellationToken cancellationToken) =>
-        httpService.SendAsync<TResponse>(HttpMethod.Post, uri, content, cancellationToken);
+        public OptionT<IO, TResponse> PostAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, HttpContent? content) =>
+            httpService.SendAsync<TResponse>(HttpMethod.Post, uri, content);
 
-    public static OptionT<IO, TResponse> DeleteAsync<TResponse>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, CancellationToken cancellationToken) =>
-        httpService.SendAsync<TResponse>(HttpMethod.Delete, uri, null, cancellationToken);
+        public OptionT<IO, TResponse> DeleteAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri) =>
+            httpService.SendAsync<TResponse>(HttpMethod.Delete, uri, null);
 
-    public static OptionT<IO, TResponse> PostAsJsonAsync<TResponse, TRequest>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, TRequest request, CancellationToken cancellationToken) =>
-        httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Post, uri, request, cancellationToken);
+        public OptionT<IO, TResponse> PostAsJsonAsync<TResponse, TRequest>([StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, TRequest request) =>
+            httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Post, uri, request);
 
-    public static OptionT<IO, TResponse> PutAsJsonAsync<TResponse, TRequest>(this IHttpService httpService,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, TRequest request, CancellationToken cancellationToken) =>
-        httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Put, uri, request, cancellationToken);
+        public OptionT<IO, TResponse> PutAsJsonAsync<TResponse, TRequest>([StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, TRequest request) =>
+            httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Put, uri, request);
 
-    public static OptionT<IO, TResponse> SendJsonAsync<TResponse, TRequest>(this IHttpService httpService, HttpMethod method,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, TRequest request, CancellationToken cancellationToken) =>
-        httpService.SendJsonAsync<TResponse, TRequest>(method, new Uri(uri, DefaultUriKind), request,
-            cancellationToken);
+        public OptionT<IO, TResponse> SendJsonAsync<TResponse, TRequest>(HttpMethod method,
+            [StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, TRequest request) =>
+            httpService.SendJsonAsync<TResponse, TRequest>(method, new Uri(uri, DefaultUriKind), request);
 
-    public static OptionT<IO, TResponse> SendAsync<TResponse>(this IHttpService httpService, HttpMethod method,
-        [StringSyntax(StringSyntaxAttribute.Uri)]
-        string uri, HttpContent? content, CancellationToken cancellationToken) =>
-        httpService.SendAsync<TResponse>(method, new Uri(uri, DefaultUriKind), content, cancellationToken);
+        public OptionT<IO, TResponse> SendAsync<TResponse>(HttpMethod method,
+            [StringSyntax(StringSyntaxAttribute.Uri)]
+            string uri, HttpContent? content) =>
+            httpService.SendAsync<TResponse>(method, new Uri(uri, DefaultUriKind), content);
+    }
 }

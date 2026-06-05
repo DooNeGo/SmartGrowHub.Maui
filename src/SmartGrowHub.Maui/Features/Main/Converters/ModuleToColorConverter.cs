@@ -3,7 +3,7 @@ using SmartGrowHub.Shared.GrowHubs.Model;
 
 namespace SmartGrowHub.Maui.Features.Main.Converters;
 
-public sealed class ComponentToColorConverter : IValueConverter
+public sealed class ModuleToColorConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

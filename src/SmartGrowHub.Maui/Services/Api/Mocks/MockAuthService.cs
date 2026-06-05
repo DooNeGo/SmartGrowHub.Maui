@@ -4,22 +4,22 @@ namespace SmartGrowHub.Maui.Services.Api.Mocks;
 
 internal sealed class MockAuthService : IAuthService
 {
-    public OptionT<IO, AuthTokensDto> CheckOtp(string otp, CancellationToken cancellationToken)
+    public IO<AuthTokensDto> VerifyOtp(string otp)
     {
         throw new NotImplementedException();
     }
 
-    public OptionT<IO, AuthTokensDto> RefreshTokens(string refreshToken, CancellationToken cancellationToken)
+    public IO<AuthTokensDto> RefreshTokens(string refreshToken)
     {
         throw new NotImplementedException();
     }
 
-    public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken)
+    public IO<Unit> RequestOtpToEmail(string emailAddress)
     {
         throw new NotImplementedException();
     }
 
-    public IO<Unit> LogOut(string refreshToken, CancellationToken cancellationToken)
+    public IO<Unit> LogOut(string refreshToken)
     {
         throw new NotImplementedException();
     }

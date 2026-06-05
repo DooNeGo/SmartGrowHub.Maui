@@ -6,8 +6,8 @@ namespace SmartGrowHub.Maui.Services.Flow;
 
 public interface ILoginByEmailService
 {
-    IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken);
-    IO<Unit> CheckOtp(string oneTimePassword, CancellationToken cancellationToken);
+    IO<Unit> SendOtpToEmail(string emailAddress);
+    IO<Unit> CheckOtp(string oneTimePassword);
 }
 
 public sealed class LoginByEmailService(
@@ -16,14 +16,14 @@ public sealed class LoginByEmailService(
     IAuthService authService)
     : ILoginByEmailService
 {
-    public IO<Unit> SendOtpToEmail(string emailAddress, CancellationToken cancellationToken) =>
+    public IO<Unit> SendOtpToEmail(string emailAddress) =>
         authService
-            .SendOtpToEmail(emailAddress, cancellationToken)
+            .RequestOtpToEmail(emailAddress)
             .TapOnFail(error => IO.lift(() => logger.Error(error.ToException(), "Failed to send otp to email")));
 
-    public IO<Unit> CheckOtp(string oneTimePassword, CancellationToken cancellationToken) => (
-        from response in authService.CheckOtp(oneTimePassword, cancellationToken)
+    public IO<Unit> CheckOtp(string oneTimePassword) => (
+        from response in authService.VerifyOtp(oneTimePassword)
         from _ in secureStorage.SetAuthTokens(response)
         select _
-    ).Run().As().TapOnFail(error => IO.lift(() => logger.Error(error.ToException(), "Failed to check otp"))).ToUnit();
+    ).TapOnFail(error => IO.lift(() => logger.Error(error.ToException(), "Failed to check otp")));
 }

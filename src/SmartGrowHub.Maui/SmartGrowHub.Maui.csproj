@@ -9,6 +9,7 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>preview</LangVersion>
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+<!--		<MauiXamlInflator>SourceGen</MauiXamlInflator>-->
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -53,21 +54,16 @@
 		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="CompiledBindings.MAUI" Version="1.0.19.7" />
 		<PackageReference Include="epj.RouteGenerator" Version="1.0.5" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-49" />
+		<PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-77" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.8" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.70" />
 		<PackageReference Include="MPowerKit.Navigation.Popups" Version="1.6.0" />
 		<PackageReference Include="MPowerKit.Regions" Version="1.6.0" />
+		<PackageReference Include="MQTTnet" Version="5.1.0.1559" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiXaml Update="**\*.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>

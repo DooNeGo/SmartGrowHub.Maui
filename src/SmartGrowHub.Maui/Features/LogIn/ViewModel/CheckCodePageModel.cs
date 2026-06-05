@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
-using SmartGrowHub.Maui.Base;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.Extensions;
@@ -12,12 +11,22 @@ using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
 
-public sealed partial class CheckCodePageModel(
-    ILoginByEmailService loginService,
-    INavigationService navigationService,
-    IDialogService dialogService)
-    : ObservableValidator, IPageLifecycleAware, IInitializeAware
+public sealed partial class CheckCodePageModel : ObservableValidator, IPageLifecycleAware, IInitializeAware
 {
+    private readonly ILoginByEmailService _loginService;
+    private readonly INavigationService _navigationService;
+    private readonly IDialogService _dialogService;
+    
+    public CheckCodePageModel(
+        ILoginByEmailService loginService,
+        INavigationService navigationService,
+        IDialogService dialogService)
+    {
+        _loginService = loginService;
+        _navigationService = navigationService;
+        _dialogService = dialogService;
+    }
+
     [ObservableProperty] public partial string SentTo { get; set; } = string.Empty;
     
     [ObservableProperty]
@@ -45,18 +54,18 @@ public sealed partial class CheckCodePageModel(
     }
 
     [RelayCommand]
-    private Task<Unit> GoBackAsync() => navigationService.GoBackAsync().RunAsync().AsTask();
+    private Task<Unit> GoBackAsync() => _navigationService.GoBackAsync().RunAsync().AsTask();
 
     [RelayCommand]
     private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) => (
-        from _1 in dialogService.ShowLoadingAsync()
-        from _2 in loginService
-            .CheckOtp(Code, cancellationToken)
+        from _1 in _dialogService.ShowLoading()
+        from _2 in _loginService
+            .CheckOtp(Code)
             .TapOnFail(DisplayError)
-            .Finally(dialogService.HideLoading())
-        from _3 in navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.MainPage}")
+            .Finally(_dialogService.HideLoading())
+        from _3 in _navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.MainPage}")
         select _3
-    ).RunSafeAsync().AsTask();
+    ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
     
     private IO<Unit> DisplayError(Error error) => IO.lift(() => CodeError = error.Message).ToUnit();
 }
