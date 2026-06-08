@@ -90,14 +90,9 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
         select _;
 
     [RelayCommand]
-    private Task<Unit> GoToComponentsControlAsync(GrowHubModuleDto? module) =>
-        module?.Type is ModuleTypeDto.DayLight
-            ? GoToLightControlAsync()
-            : Task.FromResult(Unit.Default);
-
-    private Task<Unit> GoToLightControlAsync() =>
+    private Task<Unit> GoToModuleControlAsync(GrowHubModuleDto? module) =>
         _navigationService
-            .NavigateAsync(Routes.LightControlPage)
+            .NavigateAsync(Routes.GrowHubModuleControlPage)
             .RunAsync().AsTask();
 
     private Task<Unit> WaitForStateChangeAsync()

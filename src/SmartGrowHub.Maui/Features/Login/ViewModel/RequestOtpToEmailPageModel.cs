@@ -51,8 +51,8 @@ public sealed partial class RequestOtpToEmailPageModel : ObservableValidator, IP
             .TapOnFail(DisplayError)
             .Finally(_dialogService.HideLoading())
         from _3 in _navigationService
-            .CreateBuilder(Routes.VerifyCodePage)
-            .AddRouteParameter(nameof(VerifyCodePageModel.SentTo), Email)
+            .CreateBuilder(Routes.VerifyOtpPage)
+            .AddRouteParameter(nameof(VerifyOtpPageModel.SentTo), Email)
             .NavigateAsync()
         select _3
     ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();

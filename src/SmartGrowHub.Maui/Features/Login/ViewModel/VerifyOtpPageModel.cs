@@ -10,13 +10,13 @@ using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.Login.ViewModel;
 
-public sealed partial class VerifyCodePageModel : ObservableValidator, IPageLifecycleAware, IInitializeAware
+public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifecycleAware, IInitializeAware
 {
     private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IDialogService _dialogService;
     
-    public VerifyCodePageModel(
+    public VerifyOtpPageModel(
         IAuthService authService,
         INavigationService navigationService,
         IDialogService dialogService)
