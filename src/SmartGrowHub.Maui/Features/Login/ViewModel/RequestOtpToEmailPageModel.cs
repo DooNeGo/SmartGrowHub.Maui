@@ -5,22 +5,21 @@ using MPowerKit.Navigation.Awares;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.Extensions;
-using SmartGrowHub.Maui.Services.Flow;
 
-namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
+namespace SmartGrowHub.Maui.Features.Login.ViewModel;
 
-public sealed partial class LoginByEmailPageModel : ObservableValidator, IPageLifecycleAware
+public sealed partial class RequestOtpToEmailPageModel : ObservableValidator, IPageLifecycleAware
 {
-    private readonly ILoginByEmailService _logInService;
+    private readonly IAuthService _authService;
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     
-    public LoginByEmailPageModel(
-        ILoginByEmailService logInService,
+    public RequestOtpToEmailPageModel(
+        IAuthService authService,
         IDialogService dialogService,
         INavigationService navigationService)
     {
-        _logInService = logInService;
+        _authService = authService;
         _dialogService = dialogService;
         _navigationService = navigationService;
     }
@@ -47,13 +46,13 @@ public sealed partial class LoginByEmailPageModel : ObservableValidator, IPageLi
     [RelayCommand]
     private Task<Fin<Unit>> SendOtpAsync(CancellationToken cancellationToken) => (
         from _1 in _dialogService.ShowLoading()
-        from _2 in _logInService
-            .SendOtpToEmail(Email)
+        from _2 in _authService
+            .RequestOtpToEmail(Email)
             .TapOnFail(DisplayError)
             .Finally(_dialogService.HideLoading())
         from _3 in _navigationService
-            .CreateBuilder(Routes.CheckCodePage)
-            .AddRouteParameter(nameof(CheckCodePageModel.SentTo), Email)
+            .CreateBuilder(Routes.VerifyCodePage)
+            .AddRouteParameter(nameof(VerifyCodePageModel.SentTo), Email)
             .NavigateAsync()
         select _3
     ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();

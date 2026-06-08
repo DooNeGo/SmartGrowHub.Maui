@@ -1,8 +1,8 @@
 ﻿using MPowerKit.Navigation.Utilities;
 using SmartGrowHub.Maui.Features.ConfigureGrowHub.View;
 using SmartGrowHub.Maui.Features.ConfigureGrowHub.ViewModel;
-using SmartGrowHub.Maui.Features.LogIn.View;
-using SmartGrowHub.Maui.Features.LogIn.ViewModel;
+using SmartGrowHub.Maui.Features.Login.View;
+using SmartGrowHub.Maui.Features.Login.ViewModel;
 using SmartGrowHub.Maui.Features.Main.View;
 using SmartGrowHub.Maui.Features.Main.ViewModel;
 
@@ -14,7 +14,7 @@ public static class DependencyInjection
         services
             .RegisterForNavigation<StartPage, StartPageModel>(Routes.StartPage)
             .RegisterForNavigation<MainPage, MainPageModel>(Routes.MainPage)
-            .RegisterForNavigation<LoginByEmailPage, LoginByEmailPageModel>(Routes.LoginByEmailPage)
-            .RegisterForNavigation<CheckCodePage, CheckCodePageModel>(Routes.CheckCodePage)
+            .RegisterForNavigation<RequestOtpToEmailPage, RequestOtpToEmailPageModel>(Routes.RequestOtpToEmailPage)
+            .RegisterForNavigation<VerifyCodePage, VerifyCodePageModel>(Routes.VerifyCodePage)
             .RegisterForNavigation<LightControlPage, LightControlPageModel>(Routes.LightControlPage);
 }

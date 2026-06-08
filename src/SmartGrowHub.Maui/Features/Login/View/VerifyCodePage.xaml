@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage
-    x:Class="SmartGrowHub.Maui.Features.LogIn.View.CheckCodePage"
+    x:Class="SmartGrowHub.Maui.Features.Login.View.VerifyCodePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Login.ViewModel"
     Padding="30,0"
-    x:DataType="viewModel:CheckCodePageModel"
+    x:DataType="viewModel:VerifyCodePageModel"
     Style="{StaticResource SimplePage}">
 
     <ContentPage.Resources>
@@ -38,7 +38,7 @@
             <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.CodeHasBeenSentTo}" />
 
             <Label
-                x:DataType="viewModel:CheckCodePageModel"
+                x:DataType="viewModel:VerifyCodePageModel"
                 Style="{StaticResource LargeMediumContrast}"
                 Text="{Binding SentTo}" />
         </VerticalStackLayout>

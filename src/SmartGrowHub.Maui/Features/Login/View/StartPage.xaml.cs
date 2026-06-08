@@ -1,4 +1,4 @@
-namespace SmartGrowHub.Maui.Features.LogIn.View;
+namespace SmartGrowHub.Maui.Features.Login.View;
 
 public sealed partial class StartPage
 {

@@ -3,8 +3,12 @@ using SmartGrowHub.Maui.Services.Extensions;
 
 namespace SmartGrowHub.Maui.Services.DelegatingHandlers;
 
-internal sealed class TokenDelegatingHandler(ISecureStorage secureStorage) : DelegatingHandler
+internal sealed class TokenDelegatingHandler : DelegatingHandler
 {
+    private readonly ISecureStorage _secureStorage;
+
+    public TokenDelegatingHandler(ISecureStorage secureStorage) => _secureStorage = secureStorage;
+
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken) => (
         from _ in SetAuthorization(request)
@@ -12,14 +16,14 @@ internal sealed class TokenDelegatingHandler(ISecureStorage secureStorage) : Del
         select response
     ).RunAsync(cancellationToken).AsTask();
 
-    private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request) =>
-        IO.liftAsync(env => base.SendAsync(request, env.Token));
-
     private IO<Unit> SetAuthorization(HttpRequestMessage request) => (
-        from accessToken in secureStorage.GetAccessToken()
+        from accessToken in _secureStorage.GetAccessToken()
         from _ in request.SetAccessToken(accessToken)
         select _
     ).IfNone(Unit.Default).As();
+    
+    private IO<HttpResponseMessage> SendRequest(HttpRequestMessage request) =>
+        IO.liftAsync(env => base.SendAsync(request, env.Token));
 }
 
 public static class HttpRequestMessageExtension

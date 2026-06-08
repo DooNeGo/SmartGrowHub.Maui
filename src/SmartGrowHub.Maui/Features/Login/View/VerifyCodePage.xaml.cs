@@ -1,8 +1,8 @@
-namespace SmartGrowHub.Maui.Features.LogIn.View;
+namespace SmartGrowHub.Maui.Features.Login.View;
 
-public sealed partial class CheckCodePage
+public sealed partial class VerifyCodePage
 {
-    public CheckCodePage()
+    public VerifyCodePage()
     {
         InitializeComponent();
     }

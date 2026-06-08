@@ -6,23 +6,22 @@ using MPowerKit.Navigation.Interfaces;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.Extensions;
-using SmartGrowHub.Maui.Services.Flow;
 using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
-namespace SmartGrowHub.Maui.Features.LogIn.ViewModel;
+namespace SmartGrowHub.Maui.Features.Login.ViewModel;
 
-public sealed partial class CheckCodePageModel : ObservableValidator, IPageLifecycleAware, IInitializeAware
+public sealed partial class VerifyCodePageModel : ObservableValidator, IPageLifecycleAware, IInitializeAware
 {
-    private readonly ILoginByEmailService _loginService;
+    private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IDialogService _dialogService;
     
-    public CheckCodePageModel(
-        ILoginByEmailService loginService,
+    public VerifyCodePageModel(
+        IAuthService authService,
         INavigationService navigationService,
         IDialogService dialogService)
     {
-        _loginService = loginService;
+        _authService = authService;
         _navigationService = navigationService;
         _dialogService = dialogService;
     }
@@ -59,8 +58,8 @@ public sealed partial class CheckCodePageModel : ObservableValidator, IPageLifec
     [RelayCommand]
     private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) => (
         from _1 in _dialogService.ShowLoading()
-        from _2 in _loginService
-            .CheckOtp(Code)
+        from _2 in _authService
+            .VerifyOtp(Code)
             .TapOnFail(DisplayError)
             .Finally(_dialogService.HideLoading())
         from _3 in _navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.MainPage}")

@@ -2,7 +2,6 @@
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
-using SmartGrowHub.Maui.Services.Flow;
 using SmartGrowHub.Maui.Services.Infrastructure;
 using SmartGrowHub.Shared.SerializerContext;
 using TimeProvider = SmartGrowHub.Maui.Services.Infrastructure.TimeProvider;
@@ -17,22 +16,21 @@ public static class DependencyInjection
             services
                 .AddApiServices()
                 .AddAppServices()
-                .AddFlowServices()
                 .AddInfrastructureServices();
 
         private IServiceCollection AddApiServices()
         {
             services
-                .AddSingleton<IAuthService, AuthService>()
-                .AddSingleton<IGrowHubService, GrowHubService>()
+                .AddSingleton<IAuthApi, AuthApi>()
+                .AddSingleton<IGrowHubApi, GrowHubApi>()
                 .AddTransient<TokenDelegatingHandler>()
                 .AddTransient<UnauthorizedDelegatingHandler>();
 
             services.AddHttpClient(string.Empty, ConfigureHttpClient)
-                // .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
+                .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
                 .AddHttpMessageHandler<TokenDelegatingHandler>();
 
-            services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
+            services.AddHttpClient(nameof(IAuthApi), ConfigureHttpClient);
 
             return services;
 
@@ -49,13 +47,8 @@ public static class DependencyInjection
             services
                 .AddSingleton<IDialogService, DialogService>()
                 .AddSingleton<IPopupNavigation, MPowerKitPopupNavigation>()
-                .AddScoped<INavigationService, MPowerKitNavigationService>();
-
-        private IServiceCollection AddFlowServices() =>
-            services
-                .AddTransient<IAuthorizationErrorHandler, AuthorizationErrorHandler>()
-                .AddTransient<ILoginByEmailService, LoginByEmailService>()
-                .AddTransient<ILogoutService, LogoutService>();
+                .AddScoped<INavigationService, MPowerKitNavigationService>()
+                .AddSingleton<IAuthService, AuthService>();
 
         private IServiceCollection AddInfrastructureServices() =>
             services

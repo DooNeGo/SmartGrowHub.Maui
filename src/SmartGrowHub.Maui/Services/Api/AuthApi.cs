@@ -6,7 +6,7 @@ using SmartGrowHub.Shared.Tokens;
 
 namespace SmartGrowHub.Maui.Services.Api;
 
-public interface IAuthService
+public interface IAuthApi
 {
     IO<AuthTokensDto> VerifyOtp(string otp);
     IO<AuthTokensDto> RefreshTokens(string refreshToken);
@@ -14,14 +14,14 @@ public interface IAuthService
     IO<Unit> LogOut(string refreshToken);
 }
 
-public sealed class AuthService : IAuthService
+public sealed class AuthApi : IAuthApi
 {
     private readonly IHttpService _httpService;
 
-    public AuthService(IHttpService httpService)
+    public AuthApi(IHttpService httpService)
     {
         _httpService = httpService;
-        _httpService.ClientName = nameof(IAuthService);
+        _httpService.ClientName = nameof(IAuthApi);
     }
 
     public IO<Unit> RequestOtpToEmail(string emailAddress) => (

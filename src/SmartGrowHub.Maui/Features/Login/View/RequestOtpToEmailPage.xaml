@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage
-    x:Class="SmartGrowHub.Maui.Features.LogIn.View.LoginByEmailPage"
+    x:Class="SmartGrowHub.Maui.Features.Login.View.RequestOtpToEmailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
-    xmlns:local="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:styles="clr-namespace:SmartGrowHub.Maui.Resources.Styles"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Login.View"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Login.ViewModel"
     x:Name="Root"
-    x:DataType="viewModel:LoginByEmailPageModel"
+    x:DataType="viewModel:RequestOtpToEmailPageModel"
     SafeAreaEdges="None"
     Style="{StaticResource SimplePage}">
 
@@ -78,7 +78,7 @@
                             <Setter Property="HeightRequest" Value="50" />
                             <Setter Property="WidthRequest" Value="50" />
                             <Setter Property="CornerRadius" Value="25" />
-                            <Setter x:DataType="local:LoginByEmailPage" Property="BackgroundColor" Value="{Binding BackgroundColor, Source={Reference Root}}" />
+                            <Setter x:DataType="view:RequestOtpToEmailPage" Property="BackgroundColor" Value="{Binding BackgroundColor, Source={Reference Root}}" />
                             <Setter Property="Shadow">
                                 <Setter.Value>
                                     <Shadow

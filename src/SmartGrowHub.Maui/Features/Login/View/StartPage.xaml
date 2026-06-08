@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage
-    x:Class="SmartGrowHub.Maui.Features.LogIn.View.StartPage"
+    x:Class="SmartGrowHub.Maui.Features.Login.View.StartPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
-    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Login.ViewModel"
     Padding="35"
     x:DataType="viewModel:StartPageModel"
     Style="{StaticResource SimplePage}">

@@ -87,4 +87,8 @@
 	  <ProjectReference Include="..\SmartGrowHub.Shared\SmartGrowHub.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Features\GrowHub\" />
+	</ItemGroup>
+
 </Project>

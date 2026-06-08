@@ -6,17 +6,17 @@ using SmartGrowHub.Shared.Results;
 
 namespace SmartGrowHub.Maui.Services.Api;
 
-public interface IGrowHubService
+public interface IGrowHubApi
 {
     IO<ImmutableList<GrowHubDto>> GetGrowHubs();
     IO<ImmutableList<SensorMeasurementDto>> GetLatestMeasurements(string growHubId);
 }
 
-public sealed class GrowHubService : IGrowHubService
+public sealed class GrowHubApi : IGrowHubApi
 {
     private readonly IHttpService _httpService;
 
-    public GrowHubService(IHttpService httpService) => _httpService = httpService;
+    public GrowHubApi(IHttpService httpService) => _httpService = httpService;
 
     public IO<ImmutableList<GrowHubDto>> GetGrowHubs() =>
         _httpService

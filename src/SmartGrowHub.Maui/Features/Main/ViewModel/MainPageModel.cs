@@ -18,16 +18,16 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     private TaskCompletionSource<Unit> _stateChangeTcs = new(Unit.Default);
     
     private readonly INavigationService _navigationService;
-    private readonly IGrowHubService _growHubService;
+    private readonly IGrowHubApi _growHubApi;
     private readonly ILogger _logger;
 
     public MainPageModel(
         INavigationService navigationService,
-        IGrowHubService growHubService,
+        IGrowHubApi growHubApi,
         ILogger logger)
     {
         _navigationService = navigationService;
-        _growHubService = growHubService;
+        _growHubApi = growHubApi;
         _logger = logger;
     }
 
@@ -73,12 +73,12 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     }
     
     private IO<Unit> RefreshLatestMeasurements(string growHubId) =>
-        from measurements in _growHubService.GetLatestMeasurements(growHubId)
+        from measurements in _growHubApi.GetLatestMeasurements(growHubId)
         from _ in IO.lift(() => Measurements = measurements)
         select Unit.Default;
     
     private IO<Unit> RefreshGrowHubs() =>
-        from growHubs in _growHubService.GetGrowHubs()
+        from growHubs in _growHubApi.GetGrowHubs()
         from _ in IO.lift(() =>
         {
             GrowHubs.Clear();
