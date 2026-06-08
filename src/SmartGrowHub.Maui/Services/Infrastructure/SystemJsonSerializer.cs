@@ -9,28 +9,32 @@ public interface IJsonSerializer
     OptionT<IO, T> DeserializeAsync<T>(Stream stream);
     ValueTask<T?> DeserializeAsync<T>(Stream stream, CancellationToken cancellationToken);
     Fin<string> Serialize<T>(T value);
-    IO<Unit> SerializeAsync<T>(Stream stream, T? value);
+    IO<Unit> Serialize<T>(Stream stream, T value);
 }
 
-public sealed class SystemJsonSerializer(JsonSerializerOptions options) : IJsonSerializer
+public sealed class SystemJsonSerializer : IJsonSerializer
 {
-    public Option<T> Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, options);
+    private readonly JsonSerializerOptions _options;
 
-    public Option<T> Deserialize<T>(Stream stream) => JsonSerializer.Deserialize<T>(stream, options);
+    public SystemJsonSerializer(JsonSerializerOptions options) => _options = options;
+
+    public Option<T> Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, _options);
+
+    public Option<T> Deserialize<T>(Stream stream) => JsonSerializer.Deserialize<T>(stream, _options);
 
     public OptionT<IO, T> DeserializeAsync<T>(Stream stream) =>
         IO.liftVAsync(env => JsonSerializer
-            .DeserializeAsync<T>(stream, options, env.Token)
+            .DeserializeAsync<T>(stream, _options, env.Token)
             .Map(Prelude.Optional));
 
     public ValueTask<T?> DeserializeAsync<T>(Stream stream, CancellationToken cancellationToken) =>
-        JsonSerializer.DeserializeAsync<T>(stream, options, cancellationToken);
+        JsonSerializer.DeserializeAsync<T>(stream, _options, cancellationToken);
 
     public Fin<string> Serialize<T>(T value)
     {
         try
         {
-            string result = JsonSerializer.Serialize(value, options);
+            string result = JsonSerializer.Serialize(value, _options);
             return Fin.Succ(result);
         }
         catch (Exception e)
@@ -39,6 +43,6 @@ public sealed class SystemJsonSerializer(JsonSerializerOptions options) : IJsonS
         }
     }
 
-    public IO<Unit> SerializeAsync<T>(Stream stream, T? value) =>
-        IO.liftAsync(env => JsonSerializer.SerializeAsync(stream, value, options, env.Token).ToUnit());
+    public IO<Unit> Serialize<T>(Stream stream, T value) =>
+        IO.liftAsync(env => JsonSerializer.SerializeAsync(stream, value, _options, env.Token).ToUnit());
 }

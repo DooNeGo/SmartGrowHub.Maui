@@ -20,14 +20,15 @@ public sealed class GrowHubService : IGrowHubService
 
     public IO<ImmutableList<GrowHubDto>> GetGrowHubs() =>
         _httpService
-            .GetAsync<Result<IEnumerable<GrowHubDto>>>("/api/grow-hubs")
+            .Get<Result<IReadOnlyList<GrowHubDto>>>("/api/grow-hubs")
             .ToIOOrFail("Response was null")
             .Bind(result => result.ToIO())
             .Map(x => x.ToImmutableList());
 
     public IO<ImmutableList<SensorMeasurementDto>> GetLatestMeasurements(string growHubId) =>
         _httpService
-            .GetAsync<Result<IEnumerable<SensorMeasurementDto>>>($"/api/grow-hubs/{growHubId}/measurements/latest")
+            .Get<Result<IReadOnlyList<SensorMeasurementDto>>>(
+                $"/api/grow-hubs/{growHubId}/sensors/measurements/latest")
             .ToIOOrFail("Response was null")
             .Bind(result => result.ToIO())
             .Map(x => x.ToImmutableList());

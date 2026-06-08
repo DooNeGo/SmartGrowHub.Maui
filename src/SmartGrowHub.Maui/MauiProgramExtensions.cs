@@ -34,6 +34,22 @@ public static class MauiProgramExtensions
                 fonts.AddFont("Inter-Medium.ttf", "InterMedium");
             });
 
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+        {
+            var message = e.ExceptionObject.ToString();
+
+            if (e.ExceptionObject is Exception exception)
+            {
+                Log.Fatal(exception, "Unhandled exception");
+            }
+            else
+            {
+                Log.Fatal("Unhandled exception: {message}", message);
+            }
+
+            Clipboard.SetTextAsync(message).GetAwaiter().GetResult();
+        };
+
         return builder;
     }
 

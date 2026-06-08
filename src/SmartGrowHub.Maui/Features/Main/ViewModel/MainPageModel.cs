@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using AsyncAwaitBestPractices;
 using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
 using Serilog;
@@ -37,7 +37,6 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     [ObservableProperty] public partial GrowHubDto? CurrentGrowHub { get; private set; }
     [ObservableProperty] public partial ImmutableList<SensorMeasurementDto> Measurements { get; private set; } = [];
     
-    
     public ObservableCollection<GrowHubDto> GrowHubs { get; } = [];
 
     public ObservableCollection<GrowHubModuleDto> Modules { get; } = [];
@@ -62,7 +61,7 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
         if (CurrentGrowHub is not null)
         {
             _ = await RefreshLatestMeasurements(CurrentGrowHub.Id)
-                .RunSafeAsync(EnvIO.New(token: cancellationToken, syncContext: SynchronizationContext.Current))
+                .RunSafeAsync(EnvIO.New(token: cancellationToken))
                 .Map(fin => fin.IfFail(error =>
                     _logger.Error(error.ToException(), "Failed to refresh latest measurements")));
         }
@@ -77,7 +76,6 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
         from measurements in _growHubService.GetLatestMeasurements(growHubId)
         from _ in IO.lift(() => Measurements = measurements)
         select Unit.Default;
-        
     
     private IO<Unit> RefreshGrowHubs() =>
         from growHubs in _growHubService.GetGrowHubs()

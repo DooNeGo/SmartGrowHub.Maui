@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Android-arm64" />
+    <Platform Name="Android-x64" />
+    <Platform Name="Any CPU" />
+  </Configurations>
+  <Project Path="src/SmartGrowHub.Maui.Droid/SmartGrowHub.Maui.Droid.csproj">
+    <Platform Solution="*|Android-arm64" Project="arm64" />
+    <Platform Solution="*|Android-x64" Project="x64" />
+    <Deploy />
+  </Project>
+  <Project Path="src/SmartGrowHub.Maui.iOS/SmartGrowHub.Maui.iOS.csproj" />
+  <Project Path="src/SmartGrowHub.Maui/SmartGrowHub.Maui.csproj" />
+  <Project Path="src/SmartGrowHub.Shared/SmartGrowHub.Shared.csproj" />
+</Solution>

@@ -25,24 +25,24 @@ public sealed class AuthService : IAuthService
     }
 
     public IO<Unit> RequestOtpToEmail(string emailAddress) => (
-        from response in _httpService.PostAsJsonAsync<Result, RequestOtpToEmailRequest>(
+        from response in _httpService.PostAsJson<Result, RequestOtpToEmailRequest>(
             "/api/auth/otp/email", new RequestOtpToEmailRequest(emailAddress))
         from _ in response.ToIO()
         select _
     ).ToIOOrFail("Response was null");
 
     public IO<AuthTokensDto> VerifyOtp(string otp) =>
-        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, VerifyOtpRequest>(
+        _httpService.PostAsJson<Result<AuthTokensDto>, VerifyOtpRequest>(
             "/api/auth/otp/verify", new VerifyOtpRequest(otp)
         ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 
     public IO<AuthTokensDto> RefreshTokens(string refreshToken) =>
-        _httpService.PostAsJsonAsync<Result<AuthTokensDto>, RefreshTokensRequest>(
+        _httpService.PostAsJson<Result<AuthTokensDto>, RefreshTokensRequest>(
             "/api/auth/tokens/refresh", new RefreshTokensRequest(refreshToken)
         ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 
     public IO<Unit> LogOut(string refreshToken) =>
-        _httpService.PostAsJsonAsync<Result, LogoutRequest>(
+        _httpService.PostAsJson<Result, LogoutRequest>(
             "/api/auth/logout", new LogoutRequest(refreshToken)
         ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
 }

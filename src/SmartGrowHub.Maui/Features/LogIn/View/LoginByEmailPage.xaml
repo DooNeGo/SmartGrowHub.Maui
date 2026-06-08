@@ -7,18 +7,20 @@
     xmlns:customControls="clr-namespace:SmartGrowHub.Maui.CustomControls"
     xmlns:local="clr-namespace:SmartGrowHub.Maui.Features.LogIn.View"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:styles="clr-namespace:SmartGrowHub.Maui.Resources.Styles"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.LogIn.ViewModel"
     x:Name="Root"
     x:DataType="viewModel:LoginByEmailPageModel"
+    SafeAreaEdges="None"
     Style="{StaticResource SimplePage}">
 
     <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentPage.Resources>
 
-    <ScrollView Padding="30">
-        <Grid RowDefinitions="2*,*,*,*">
+    <ScrollView Padding="30" SafeAreaEdges="None">
+        <Grid RowDefinitions="2*,*,*,*" SafeAreaEdges="None">
             <VerticalStackLayout
                 Grid.Row="0"
                 Spacing="8"
@@ -43,6 +45,7 @@
                 Keyboard="{x:Static Keyboard.Email}"
                 Placeholder="{x:Static localization:AppResources.Email}"
                 ReturnType="Done"
+                SafeAreaEdges="None"
                 Text="{Binding Email}"
                 VerticalOptions="Center" />
 
@@ -62,7 +65,7 @@
 
                     <Label
                         Grid.Column="1"
-                        FontFamily="InterSemiBold"
+                        FontFamily="{x:Static styles:Fonts.SemiBold}"
                         FontSize="13"
                         Text="{x:Static localization:AppResources.OrContinueWith}" />
 
@@ -79,7 +82,7 @@
                             <Setter Property="Shadow">
                                 <Setter.Value>
                                     <Shadow
-                                        Brush="{toolkit:AppThemeResource Key=ContrastColor}"
+                                        Brush="{SolidColorBrush Color={toolkit:AppThemeResource Key=ContrastColor}}"
                                         Opacity="0.1"
                                         Radius="5"
                                         Offset="0,1" />

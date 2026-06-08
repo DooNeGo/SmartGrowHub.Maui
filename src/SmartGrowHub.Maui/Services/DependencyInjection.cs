@@ -1,12 +1,9 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.Options;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
 using SmartGrowHub.Maui.Services.Flow;
 using SmartGrowHub.Maui.Services.Infrastructure;
-using SmartGrowHub.Shared.GrowHubs.Model;
 using SmartGrowHub.Shared.SerializerContext;
 using TimeProvider = SmartGrowHub.Maui.Services.Infrastructure.TimeProvider;
 
@@ -30,9 +27,9 @@ public static class DependencyInjection
                 .AddSingleton<IGrowHubService, GrowHubService>()
                 .AddTransient<TokenDelegatingHandler>()
                 .AddTransient<UnauthorizedDelegatingHandler>();
-        
+
             services.AddHttpClient(string.Empty, ConfigureHttpClient)
-                .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
+                // .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
                 .AddHttpMessageHandler<TokenDelegatingHandler>();
 
             services.AddHttpClient(nameof(IAuthService), ConfigureHttpClient);
@@ -41,7 +38,9 @@ public static class DependencyInjection
 
             static void ConfigureHttpClient(HttpClient client)
             {
-                client.BaseAddress = new Uri("https://rants-unheard-seizing.ngrok-free.dev");
+                client.BaseAddress =
+                    new Uri("https://rants-unheard-seizing.ngrok-free.dev");
+                    //new Uri("http://192.168.0.4:8080");
                 client.Timeout = TimeSpan.FromSeconds(40);
             }
         }
@@ -66,7 +65,12 @@ public static class DependencyInjection
                 .AddSingleton(SecureStorage.Default)
                 .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
                 {
-                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                        RespectNullableAnnotations = true,
+                        RespectRequiredConstructorParameters = true
+                    };
                     options.TypeInfoResolverChain.Add(SmartGrowHubSerializerContext.Default);
                     return new SystemJsonSerializer(options);
                 });

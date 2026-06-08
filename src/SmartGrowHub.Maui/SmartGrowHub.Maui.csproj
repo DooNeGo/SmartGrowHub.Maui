@@ -7,9 +7,12 @@
 		<RootNamespace>SmartGrowHub.Maui</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<Nullable>enable</Nullable>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<NeutralLanguage>en-US</NeutralLanguage>
 		<LangVersion>preview</LangVersion>
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
-<!--		<MauiXamlInflator>SourceGen</MauiXamlInflator>-->
+		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -51,7 +54,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="10.0.0" />
-		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="epj.RouteGenerator" Version="1.0.5" GeneratePathProperty="true" PrivateAssets="all" />

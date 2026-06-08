@@ -27,13 +27,6 @@ public static class ResultExtensions
                     ? Fin.Succ(result.Data)
                     : Fin.Fail<T>(Error.New("Null response error"))
                 : Fin.Fail<T>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty));
-
-        public OptionT<IO, T> ToOptionTIO() =>
-            result.IsSuccess
-                ? result.Data is not null
-                    ? OptionT.Some<IO, T>(result.Data)
-                    : OptionT<IO, T>.None
-                : OptionT.lift(IO.fail<T>(Error.New(result.ErrorCode ?? 0, result.ErrorMessage ?? string.Empty)));
         
         public IO<T> ToIO() =>
             result.IsSuccess

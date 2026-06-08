@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmartGrowHub.Maui.Services.Infrastructure;
+﻿using SmartGrowHub.Maui.Services.Infrastructure;
 
 namespace SmartGrowHub.Maui.Services.Extensions;
 
@@ -9,36 +8,28 @@ public static class HttpServiceExtensions
 
     extension(IHttpService httpService)
     {
-        public OptionT<IO, TResponse> GetAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri) =>
-            httpService.SendAsync<TResponse>(HttpMethod.Get, uri, null);
+        public OptionT<IO, TResponse> Get<TResponse>(string uri) =>
+            httpService.Send<TResponse>(HttpMethod.Get, uri, null);
 
-        public OptionT<IO, TResponse> PutAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, HttpContent? content) =>
-            httpService.SendAsync<TResponse>(HttpMethod.Put, uri, content);
+        public OptionT<IO, TResponse> Put<TResponse>(string uri, HttpContent? content) =>
+            httpService.Send<TResponse>(HttpMethod.Put, uri, content);
 
-        public OptionT<IO, TResponse> PostAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, HttpContent? content) =>
-            httpService.SendAsync<TResponse>(HttpMethod.Post, uri, content);
+        public OptionT<IO, TResponse> Post<TResponse>(string uri, HttpContent? content) =>
+            httpService.Send<TResponse>(HttpMethod.Post, uri, content);
 
-        public OptionT<IO, TResponse> DeleteAsync<TResponse>([StringSyntax(StringSyntaxAttribute.Uri)] string uri) =>
-            httpService.SendAsync<TResponse>(HttpMethod.Delete, uri, null);
+        public OptionT<IO, TResponse> Delete<TResponse>(string uri) =>
+            httpService.Send<TResponse>(HttpMethod.Delete, uri, null);
 
-        public OptionT<IO, TResponse> PostAsJsonAsync<TResponse, TRequest>([StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, TRequest request) =>
-            httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Post, uri, request);
+        public OptionT<IO, TResponse> PostAsJson<TResponse, TRequest>(string uri, TRequest request) =>
+            httpService.SendAsJson<TResponse, TRequest>(HttpMethod.Post, uri, request);
 
-        public OptionT<IO, TResponse> PutAsJsonAsync<TResponse, TRequest>([StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, TRequest request) =>
-            httpService.SendJsonAsync<TResponse, TRequest>(HttpMethod.Put, uri, request);
+        public OptionT<IO, TResponse> PutAsJson<TResponse, TRequest>(string uri, TRequest request) =>
+            httpService.SendAsJson<TResponse, TRequest>(HttpMethod.Put, uri, request);
 
-        public OptionT<IO, TResponse> SendJsonAsync<TResponse, TRequest>(HttpMethod method,
-            [StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, TRequest request) =>
-            httpService.SendJsonAsync<TResponse, TRequest>(method, new Uri(uri, DefaultUriKind), request);
+        public OptionT<IO, TResponse> SendAsJson<TResponse, TRequest>(HttpMethod method, string uri, TRequest request) =>
+            httpService.SendAsJson<TResponse, TRequest>(method, new Uri(uri, DefaultUriKind), request);
 
-        public OptionT<IO, TResponse> SendAsync<TResponse>(HttpMethod method,
-            [StringSyntax(StringSyntaxAttribute.Uri)]
-            string uri, HttpContent? content) =>
-            httpService.SendAsync<TResponse>(method, new Uri(uri, DefaultUriKind), content);
+        public OptionT<IO, TResponse> Send<TResponse>(HttpMethod method, string uri, HttpContent? content) =>
+            httpService.Send<TResponse>(method, new Uri(uri, DefaultUriKind), content);
     }
 }
