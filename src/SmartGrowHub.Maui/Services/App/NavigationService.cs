@@ -7,13 +7,10 @@ namespace SmartGrowHub.Maui.Services.App;
 
 public interface INavigationService
 {
-    IO<Unit> NavigateAsync(string route, Option<IDictionary<string, object>> parameters = default, bool modal = false,
+    IO<Unit> Navigate(string route, Option<IDictionary<string, object>> parameters = default, bool modal = false,
         bool animated = true);
 
-    IO<Unit> GoBackAsync(Option<IDictionary<string, object>> parameters = default, bool modal = false,
-        bool animated = true);
-
-    IO<Unit> GoBackToRootAsync(Option<IDictionary<string, object>> parameters = default, bool animated = true);
+    IO<Unit> GoBack(Option<IDictionary<string, object>> parameters = default, bool modal = false, bool animated = true);
     
     NavigationBuilder CreateBuilder(string route);
 }
@@ -31,7 +28,7 @@ public sealed class MPowerKitNavigationService : INavigationService
         _logger = logger;
     }
 
-    public IO<Unit> NavigateAsync(string route, Option<IDictionary<string, object>> parameters = default,
+    public IO<Unit> Navigate(string route, Option<IDictionary<string, object>> parameters = default,
         bool modal = false, bool animated = true) =>
         IO.liftVAsync(async () =>
         {
@@ -46,20 +43,12 @@ public sealed class MPowerKitNavigationService : INavigationService
             return Unit.Default;
         });
 
-    public IO<Unit> GoBackAsync(Option<IDictionary<string, object>> parameters = default, bool modal = false,
+    public IO<Unit> GoBack(Option<IDictionary<string, object>> parameters = default, bool modal = false,
         bool animated = true) =>
         IO.liftVAsync(async () =>
         {
             NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
             await _navigationService.GoBackAsync(navigationParameters, modal, animated).ConfigureAwait(false);
-            return Unit.Default;
-        });
-    
-    public IO<Unit> GoBackToRootAsync(Option<IDictionary<string, object>> parameters = default, bool animated = true) =>
-        IO.liftVAsync(async () =>
-        {
-            NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
-            await _navigationService.GoBackToRootAsync(navigationParameters, animated).ConfigureAwait(false);
             return Unit.Default;
         });
 

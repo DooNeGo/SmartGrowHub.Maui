@@ -53,7 +53,7 @@ public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifec
     }
 
     [RelayCommand]
-    private Task<Unit> GoBackAsync() => _navigationService.GoBackAsync().RunAsync().AsTask();
+    private Task<Unit> GoBackAsync() => _navigationService.GoBack().RunAsync().AsTask();
 
     [RelayCommand]
     private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) => (
@@ -62,7 +62,7 @@ public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifec
             .VerifyOtp(Code)
             .TapOnFail(DisplayError)
             .Finally(_dialogService.HideLoading())
-        from _3 in _navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.MainPage}")
+        from _3 in _navigationService.Navigate($"/{Routes.NavigationPage}/{Routes.MainPage}")
         select _3
     ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
     

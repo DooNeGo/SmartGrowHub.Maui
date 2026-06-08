@@ -92,7 +92,7 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     [RelayCommand]
     private Task<Unit> GoToModuleControlAsync(GrowHubModuleDto? module) =>
         _navigationService
-            .NavigateAsync(Routes.GrowHubModuleControlPage)
+            .Navigate(Routes.GrowHubModuleControlPage)
             .RunAsync().AsTask();
 
     private Task<Unit> WaitForStateChangeAsync()

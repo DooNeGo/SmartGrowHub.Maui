@@ -18,9 +18,8 @@ public sealed class NavigationBuilder
         return this;
     }
 
-    public IO<Unit> NavigateAsync(bool modal = false, bool animated = true)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(_route);
-        return _navigationService.NavigateAsync(_route, _parameters, modal, animated);
-    }
+    public IO<Unit> Navigate(bool modal = false, bool animated = true) =>
+        string.IsNullOrWhiteSpace(_route)
+            ? IO.fail<Unit>("Route cannot be null or whitespace")
+            : _navigationService.Navigate(_route, _parameters, modal, animated);
 }

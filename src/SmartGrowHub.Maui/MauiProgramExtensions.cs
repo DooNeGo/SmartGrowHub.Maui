@@ -75,7 +75,7 @@ public static class MauiProgramExtensions
             .Match(
                 Some: _ => $"{Routes.NavigationPage}/{Routes.MainPage}",
                 None: () => $"{Routes.NavigationPage}/{Routes.StartPage}")
-            .Bind(route => navigationService.NavigateAsync(route))
+            .Bind(route => navigationService.Navigate(route))
             .RunAsync();
     }
 }

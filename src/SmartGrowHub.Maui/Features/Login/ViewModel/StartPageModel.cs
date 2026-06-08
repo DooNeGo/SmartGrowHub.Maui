@@ -16,6 +16,6 @@ public sealed partial class StartPageModel : ObservableObject
     [RelayCommand]
     private Task<Unit> LogInByEmailAsync() =>
         _navigationService
-            .NavigateAsync(Routes.RequestOtpToEmailPage)
+            .Navigate(Routes.RequestOtpToEmailPage)
             .RunAsync().AsTask();
 }

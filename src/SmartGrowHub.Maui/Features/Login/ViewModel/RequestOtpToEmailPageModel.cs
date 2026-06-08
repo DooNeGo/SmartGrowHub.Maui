@@ -53,7 +53,7 @@ public sealed partial class RequestOtpToEmailPageModel : ObservableValidator, IP
         from _3 in _navigationService
             .CreateBuilder(Routes.VerifyOtpPage)
             .AddRouteParameter(nameof(VerifyOtpPageModel.SentTo), Email)
-            .NavigateAsync()
+            .Navigate()
         select _3
     ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
 
