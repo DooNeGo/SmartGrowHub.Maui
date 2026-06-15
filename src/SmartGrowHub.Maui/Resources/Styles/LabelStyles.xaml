@@ -31,7 +31,7 @@
         x:Key="SmallRegularCaption"
         BasedOn="{StaticResource SmallRegular}"
         TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource CaptionColorLight}, Dark={StaticResource CaptionColorDark}}" />
+        <Setter Property="TextColor" Value="{StaticResource CaptionColor}" />
     </Style>
 
     <Style
@@ -52,7 +52,7 @@
     <Style x:Key="LargeMediumContrast" TargetType="Label">
         <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Medium}" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ContrastColorLight}, Dark={StaticResource ContrastColorDark}}" />
+        <Setter Property="TextColor" Value="{StaticResource CaptionColor}" />
     </Style>
 
     <Style

@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
 namespace SmartGrowHub.Maui.Services.Infrastructure;
 
@@ -36,12 +35,12 @@ public sealed class HttpService : IHttpService
             HttpClient client = _clientFactory.CreateClient(ClientName);
             using var request = new HttpRequestMessage(method, uri);
             request.Content = content;
-            
+
             using HttpResponseMessage response = await client
                 .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, env.Token)
                 .ConfigureAwait(false);
-            
-            //string stringResponse = await response.Content.ReadAsStringAsync(env.Token).ConfigureAwait(false);
+
+            //string stringResponse = await response.Content.ReadAsStringAsync(env.Token);
             await using Stream stream = await response.Content.ReadAsStreamAsync(env.Token).ConfigureAwait(false);
             Option<T> result = await _jsonSerializer.DeserializeAsync<T>(stream, env.Token).ConfigureAwait(false);
             return result;

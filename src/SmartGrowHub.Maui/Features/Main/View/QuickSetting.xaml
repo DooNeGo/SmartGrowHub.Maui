@@ -38,6 +38,7 @@
 
             <Label
                 Grid.Row="1"
+                FontSize="16"
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
                 Style="{StaticResource XMediumMedium}"
@@ -49,6 +50,7 @@
             <Label
                 Grid.Row="2"
                 HorizontalTextAlignment="Center"
+                IsVisible="{Binding Status, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
                 Style="{StaticResource SmallRegular}"
                 Text="{Binding Status}"
                 TextColor="{StaticResource Gray400}" />

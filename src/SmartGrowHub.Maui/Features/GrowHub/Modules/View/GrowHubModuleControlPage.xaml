@@ -3,6 +3,19 @@
 <ContentPage
     x:Class="SmartGrowHub.Maui.Features.GrowHub.Modules.View.GrowHubModuleControlPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.GrowHub.Modules.ViewModel"
+    x:DataType="viewModel:GrowHubModuleControlPageModel"
+    NavigationPage.HasNavigationBar="True"
+    Style="{StaticResource DefaultPage}">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Switch IsToggled="{Binding IsEnabled}" />
+
+            <Button
+                Command="{Binding UpdateScheduleCommand}"
+                Style="{StaticResource PrimaryButton}"
+                Text="Save" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

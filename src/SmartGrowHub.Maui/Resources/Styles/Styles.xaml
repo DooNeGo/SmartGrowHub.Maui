@@ -393,9 +393,9 @@
     <Style x:Key="SimplePage" TargetType="Page">
         <Setter Property="BackgroundColor" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="NavigationPage.HasNavigationBar" Value="False" />
-        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource SimplePageBackgroundColor}" />
+        <Setter Property="droid:NavigationBar.Color" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="behaviors:StatusBar.StatusBarApplyOn" Value="OnPageNavigatedTo" />
-        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{toolkit:AppThemeResource SimplePageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{StaticResource SimplePageBackgroundColor}" />
         <Setter Property="behaviors:StatusBar.StatusBarStyle" Value="{AppThemeBinding Light={x:Static core:StatusBarStyle.DarkContent}, Dark={x:Static core:StatusBarStyle.LightContent}}" />
         <Setter Property="droid:NavigationBar.Style" Value="{AppThemeBinding Light={x:Static core:NavigationBarStyle.DarkContent}, Dark={x:Static core:NavigationBarStyle.LightContent}}" />
     </Style>
@@ -404,9 +404,9 @@
         x:Key="DefaultPage"
         BasedOn="{StaticResource SimplePage}"
         TargetType="Page">
-        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
-        <Setter Property="droid:NavigationBar.Color" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
-        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{toolkit:AppThemeResource DefaultPageBackgroundColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource DefaultPageBackgroundColor}" />
+        <Setter Property="droid:NavigationBar.Color" Value="{StaticResource DefaultPageBackgroundColor}" />
+        <Setter Property="behaviors:StatusBar.StatusBarColor" Value="{StaticResource DefaultPageBackgroundColor}" />
     </Style>
 
     <Style x:Key="Divider" TargetType="BoxView">
@@ -425,5 +425,8 @@
         <Setter Property="Padding" Value="10" />
         <Setter Property="BackgroundColor" Value="{StaticResource SimplePageBackgroundColor}" />
     </Style>
+
+    <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter" />
+    <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
 
 </ResourceDictionary>

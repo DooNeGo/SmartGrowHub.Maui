@@ -82,7 +82,7 @@
                             <Setter Property="Shadow">
                                 <Setter.Value>
                                     <Shadow
-                                        Brush="{SolidColorBrush Color={toolkit:AppThemeResource Key=ContrastColor}}"
+                                        Brush="{SolidColorBrush Color={StaticResource ContrastColor}}"
                                         Opacity="0.1"
                                         Radius="5"
                                         Offset="0,1" />

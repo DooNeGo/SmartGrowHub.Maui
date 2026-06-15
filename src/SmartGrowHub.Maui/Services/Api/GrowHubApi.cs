@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Infrastructure;
 using SmartGrowHub.Shared.GrowHubs.Model;
+using SmartGrowHub.Shared.GrowHubs.Requests;
 using SmartGrowHub.Shared.Results;
 
 namespace SmartGrowHub.Maui.Services.Api;
@@ -10,6 +11,7 @@ public interface IGrowHubApi
 {
     IO<ImmutableList<GrowHubDto>> GetGrowHubs();
     IO<ImmutableList<SensorMeasurementDto>> GetLatestMeasurements(string growHubId);
+    IO<Unit> UpdateSchedule(string scheduleId, UpdateScheduleRequestDto request);
 }
 
 public sealed class GrowHubApi : IGrowHubApi
@@ -32,4 +34,11 @@ public sealed class GrowHubApi : IGrowHubApi
             .ToIOOrFail("Response was null")
             .Bind(result => result.ToIO())
             .Map(x => x.ToImmutableList());
+
+    public IO<Unit> UpdateSchedule(string scheduleId, UpdateScheduleRequestDto request) =>
+        _httpService
+            .PutAsJson<Result, UpdateScheduleRequestDto>(
+                $"/api/grow-hubs/modules/schedules/{scheduleId}", request)
+            .ToIOOrFail("Response was null")
+            .Bind(result => result.ToIO());
 }

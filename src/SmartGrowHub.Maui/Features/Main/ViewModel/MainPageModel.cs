@@ -7,7 +7,9 @@ using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
 using Serilog;
 using SmartGrowHub.Maui.Base;
+using SmartGrowHub.Maui.Features.GrowHub.Modules.ViewModel;
 using SmartGrowHub.Maui.Services.Api;
+using SmartGrowHub.Maui.Services.Infrastructure;
 using SmartGrowHub.Shared.GrowHubs.Model;
 using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
@@ -19,15 +21,18 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     
     private readonly INavigationService _navigationService;
     private readonly IGrowHubApi _growHubApi;
+    private readonly IMainThread _mainThread;
     private readonly ILogger _logger;
 
     public MainPageModel(
         INavigationService navigationService,
         IGrowHubApi growHubApi,
+        IMainThread mainThread,
         ILogger logger)
     {
         _navigationService = navigationService;
         _growHubApi = growHubApi;
+        _mainThread = mainThread;
         _logger = logger;
     }
 
@@ -49,37 +54,76 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     {
         if (IsRefreshing) return;
 
-        await WaitForStateChangeAsync();
-
-        IsRefreshing = true;
-        CurrentState = PageStates.Loading;
-
-        _ = await RefreshGrowHubs()
-            .RunSafeAsync(EnvIO.New(token: cancellationToken))
-            .Map(fin => fin.IfFail(error => _logger.Error(error.ToException(), "Failed to refresh grow hubs")));
-
-        if (CurrentGrowHub is not null)
+        try
         {
-            _ = await RefreshLatestMeasurements(CurrentGrowHub.Id)
-                .RunSafeAsync(EnvIO.New(token: cancellationToken))
-                .Map(fin => fin.IfFail(error =>
-                    _logger.Error(error.ToException(), "Failed to refresh latest measurements")));
+            await Task.Run(() => Refresh.RunAsync(cancellationToken), cancellationToken);
         }
-
-        await WaitForStateChangeAsync();
-
-        CurrentState = null;
-        IsRefreshing = false;
+        catch (Exception e)
+        {
+            _logger.Error(e, "Failed to refresh main page");
+        }
+        
+        // try
+        // {
+        //     await WaitForStateChangeAsync();
+        //
+        //     IsRefreshing = true;
+        //     CurrentState = PageStates.Loading;
+        //
+        //     await Task.Run(() => RefreshGrowHubs
+        //         .RunAsync(EnvIO.New(token: cancellationToken))
+        //         .AsTask(), cancellationToken);
+        //
+        //     if (CurrentGrowHub is not null)
+        //     {
+        //         await Task.Run(
+        //             () => RefreshLatestMeasurements(CurrentGrowHub.Id).RunAsync(EnvIO.New(token: cancellationToken)),
+        //             cancellationToken);
+        //     }
+        //
+        //     await WaitForStateChangeAsync();
+        // }
+        // catch (Exception e)
+        // {
+        //     _logger.Error(e, "Failed to refresh main page");
+        // }
+        // finally
+        // {
+        //     CurrentState = null;
+        //     IsRefreshing = false;
+        // }
     }
-    
+
+    private IO<Unit> Refresh => (
+            from _1 in WaitForStateChange
+            from _2 in _mainThread.InvokeOnMainThread(() =>
+            {
+                IsRefreshing = true;
+                CurrentState = PageStates.Loading;
+            })
+            from _3 in RefreshGrowHubs
+            from current in IO.lift(() => CurrentGrowHub)
+            from _4 in current is null
+                ? IO.pure(Unit.Default)
+                : RefreshLatestMeasurements(current.Id)
+            from _5 in WaitForStateChange
+            select _5)
+        .Catch(error => IO.lift(() => _logger.Error(error.ToErrorException(), "Failed to refresh main page")))
+        .Finally(_mainThread.InvokeOnMainThread(() =>
+        {
+            CurrentState = null;
+            IsRefreshing = false;
+        })).As();
+        
+
     private IO<Unit> RefreshLatestMeasurements(string growHubId) =>
         from measurements in _growHubApi.GetLatestMeasurements(growHubId)
-        from _ in IO.lift(() => Measurements = measurements)
+        from _ in _mainThread.InvokeOnMainThread(() => Measurements = measurements)
         select Unit.Default;
-    
-    private IO<Unit> RefreshGrowHubs() =>
+
+    private IO<Unit> RefreshGrowHubs =>
         from growHubs in _growHubApi.GetGrowHubs()
-        from _ in IO.lift(() =>
+        from _ in _mainThread.InvokeOnMainThread(() =>
         {
             GrowHubs.Clear();
             Modules.Clear();
@@ -92,7 +136,9 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     [RelayCommand]
     private Task<Unit> GoToModuleControlAsync(GrowHubModuleDto? module) =>
         _navigationService
-            .Navigate(Routes.GrowHubModuleControlPage)
+            .CreateBuilder(Routes.GrowHubModuleControlPage)
+            .AddRouteParameter(GrowHubModuleControlPageModel.ModuleKey, module!)
+            .Navigate()
             .RunAsync().AsTask();
 
     private Task<Unit> WaitForStateChangeAsync()
@@ -103,6 +149,8 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     
         return _stateChangeTcs.Task;
     }
+
+    private IO<Unit> WaitForStateChange => IO.liftAsync(WaitForStateChangeAsync);
 
     partial void OnCanStateChangeChanged(bool value)
     {

@@ -4,9 +4,11 @@
     x:Class="SmartGrowHub.Maui.Features.Main.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:SmartGrowHub.Maui.Base"
     xmlns:converters="clr-namespace:SmartGrowHub.Maui.Features.Main.Converters"
     xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:model="clr-namespace:SmartGrowHub.Shared.GrowHubs.Model;assembly=SmartGrowHub.Shared"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:view="clr-namespace:SmartGrowHub.Maui.Features.Main.View"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.Main.ViewModel"
     x:Name="Root"
@@ -54,28 +56,32 @@
                                         </view:MetricWidget>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
+
+                                <CollectionView.EmptyView>
+                                    <Label Text="There will be measurements" />
+                                </CollectionView.EmptyView>
                             </CollectionView>
                         </VerticalStackLayout>
                     </Border>
 
-                    <!-- <toolkit:StateContainer.StateViews> -->
-                    <!--     <VerticalStackLayout toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"> -->
-                    <!--         <Border Padding="15" Style="{StaticResource DefaultBorder}"> -->
-                    <!--             <VerticalStackLayout Spacing="15"> -->
-                    <!--  <BoxView  -->
-                    <!--  HorizontalOptions="Start"  -->
-                    <!--  Style="{StaticResource SkeletonRow}"  -->
-                    <!--  WidthRequest="100" />  -->
-                    <!--                 <BoxView Style="{StaticResource SkeletonRow}" /> -->
-                    <!--                 <BoxView Style="{StaticResource SkeletonRow}" /> -->
-                    <!--             </VerticalStackLayout> -->
-                    <!--         </Border> -->
-                    <!--     </VerticalStackLayout> -->
-                    <!-- </toolkit:StateContainer.StateViews> -->
+                    <toolkit:StateContainer.StateViews>
+                        <VerticalStackLayout toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}">
+                            <Border Padding="15" Style="{StaticResource DefaultBorder}">
+                                <VerticalStackLayout Spacing="15">
+                                    <BoxView
+                                        HorizontalOptions="Start"
+                                        Style="{StaticResource SkeletonRow}"
+                                        WidthRequest="100" />
+                                    <BoxView Style="{StaticResource SkeletonRow}" />
+                                    <BoxView Style="{StaticResource SkeletonRow}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </toolkit:StateContainer.StateViews>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout x:Name="QuickSettingsStackLayout">
-                    <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{Binding Modules}">
+                    <CollectionView ItemsSource="{Binding Modules}">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout
                                 HorizontalItemSpacing="10"
@@ -95,7 +101,7 @@
                                     <view:QuickSetting.Command>
                                         <Binding
                                             x:DataType="viewModel:MainPageModel"
-                                            Path="GoToComponentsControlCommand"
+                                            Path="GoToModuleControlCommand"
                                             Source="{RelativeSource AncestorType={Type viewModel:MainPageModel}}" />
                                     </view:QuickSetting.Command>
                                 </view:QuickSetting>
@@ -103,16 +109,16 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <!-- <toolkit:StateContainer.StateViews> -->
-                    <!--  <Grid  -->
-                    <!--  toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"  -->
-                    <!--  ColumnDefinitions="*,*,*"  -->
-                    <!--  ColumnSpacing="10">  -->
-                    <!--         <view:QuickSettingSkeleton Grid.Column="0" /> -->
-                    <!--         <view:QuickSettingSkeleton Grid.Column="1" /> -->
-                    <!--         <view:QuickSettingSkeleton Grid.Column="2" /> -->
-                    <!--     </Grid> -->
-                    <!-- </toolkit:StateContainer.StateViews> -->
+                    <toolkit:StateContainer.StateViews>
+                        <Grid
+                            toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}"
+                            ColumnDefinitions="*,*,*"
+                            ColumnSpacing="10">
+                            <view:QuickSettingSkeleton Grid.Column="0" />
+                            <view:QuickSettingSkeleton Grid.Column="1" />
+                            <view:QuickSettingSkeleton Grid.Column="2" />
+                        </Grid>
+                    </toolkit:StateContainer.StateViews>
                 </VerticalStackLayout>
 
                 <Label Style="{StaticResource XLargeSemiBoldPrimary}" Text="{x:Static localization:AppResources.MyPlan}" />
@@ -152,13 +158,13 @@
                             </BindableLayout.ItemTemplate>
                         </HorizontalStackLayout>
 
-                        <!-- <toolkit:StateContainer.StateViews> -->
-                        <!--     <HorizontalStackLayout toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}" Spacing="10"> -->
-                        <!--         <view:QuickSettingSkeleton MinimumWidthRequest="140" /> -->
-                        <!--         <view:QuickSettingSkeleton MinimumWidthRequest="140" /> -->
-                        <!--         <view:QuickSettingSkeleton MinimumWidthRequest="140" /> -->
-                        <!--     </HorizontalStackLayout> -->
-                        <!-- </toolkit:StateContainer.StateViews> -->
+                        <toolkit:StateContainer.StateViews>
+                            <HorizontalStackLayout toolkit:StateView.StateKey="{x:Static base:PageStates.Loading}" Spacing="10">
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                                <view:QuickSettingSkeleton MinimumWidthRequest="140" />
+                            </HorizontalStackLayout>
+                        </toolkit:StateContainer.StateViews>
                     </VerticalStackLayout>
                 </ScrollView>
             </VerticalStackLayout>

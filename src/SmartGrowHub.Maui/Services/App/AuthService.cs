@@ -48,10 +48,9 @@ internal sealed class AuthService : IAuthService
         from _ in _secureStorage.SetAuthTokens(authTokens)
         select _;
 
-    private IO<AuthTokensDto> RefreshTokens(string refreshToken) =>
-        _authApi.RefreshTokens(refreshToken)
-            .Retry(Schedule.Once)
-            .TapOnFail(error => error.Code is 3 ? LogOut() : IO.pure(Unit.Default));
+    private IO<AuthTokensDto> RefreshTokens(string refreshToken) => _authApi.RefreshTokens(refreshToken);
+            // .Retry(Schedule.Once)
+            // .TapOnFail(error => error.Code is 3 ? LogOut() : IO.pure(Unit.Default));
     
     public IO<Unit> LogOut() =>
         from _1 in LogOutFromServer()

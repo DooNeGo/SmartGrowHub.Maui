@@ -54,37 +54,41 @@
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
 
-    <Color x:Key="EntryColorLight">#F2F2F7</Color>
+    <Color x:Key="EntryColor">#F2F2F7</Color>
     <Color x:Key="EntryColorDark">#212121</Color>
 
-    <Color x:Key="CaptionColorLight">#B5B5B5</Color>
+    <Color x:Key="CaptionColor">#B5B5B5</Color>
     <Color x:Key="CaptionColorDark">#B5B5B5</Color>
 
-    <Color x:Key="ContrastColorLight">Black</Color>
+    <Color x:Key="ContrastColor">Black</Color>
     <Color x:Key="ContrastColorDark">White</Color>
 
-    <toolkit:AppThemeColor
-        x:Key="SimplePageBackgroundColor"
-        Dark="{StaticResource Black}"
-        Light="{StaticResource White}" />
+    <Color x:Key="SimplePageBackgroundColor">White</Color>
 
-    <toolkit:AppThemeColor
-        x:Key="DefaultPageBackgroundColor"
-        Dark="{StaticResource Black}"
-        Light="{StaticResource EntryColorLight}" />
+    <Color x:Key="DefaultPageBackgroundColor">#F2F2F7</Color>
 
-    <toolkit:AppThemeColor
-        x:Key="ContrastColor"
-        Dark="{StaticResource White}"
-        Light="{StaticResource Black}" />
-
-    <toolkit:AppThemeColor
-        x:Key="EntryColor"
-        Dark="{StaticResource Gray900}"
-        Light="{StaticResource EntryColorLight}" />
-
-    <toolkit:AppThemeColor
-        x:Key="CaptionColor"
-        Dark="{StaticResource CaptionColorDark}"
-        Light="{StaticResource CaptionColorLight}" />
+    <!--  <toolkit:AppThemeColor  -->
+    <!--  x:Key="SimplePageBackgroundColor"  -->
+    <!--  Dark="{StaticResource Black}"  -->
+    <!--  Light="{StaticResource White}" />  -->
+    <!--    -->
+    <!--  <toolkit:AppThemeColor  -->
+    <!--  x:Key="DefaultPageBackgroundColor"  -->
+    <!--  Dark="{StaticResource Black}"  -->
+    <!--  Light="{StaticResource EntryColorLight}" />  -->
+    <!--    -->
+    <!--  <toolkit:AppThemeColor  -->
+    <!--  x:Key="ContrastColor"  -->
+    <!--  Dark="{StaticResource White}"  -->
+    <!--  Light="{StaticResource Black}" />  -->
+    <!--    -->
+    <!--  <toolkit:AppThemeColor  -->
+    <!--  x:Key="EntryColor"  -->
+    <!--  Dark="{StaticResource Gray900}"  -->
+    <!--  Light="{StaticResource EntryColorLight}" />  -->
+    <!--    -->
+    <!--  <toolkit:AppThemeColor  -->
+    <!--  x:Key="CaptionColor"  -->
+    <!--  Dark="{StaticResource CaptionColorDark}"  -->
+    <!--  Light="{StaticResource CaptionColorLight}" />  -->
 </ResourceDictionary>
