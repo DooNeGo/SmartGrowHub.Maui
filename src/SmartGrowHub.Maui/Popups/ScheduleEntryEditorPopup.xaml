@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<popups:PopupPage
+    x:Class="SmartGrowHub.Maui.Popups.ScheduleEntryEditorPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:popups="clr-namespace:MPowerKit.Popups;assembly=MPowerKit.Popups"
+    BackgroundColor="#60000000"
+    CloseOnBackgroundClick="False"
+    HasSystemPadding="False">
+
+    <Border
+        Padding="20"
+        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}"
+        StrokeShape="{RoundRectangle CornerRadius=20}"
+        VerticalOptions="End">
+        <ScrollView VerticalOptions="End">
+            <VerticalStackLayout Spacing="14">
+                <Label
+                    HorizontalOptions="Center"
+                    Style="{StaticResource MediumSemiBold}"
+                    Text="{x:Static localization:AppResources.AddScheduleEntry}" />
+
+                <VerticalStackLayout
+                    x:Name="DayPickersSection"
+                    IsVisible="False"
+                    Spacing="8">
+                    <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.StartDay}" />
+                    <Picker x:Name="StartDayPicker" />
+
+                    <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.EndDay}" />
+                    <Picker x:Name="EndDayPicker" />
+                </VerticalStackLayout>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.StartTime}" />
+                        <TimePicker x:Name="StartTimePicker" Format="HH:mm" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.EndTime}" />
+                        <TimePicker x:Name="EndTimePicker" Format="HH:mm" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.Mode}" />
+                <Picker x:Name="KindPicker" />
+
+                <Label Style="{StaticResource SmallRegularCaption}" Text="{x:Static localization:AppResources.PowerPercent}" />
+                <Slider
+                    x:Name="MagnitudeSlider"
+                    Maximum="100"
+                    Minimum="0"
+                    ValueChanged="OnMagnitudeChanged" />
+                <Label
+                    x:Name="MagnitudeLabel"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource MediumMedium}"
+                    Text="50%" />
+
+                <Grid
+                    Margin="0,8,0,0"
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        Clicked="OnCancelClicked"
+                        Text="{x:Static localization:AppResources.Cancel}"
+                        TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}" />
+
+                    <Button
+                        Grid.Column="1"
+                        Clicked="OnSaveClicked"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Text="{x:Static localization:AppResources.Save}" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Border>
+</popups:PopupPage>
+

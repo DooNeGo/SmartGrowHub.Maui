@@ -330,4 +330,76 @@
   <data name="SensorRandomNumberShort" xml:space="preserve">
     <value>Случайное</value>
   </data>
+  <data name="SelectMode" xml:space="preserve">
+    <value>Выберите режим</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Режим</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="NoScheduleEntries" xml:space="preserve">
+    <value>Нет записей расписания.</value>
+  </data>
+  <data name="AddScheduleEntry" xml:space="preserve">
+    <value>Добавить запись расписания</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Время начала</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Время окончания</value>
+  </data>
+  <data name="StartDay" xml:space="preserve">
+    <value>День начала</value>
+  </data>
+  <data name="EndDay" xml:space="preserve">
+    <value>День окончания</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Мощность</value>
+  </data>
+  <data name="Prefer" xml:space="preserve">
+    <value>Предпочтение</value>
+  </data>
+  <data name="PowerPercent" xml:space="preserve">
+    <value>Мощность (%)</value>
+  </data>
+  <data name="EnabledScheduleDescription" xml:space="preserve">
+    <value>Модуль всегда включен</value>
+  </data>
+  <data name="DisabledScheduleDescription" xml:space="preserve">
+    <value>Модуль всегда выключен</value>
+  </data>
+  <data name="DailyScheduleDescription" xml:space="preserve">
+    <value>Модуль работает по ежедневному расписанию</value>
+  </data>
+  <data name="WeeklyScheduleDescription" xml:space="preserve">
+    <value>Модуль работает по еженедельному расписанию</value>
+  </data>
+  <data name="ModuleTypeLed" xml:space="preserve">
+    <value>LED-освещение</value>
+  </data>
+  <data name="ModuleTypeUvLight" xml:space="preserve">
+    <value>УФ-освещение</value>
+  </data>
+  <data name="ModuleTypeHumidifier" xml:space="preserve">
+    <value>Увлажнитель</value>
+  </data>
+  <data name="ModuleTypeWaterPump" xml:space="preserve">
+    <value>Водяная помпа</value>
+  </data>
+  <data name="ModuleTypeAirFlap" xml:space="preserve">
+    <value>Воздушная заслонка</value>
+  </data>
 </root>

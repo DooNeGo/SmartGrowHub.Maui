@@ -23,7 +23,7 @@
             Grid.Row="1"
             Command="{Binding LogInByEmailCommand}"
             HeightRequest="50"
-            Style="{StaticResource PrimaryButton}"
+            Style="{StaticResource PrimaryButtonStyle}"
             Text="{x:Static localization:AppResources.LogIn}" />
     </Grid>
 </ContentPage>

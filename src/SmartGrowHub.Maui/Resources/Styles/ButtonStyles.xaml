@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:SmartGrowHub.Maui.Resources.Styles">
 
-    <Style x:Key="PrimaryButton" TargetType="Button">
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{OnPlatform Android={StaticResource PrimaryLinearGradientBrush}}" />
         <Setter Property="BackgroundColor" Value="{OnPlatform iOS={StaticResource Primary}}" />
         <Setter Property="CornerRadius" Value="25" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="FontFamily" Value="InterSemiBold" />
+        <Setter Property="Padding" Value="5,10" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.SemiBold}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray200}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver" />
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LabelButtonStyle" TargetType="Button">
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="{x:Static styles:Fonts.SemiBold}" />
     </Style>
 
 </ResourceDictionary>

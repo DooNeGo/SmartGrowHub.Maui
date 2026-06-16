@@ -48,7 +48,7 @@ public static class DependencyInjection
         private IServiceCollection AddAppServices() =>
             services
                 .AddSingleton<IDialogService, DialogService>()
-                .AddSingleton<IPopupNavigation, MPowerKitPopupNavigation>()
+                .AddScoped<IPopupNavigation, MPowerKitPopupNavigation>()
                 .AddScoped<INavigationService, MPowerKitNavigationService>()
                 .AddSingleton<IAuthService, AuthService>();
 

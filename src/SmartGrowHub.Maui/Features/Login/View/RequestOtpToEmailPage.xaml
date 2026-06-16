@@ -54,7 +54,7 @@
                 Command="{Binding SendOtpCommand}"
                 HeightRequest="50"
                 IsEnabled="{Binding HasErrors, Converter={StaticResource InvertedBoolConverter}}"
-                Style="{StaticResource PrimaryButton}"
+                Style="{StaticResource PrimaryButtonStyle}"
                 Text="{x:Static localization:AppResources.SendCode}"
                 VerticalOptions="Start"
                 WidthRequest="200" />

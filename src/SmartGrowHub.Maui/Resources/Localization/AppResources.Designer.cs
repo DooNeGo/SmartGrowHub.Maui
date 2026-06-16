@@ -470,5 +470,149 @@ namespace SmartGrowHub.Maui.Resources.Localization {
                 return ResourceManager.GetString("SensorRandomNumberShort", resourceCulture);
             }
         }
+        
+        internal static string SelectMode {
+            get {
+                return ResourceManager.GetString("SelectMode", resourceCulture);
+            }
+        }
+        
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        internal static string Mode {
+            get {
+                return ResourceManager.GetString("Mode", resourceCulture);
+            }
+        }
+        
+        internal static string Schedule {
+            get {
+                return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        internal static string NoScheduleEntries {
+            get {
+                return ResourceManager.GetString("NoScheduleEntries", resourceCulture);
+            }
+        }
+        
+        internal static string AddScheduleEntry {
+            get {
+                return ResourceManager.GetString("AddScheduleEntry", resourceCulture);
+            }
+        }
+        
+        internal static string StartTime {
+            get {
+                return ResourceManager.GetString("StartTime", resourceCulture);
+            }
+        }
+        
+        internal static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
+            }
+        }
+        
+        internal static string StartDay {
+            get {
+                return ResourceManager.GetString("StartDay", resourceCulture);
+            }
+        }
+        
+        internal static string EndDay {
+            get {
+                return ResourceManager.GetString("EndDay", resourceCulture);
+            }
+        }
+        
+        internal static string Power {
+            get {
+                return ResourceManager.GetString("Power", resourceCulture);
+            }
+        }
+        
+        internal static string Prefer {
+            get {
+                return ResourceManager.GetString("Prefer", resourceCulture);
+            }
+        }
+        
+        internal static string PowerPercent {
+            get {
+                return ResourceManager.GetString("PowerPercent", resourceCulture);
+            }
+        }
+        
+        internal static string EnabledScheduleDescription {
+            get {
+                return ResourceManager.GetString("EnabledScheduleDescription", resourceCulture);
+            }
+        }
+        
+        internal static string DisabledScheduleDescription {
+            get {
+                return ResourceManager.GetString("DisabledScheduleDescription", resourceCulture);
+            }
+        }
+        
+        internal static string DailyScheduleDescription {
+            get {
+                return ResourceManager.GetString("DailyScheduleDescription", resourceCulture);
+            }
+        }
+        
+        internal static string WeeklyScheduleDescription {
+            get {
+                return ResourceManager.GetString("WeeklyScheduleDescription", resourceCulture);
+            }
+        }
+        
+        internal static string ModuleTypeLed {
+            get {
+                return ResourceManager.GetString("ModuleTypeLed", resourceCulture);
+            }
+        }
+        
+        internal static string ModuleTypeUvLight {
+            get {
+                return ResourceManager.GetString("ModuleTypeUvLight", resourceCulture);
+            }
+        }
+        
+        internal static string ModuleTypeHumidifier {
+            get {
+                return ResourceManager.GetString("ModuleTypeHumidifier", resourceCulture);
+            }
+        }
+        
+        internal static string ModuleTypeWaterPump {
+            get {
+                return ResourceManager.GetString("ModuleTypeWaterPump", resourceCulture);
+            }
+        }
+        
+        internal static string ModuleTypeAirFlap {
+            get {
+                return ResourceManager.GetString("ModuleTypeAirFlap", resourceCulture);
+            }
+        }
     }
 }

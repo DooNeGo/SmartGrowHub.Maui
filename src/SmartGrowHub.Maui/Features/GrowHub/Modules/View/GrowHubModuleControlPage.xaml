@@ -4,20 +4,122 @@
     x:Class="SmartGrowHub.Maui.Features.GrowHub.Modules.View.GrowHubModuleControlPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:SmartGrowHub.Maui.Features.Main.Converters"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
     xmlns:viewModel="clr-namespace:SmartGrowHub.Maui.Features.GrowHub.Modules.ViewModel"
     x:DataType="viewModel:GrowHubModuleControlPageModel"
     NavigationPage.HasNavigationBar="True"
     Style="{StaticResource DefaultPage}">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label Style="{StaticResource LargeMediumContrast}" Text="{Binding Module.Type}" />
+    <ContentPage.Resources>
+        <converters:ModuleToColorConverter x:Key="ModuleToColorConverter" />
+        <converters:ModuleToIconConverter x:Key="ModuleToIconConverter" />
+        <converters:ModuleTypeToNameConverter x:Key="ModuleTypeToNameConverter" />
+    </ContentPage.Resources>
 
-            <Switch IsToggled="{Binding IsEnabled}" />
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="20">
+            <Border Padding="16" Style="{StaticResource DefaultBorder}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border
+                        Grid.Column="0"
+                        Padding="12"
+                        BackgroundColor="{Binding Module, Converter={StaticResource ModuleToColorConverter}}"
+                        HeightRequest="56"
+                        StrokeShape="{RoundRectangle CornerRadius=14}"
+                        WidthRequest="56">
+                        <Image
+                            HeightRequest="30"
+                            Source="{Binding Module, Converter={StaticResource ModuleToIconConverter}}"
+                            WidthRequest="30" />
+                    </Border>
+
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource MediumSemiBold}"
+                        Text="{Binding Module.Type, Converter={StaticResource ModuleTypeToNameConverter}}"
+                        VerticalTextAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Border Padding="16" Style="{StaticResource DefaultBorder}">
+                <VerticalStackLayout Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource SmallRegularCaption}"
+                            Text="{x:Static localization:AppResources.Mode}" />
+
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding SelectModeCommand}"
+                            Style="{StaticResource LabelButtonStyle}"
+                            Text="{x:Static localization:AppResources.Change}" />
+                    </Grid>
+
+                    <Label
+                        Style="{StaticResource MediumMedium}"
+                        Text="{Binding ScheduleModeText}"
+                        VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                Padding="16"
+                IsVisible="{Binding IsScheduleEditable}"
+                Style="{StaticResource DefaultBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource SmallRegularCaption}"
+                            Text="{x:Static localization:AppResources.Schedule}" />
+
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding AddEntryCommand}"
+                            Style="{StaticResource LabelButtonStyle}"
+                            Text="{x:Static localization:AppResources.Add}"
+                            VerticalOptions="Start" />
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Entries}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="viewModel:ScheduleEntryModel">
+                                <Border Padding="12" Style="{StaticResource DefaultBorder}">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                            <Label Style="{StaticResource SmallRegular}" Text="{Binding TimeDisplayText}" />
+                                            <Label Style="{StaticResource XSmallMediumCaption}" Text="{Binding DisplayText}" />
+                                        </VerticalStackLayout>
+
+                                        <Button
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding Source={RelativeSource AncestorType={Type viewModel:GrowHubModuleControlPageModel}}, Path=RemoveEntryCommand}"
+                                            CommandParameter="{Binding .}"
+                                            FontSize="18"
+                                            Text="✕"
+                                            TextColor="{StaticResource Gray400}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+
+                        <BindableLayout.EmptyView>
+                            <Label
+                                HorizontalOptions="Center"
+                                Style="{StaticResource SmallRegularCaption}"
+                                Text="{x:Static localization:AppResources.NoScheduleEntries}" />
+                        </BindableLayout.EmptyView>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
             <Button
-                Command="{Binding UpdateScheduleCommand}"
-                Style="{StaticResource PrimaryButton}"
-                Text="Save" />
+                Command="{Binding SaveCommand}"
+                Style="{StaticResource PrimaryButtonStyle}"
+                Text="{x:Static localization:AppResources.Save}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popups:PopupPage
+    x:Class="SmartGrowHub.Maui.Popups.ScheduleModePopupPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:SmartGrowHub.Maui.Resources.Localization"
+    xmlns:model="clr-namespace:SmartGrowHub.Shared.GrowHubs.Model;assembly=SmartGrowHub.Shared"
+    xmlns:popups="clr-namespace:MPowerKit.Popups;assembly=MPowerKit.Popups"
+    xmlns:popups1="clr-namespace:SmartGrowHub.Maui.Popups"
+    x:DataType="popups1:ScheduleModePopupViewModel"
+    BackgroundColor="#60000000"
+    CloseOnBackgroundClick="True">
+    <Border
+        Padding="20"
+        BackgroundColor="{StaticResource White}"
+        StrokeShape="{RoundRectangle CornerRadius=20}"
+        VerticalOptions="End">
+        <VerticalStackLayout Spacing="18">
+            <Label
+                HorizontalOptions="Center"
+                Style="{StaticResource MediumSemiBold}"
+                Text="{x:Static localization:AppResources.SelectMode}" />
+
+            <popups1:ScheduleModeListItem Title="{x:Static localization:AppResources.EnabledSchedule}" Description="{x:Static localization:AppResources.EnabledScheduleDescription}">
+                <popups1:ScheduleModeListItem.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectModeCommand}" CommandParameter="{x:Static model:ScheduleTypeDto.Enabled}" />
+                </popups1:ScheduleModeListItem.GestureRecognizers>
+            </popups1:ScheduleModeListItem>
+
+            <popups1:ScheduleModeListItem Title="{x:Static localization:AppResources.DisabledSchedule}" Description="{x:Static localization:AppResources.DisabledScheduleDescription}">
+                <popups1:ScheduleModeListItem.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectModeCommand}" CommandParameter="{x:Static model:ScheduleTypeDto.Disabled}" />
+                </popups1:ScheduleModeListItem.GestureRecognizers>
+            </popups1:ScheduleModeListItem>
+
+            <popups1:ScheduleModeListItem Title="{x:Static localization:AppResources.DailySchedule}" Description="{x:Static localization:AppResources.DailyScheduleDescription}">
+                <popups1:ScheduleModeListItem.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectModeCommand}" CommandParameter="{x:Static model:ScheduleTypeDto.Daily}" />
+                </popups1:ScheduleModeListItem.GestureRecognizers>
+            </popups1:ScheduleModeListItem>
+
+            <popups1:ScheduleModeListItem Title="{x:Static localization:AppResources.WeeklySchedule}" Description="{x:Static localization:AppResources.WeeklyScheduleDescription}">
+                <popups1:ScheduleModeListItem.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectModeCommand}" CommandParameter="{x:Static model:ScheduleTypeDto.Weekly}" />
+                </popups1:ScheduleModeListItem.GestureRecognizers>
+            </popups1:ScheduleModeListItem>
+
+            <Button
+                BackgroundColor="Transparent"
+                Command="{Binding CloseCommand}"
+                Style="{StaticResource PrimaryButtonStyle}"
+                Text="{x:Static localization:AppResources.Cancel}" />
+        </VerticalStackLayout>
+    </Border>
+</popups:PopupPage>

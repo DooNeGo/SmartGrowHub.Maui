@@ -9,7 +9,7 @@ public sealed class ModuleToIconConverter : IValueConverter
     {
         if (value is not GrowHubModuleDto module) return value;
 
-        return module.Type switch
+        string fileName = module.Type switch
         {
             ModuleTypeDto.DayLight => "sun_icon.svg",
             ModuleTypeDto.UvLight => "uv_light_icon.png",
@@ -21,6 +21,8 @@ public sealed class ModuleToIconConverter : IValueConverter
             ModuleTypeDto.AirFlap => "air_flap_icon.svg",
             _ => throw new ArgumentOutOfRangeException(nameof(value), module.Type, null)
         };
+
+        return (ImageSource)fileName;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -330,4 +330,76 @@
   <data name="SensorRandomNumberShort" xml:space="preserve">
     <value>Random</value>
   </data>
+  <data name="SelectMode" xml:space="preserve">
+    <value>Select mode</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="NoScheduleEntries" xml:space="preserve">
+    <value>No schedule entries.</value>
+  </data>
+  <data name="AddScheduleEntry" xml:space="preserve">
+    <value>Add schedule entry</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="StartDay" xml:space="preserve">
+    <value>Start day</value>
+  </data>
+  <data name="EndDay" xml:space="preserve">
+    <value>End day</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Power</value>
+  </data>
+  <data name="Prefer" xml:space="preserve">
+    <value>Prefer</value>
+  </data>
+  <data name="PowerPercent" xml:space="preserve">
+    <value>Power (%)</value>
+  </data>
+  <data name="EnabledScheduleDescription" xml:space="preserve">
+    <value>Module is always on</value>
+  </data>
+  <data name="DisabledScheduleDescription" xml:space="preserve">
+    <value>Module is always off</value>
+  </data>
+  <data name="DailyScheduleDescription" xml:space="preserve">
+    <value>Module runs on a daily schedule</value>
+  </data>
+  <data name="WeeklyScheduleDescription" xml:space="preserve">
+    <value>Module runs on a weekly schedule</value>
+  </data>
+  <data name="ModuleTypeLed" xml:space="preserve">
+    <value>LED</value>
+  </data>
+  <data name="ModuleTypeUvLight" xml:space="preserve">
+    <value>UV Light</value>
+  </data>
+  <data name="ModuleTypeHumidifier" xml:space="preserve">
+    <value>Humidifier</value>
+  </data>
+  <data name="ModuleTypeWaterPump" xml:space="preserve">
+    <value>Water Pump</value>
+  </data>
+  <data name="ModuleTypeAirFlap" xml:space="preserve">
+    <value>Air Flap</value>
+  </data>
 </root>
