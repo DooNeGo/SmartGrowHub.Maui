@@ -306,4 +306,28 @@
   <data name="EnabledSchedule" xml:space="preserve">
     <value>Включено</value>
   </data>
+  <data name="SensorAirTemperatureShort" xml:space="preserve">
+    <value>Темп. Воздуха</value>
+  </data>
+  <data name="SensorAirPressureShort" xml:space="preserve">
+    <value>Давл. Воздуха</value>
+  </data>
+  <data name="SensorAirHumidityShort" xml:space="preserve">
+    <value>Влажн. Воздуха</value>
+  </data>
+  <data name="SensorPlantHeightShort" xml:space="preserve">
+    <value>Высота Раст.</value>
+  </data>
+  <data name="SensorSoilMoistureShort" xml:space="preserve">
+    <value>Влажн. Почвы</value>
+  </data>
+  <data name="SensorSoilTemperatureShort" xml:space="preserve">
+    <value>Темп. Почвы</value>
+  </data>
+  <data name="SensorIlluminationShort" xml:space="preserve">
+    <value>Освещ.</value>
+  </data>
+  <data name="SensorRandomNumberShort" xml:space="preserve">
+    <value>Случайное</value>
+  </data>
 </root>

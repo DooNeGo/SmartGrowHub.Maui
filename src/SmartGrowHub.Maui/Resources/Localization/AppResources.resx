@@ -306,4 +306,28 @@
   <data name="EnabledSchedule" xml:space="preserve">
     <value>Enabled schedule</value>
   </data>
+  <data name="SensorAirTemperatureShort" xml:space="preserve">
+    <value>Air Temp.</value>
+  </data>
+  <data name="SensorAirPressureShort" xml:space="preserve">
+    <value>Air Press.</value>
+  </data>
+  <data name="SensorAirHumidityShort" xml:space="preserve">
+    <value>Air Hum.</value>
+  </data>
+  <data name="SensorPlantHeightShort" xml:space="preserve">
+    <value>Plant Ht.</value>
+  </data>
+  <data name="SensorSoilMoistureShort" xml:space="preserve">
+    <value>Soil Moist.</value>
+  </data>
+  <data name="SensorSoilTemperatureShort" xml:space="preserve">
+    <value>Soil Temp.</value>
+  </data>
+  <data name="SensorIlluminationShort" xml:space="preserve">
+    <value>Illum.</value>
+  </data>
+  <data name="SensorRandomNumberShort" xml:space="preserve">
+    <value>Random</value>
+  </data>
 </root>

@@ -422,5 +422,53 @@ namespace SmartGrowHub.Maui.Resources.Localization {
                 return ResourceManager.GetString("EnabledSchedule", resourceCulture);
             }
         }
+        
+        internal static string SensorAirTemperatureShort {
+            get {
+                return ResourceManager.GetString("SensorAirTemperatureShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorAirPressureShort {
+            get {
+                return ResourceManager.GetString("SensorAirPressureShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorAirHumidityShort {
+            get {
+                return ResourceManager.GetString("SensorAirHumidityShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorPlantHeightShort {
+            get {
+                return ResourceManager.GetString("SensorPlantHeightShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorSoilMoistureShort {
+            get {
+                return ResourceManager.GetString("SensorSoilMoistureShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorSoilTemperatureShort {
+            get {
+                return ResourceManager.GetString("SensorSoilTemperatureShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorIlluminationShort {
+            get {
+                return ResourceManager.GetString("SensorIlluminationShort", resourceCulture);
+            }
+        }
+        
+        internal static string SensorRandomNumberShort {
+            get {
+                return ResourceManager.GetString("SensorRandomNumberShort", resourceCulture);
+            }
+        }
     }
 }

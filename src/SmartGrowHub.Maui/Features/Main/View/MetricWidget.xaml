@@ -22,7 +22,7 @@
                 <FormattedString>
                     <Span
                         FontFamily="InterMedium"
-                        FontSize="20"
+                        FontSize="18"
                         Text="{Binding MainValue}" />
                     <Span
                         FontFamily="InterMedium"
@@ -31,8 +31,9 @@
                     <Span Text="&#10;" />
                     <Span
                         FontFamily="InterRegular"
+                        FontSize="12"
                         Text="{Binding MetricName}"
-                        TextColor="{StaticResource Black}" />
+                        TextColor="{StaticResource CaptionColor}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>

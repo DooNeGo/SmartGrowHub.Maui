@@ -20,6 +20,7 @@
         <converters:ModuleToIconConverter x:Key="ComponentToIconConverter" />
         <converters:ScheduleToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
         <converters:ScheduleToTitleConverter x:Key="ProgramToTitleConverter" />
+        <converters:SensorTypeToShortNameConverter x:Key="SensorTypeToShortNameConverter" />
     </ContentPage.Resources>
 
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
@@ -45,7 +46,7 @@
                                     <DataTemplate x:DataType="model:SensorMeasurementDto">
                                         <view:MetricWidget
                                             MainValue="{Binding Quantity.Magnitude, StringFormat='{0:F0}'}"
-                                            MetricName="{Binding Type}"
+                                            MetricName="{Binding Type, Converter={StaticResource SensorTypeToShortNameConverter}}"
                                             ValueUnit="{Binding Quantity.Unit}">
                                             <view:MetricWidget.BackgroundColor>
                                                 <Binding
