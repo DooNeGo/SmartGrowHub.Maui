@@ -52,7 +52,7 @@
     <Style x:Key="LargeMediumContrast" TargetType="Label">
         <Setter Property="FontFamily" Value="{x:Static styles:Fonts.Medium}" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="TextColor" Value="{StaticResource CaptionColor}" />
+        <Setter Property="TextColor" Value="{StaticResource ContrastColor}" />
     </Style>
 
     <Style

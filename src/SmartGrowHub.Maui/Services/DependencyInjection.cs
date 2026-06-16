@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using MQTTnet;
 using SmartGrowHub.Maui.Services.Api;
 using SmartGrowHub.Maui.Services.App;
 using SmartGrowHub.Maui.Services.DelegatingHandlers;
@@ -38,8 +39,8 @@ public static class DependencyInjection
             {
                 client.BaseAddress =
                     //new Uri("https://rants-unheard-seizing.ngrok-free.dev");
-                    new Uri("http://192.168.0.111:8080");
-                client.Timeout = TimeSpan.FromSeconds(15);
+                    new Uri("http://10.42.0.1:8080");
+                client.Timeout = TimeSpan.FromSeconds(30);
             }
         }
 
@@ -56,6 +57,8 @@ public static class DependencyInjection
                 .AddSingleton<ITimeProvider, TimeProvider>()
                 .AddSingleton<IMainThread, DefaultMainThread>()
                 .AddSingleton(SecureStorage.Default)
+                .AddSingleton<IMqttClient>(_ => new MqttClientFactory().CreateMqttClient())
+                .AddSingleton<IMessagesService, MessagesService>()
                 .AddSingleton<IJsonSerializer, SystemJsonSerializer>(_ =>
                 {
                     var options = new JsonSerializerOptions

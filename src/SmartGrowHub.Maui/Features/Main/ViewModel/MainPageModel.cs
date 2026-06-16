@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,22 +14,27 @@ using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.Main.ViewModel;
 
-public sealed partial class MainPageModel : ObservableObject, IInitializeAware
+public sealed partial class MainPageModel : ObservableObject, IInitializeAware, IAsyncDisposable
 {
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    
     private TaskCompletionSource<Unit> _stateChangeTcs = new(Unit.Default);
     
     private readonly INavigationService _navigationService;
+    private readonly IMessagesService _messagesService;
     private readonly IGrowHubApi _growHubApi;
     private readonly IMainThread _mainThread;
     private readonly ILogger _logger;
 
     public MainPageModel(
         INavigationService navigationService,
+        IMessagesService messagesService,
         IGrowHubApi growHubApi,
         IMainThread mainThread,
         ILogger logger)
     {
         _navigationService = navigationService;
+        _messagesService = messagesService;
         _growHubApi = growHubApi;
         _mainThread = mainThread;
         _logger = logger;
@@ -40,14 +44,47 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     [ObservableProperty] public partial string? CurrentState { get; set; } = PageStates.Loading;
     [ObservableProperty] public partial bool CanStateChange { get; set; } = true;
     [ObservableProperty] public partial GrowHubDto? CurrentGrowHub { get; private set; }
-    [ObservableProperty] public partial ImmutableList<SensorMeasurementDto> Measurements { get; private set; } = [];
+    
+    public ObservableCollection<SensorMeasurementDto> Measurements { get; } = [];
     
     public ObservableCollection<GrowHubDto> GrowHubs { get; } = [];
 
     public ObservableCollection<GrowHubModuleDto> Modules { get; } = [];
 
-    public void Initialize(INavigationParameters parameters) =>
-        RefreshAsync(CancellationToken.None).SafeFireAndForget();
+    public void Initialize(INavigationParameters parameters)
+    {
+        _messagesService.MeasurementReceived += OnMeasurementReceived;
+        
+        Task.WhenAll(
+            Task.Run(() => _messagesService.Start().RunAsync().AsTask()),
+            RefreshAsync(CancellationToken.None)).SafeFireAndForget();
+    }
+    
+    private void OnMeasurementReceived(SensorMeasurementDto obj) =>
+        MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            await _semaphore.WaitAsync(CancellationToken.None);
+            
+            try
+            {
+                SensorMeasurementDto? measurement = Measurements.FirstOrDefault(m =>
+                    string.Equals(m.SensorId, obj.SensorId, StringComparison.Ordinal));
+                
+                if (measurement is null)
+                {
+                    Measurements.Add(obj);
+                    return;
+                }
+                
+                int index = Measurements.IndexOf(measurement);
+                Measurements.RemoveAt(index);
+                Measurements.Insert(index, obj);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }).SafeFireAndForget();
 
     [RelayCommand]
     private async Task RefreshAsync(CancellationToken cancellationToken)
@@ -118,7 +155,11 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
 
     private IO<Unit> RefreshLatestMeasurements(string growHubId) =>
         from measurements in _growHubApi.GetLatestMeasurements(growHubId)
-        from _ in _mainThread.InvokeOnMainThread(() => Measurements = measurements)
+        from _ in _mainThread.InvokeOnMainThread(() =>
+        {
+            Measurements.Clear();
+            Measurements.AddRange(measurements);
+        })
         select Unit.Default;
 
     private IO<Unit> RefreshGrowHubs =>
@@ -156,5 +197,11 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware
     {
         if (!value) return;
         _stateChangeTcs.TrySetResult(Unit.Default);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await Task.Run(() => _messagesService.Stop().RunAsync().AsTask());
+        _messagesService.MeasurementReceived -= OnMeasurementReceived;
     }
 }

@@ -10,6 +10,8 @@
     Style="{StaticResource DefaultPage}">
     <ScrollView>
         <VerticalStackLayout>
+            <Label Style="{StaticResource LargeMediumContrast}" Text="{Binding Module.Type}" />
+
             <Switch IsToggled="{Binding IsEnabled}" />
 
             <Button

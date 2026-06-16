@@ -26,8 +26,8 @@
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
 <!--        <AndroidLinkTool>r8</AndroidLinkTool>-->
-<!--        <UseMonoRuntime>false</UseMonoRuntime>-->
-        <AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
+        <UseMonoRuntime>false</UseMonoRuntime>
+        <AndroidLinkMode>None</AndroidLinkMode>
     </PropertyGroup>
 
     <ItemGroup>
