@@ -40,6 +40,11 @@
 		<MauiImage Update="Resources\Images\wind_icon.svg" Resize="True" BaseSize="30,30" />
 		<MauiImage Update="Resources\Images\uv_light_icon.png" Resize="True" BaseSize="30,30" />
 		
+		<MauiImage Update="Resources\Images\led_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\humidifier_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\water_pump_icon.svg" Resize="True" BaseSize="30,30" />
+		<MauiImage Update="Resources\Images\air_flap_icon.svg" Resize="True" BaseSize="30,30" />
+		
 		<MauiImage Update="Resources\Images\wifi_icon.png" Resize="True" BaseSize="20,20" />
 
 		<MauiImage Update="Resources\Images\start_app_text.svg" Resize="True" BaseSize="173.5,110" />

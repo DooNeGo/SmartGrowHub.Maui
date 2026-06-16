@@ -304,7 +304,7 @@
     <value>Disabled</value>
   </data>
   <data name="EnabledSchedule" xml:space="preserve">
-    <value>Enabled schedule</value>
+    <value>Enabled</value>
   </data>
   <data name="SensorAirTemperatureShort" xml:space="preserve">
     <value>Air Temp.</value>

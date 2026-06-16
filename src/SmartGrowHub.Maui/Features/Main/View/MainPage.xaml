@@ -16,10 +16,10 @@
     SafeAreaEdges="All"
     Style="{StaticResource DefaultPage}">
     <ContentPage.Resources>
-        <converters:ModuleToColorConverter x:Key="ComponentToColorConverter" />
-        <converters:ModuleToIconConverter x:Key="ComponentToIconConverter" />
-        <converters:ScheduleToCurrentValueConverter x:Key="ProgramToCurrentValueConverter" />
-        <converters:ScheduleToTitleConverter x:Key="ProgramToTitleConverter" />
+        <converters:ModuleToColorConverter x:Key="ModuleToColorConverter" />
+        <converters:ModuleToIconConverter x:Key="ModuleToIconConverter" />
+        <converters:ScheduleToCurrentValueConverter x:Key="ScheduleToCurrentValueConverter" />
+        <converters:ScheduleToTitleConverter x:Key="ScheduleToTitleConverter" />
         <converters:SensorTypeToShortNameConverter x:Key="SensorTypeToShortNameConverter" />
     </ContentPage.Resources>
 
@@ -95,10 +95,10 @@
                             <DataTemplate x:DataType="model:GrowHubModuleDto">
                                 <view:QuickSetting
                                     CommandParameter="{Binding .}"
-                                    IconColor="{Binding ., Converter={StaticResource ComponentToColorConverter}}"
-                                    IconSource="{Binding ., Converter={StaticResource ComponentToIconConverter}}"
-                                    Status="{Binding Schedule, Converter={StaticResource ProgramToTitleConverter}}"
-                                    Value="{Binding Schedule, Converter={StaticResource ProgramToCurrentValueConverter}}">
+                                    IconColor="{Binding ., Converter={StaticResource ModuleToColorConverter}}"
+                                    IconSource="{Binding ., Converter={StaticResource ModuleToIconConverter}}"
+                                    Status="{Binding Schedule, Converter={StaticResource ScheduleToTitleConverter}}"
+                                    Value="{Binding Schedule, Converter={StaticResource ScheduleToCurrentValueConverter}}">
                                     <view:QuickSetting.Command>
                                         <Binding
                                             x:DataType="viewModel:MainPageModel"

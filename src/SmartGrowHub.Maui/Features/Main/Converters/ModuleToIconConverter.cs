@@ -11,14 +11,14 @@ public sealed class ModuleToIconConverter : IValueConverter
 
         return module.Type switch
         {
-            ModuleTypeDto.DayLight => "sun_icon.png",
+            ModuleTypeDto.DayLight => "sun_icon.svg",
             ModuleTypeDto.UvLight => "uv_light_icon.png",
-            ModuleTypeDto.Heater => "heat_icon.png",
-            ModuleTypeDto.Fan => "wind_icon.png",
-            ModuleTypeDto.Led => "led_icon.png",
-            ModuleTypeDto.Humidifier => "humidifier_icon.png",
-            ModuleTypeDto.WaterPump => "water_pump_icon.png",
-            ModuleTypeDto.AirFlap => "air_flap_icon.png",
+            ModuleTypeDto.Heater => "heat_icon.svg",
+            ModuleTypeDto.Fan => "wind_icon.svg",
+            ModuleTypeDto.Led => "led_icon.svg",
+            ModuleTypeDto.Humidifier => "humidifier_icon.svg",
+            ModuleTypeDto.WaterPump => "water_pump_icon.svg",
+            ModuleTypeDto.AirFlap => "air_flap_icon.svg",
             _ => throw new ArgumentOutOfRangeException(nameof(value), module.Type, null)
         };
     }
