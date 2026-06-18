@@ -1,36 +1,35 @@
-﻿namespace SmartGrowHub.Maui.Services.Infrastructure;
+namespace SmartGrowHub.Maui.Services.Infrastructure;
 
 public interface IMainThread
 {
     bool IsMainThread { get; }
 
-    IO<Unit> InvokeOnMainThread(Action action);
-    IO<T> InvokeOnMainThread<T>(Func<T> func);
-    IO<T> InvokeOnMainThread<T>(Func<Task<T>> func);
-    IO<Unit> InvokeOnMainThread(Func<Task> func);
-    IO<Unit> BeginInvokeOnMainThread(Action action);
-    IO<SynchronizationContext> GetMainThreadSynchronizationContext();
+    Task InvokeOnMainThreadAsync(Action action);
+    Task<T> InvokeOnMainThreadAsync<T>(Func<T> func);
+    Task<T> InvokeOnMainThreadAsync<T>(Func<Task<T>> func);
+    Task InvokeOnMainThreadAsync(Func<Task> func);
+    Task BeginInvokeOnMainThread(Action action);
+    Task<SynchronizationContext> GetMainThreadSynchronizationContext();
 }
 
 public sealed class DefaultMainThread : IMainThread
 {
     public bool IsMainThread => MainThread.IsMainThread;
 
-    public IO<Unit> InvokeOnMainThread(Action action) =>
-        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(action).ToUnit());
+    public Task InvokeOnMainThreadAsync(Action action) => MainThread.InvokeOnMainThreadAsync(action);
 
-    public IO<T> InvokeOnMainThread<T>(Func<T> func) =>
-        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func));
+    public Task<T> InvokeOnMainThreadAsync<T>(Func<T> func) => MainThread.InvokeOnMainThreadAsync(func);
 
-    public IO<T> InvokeOnMainThread<T>(Func<Task<T>> func) =>
-        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func));
+    public Task<T> InvokeOnMainThreadAsync<T>(Func<Task<T>> func) => MainThread.InvokeOnMainThreadAsync(func);
 
-    public IO<Unit> InvokeOnMainThread(Func<Task> func) =>
-        IO.liftAsync(() => MainThread.InvokeOnMainThreadAsync(func).ToUnit());
+    public Task InvokeOnMainThreadAsync(Func<Task> func) => MainThread.InvokeOnMainThreadAsync(func);
 
-    public IO<Unit> BeginInvokeOnMainThread(Action action) =>
-        IO.lift(() => MainThread.BeginInvokeOnMainThread(action));
+    public Task BeginInvokeOnMainThread(Action action)
+    {
+        MainThread.BeginInvokeOnMainThread(action);
+        return Task.CompletedTask;
+    }
 
-    public IO<SynchronizationContext> GetMainThreadSynchronizationContext() =>
-        IO.liftAsync(MainThread.GetMainThreadSynchronizationContextAsync);
+    public Task<SynchronizationContext> GetMainThreadSynchronizationContext() =>
+        MainThread.GetMainThreadSynchronizationContextAsync();
 }

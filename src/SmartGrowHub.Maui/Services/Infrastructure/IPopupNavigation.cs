@@ -1,4 +1,4 @@
-﻿using MPowerKit.Navigation.Interfaces;
+using MPowerKit.Navigation.Interfaces;
 using MPowerKit.Navigation.Popups;
 using MPowerKit.Popups;
 
@@ -8,10 +8,10 @@ public interface IPopupNavigation
 {
     IReadOnlyList<PopupPage> PopupStack { get; }
 
-    IO<PopupResult> ShowAwaitablePopup(string route, INavigationParameters? parameters = null, bool animated = true);
-    IO<Unit> ShowPopup(PopupPage page, bool animated = true);
-    IO<Unit> HidePopup(bool animated = true);
-    IO<Unit> HidePopup(PopupPage page, bool animated = true);
+    ValueTask<PopupResult> ShowAwaitablePopupAsync(string route, INavigationParameters? parameters = null, bool animated = true);
+    ValueTask ShowPopupAsync(PopupPage page, bool animated = true);
+    ValueTask HidePopupAsync(bool animated = true);
+    ValueTask HidePopupAsync(PopupPage page, bool animated = true);
 }
 
 public sealed class MPowerKitPopupNavigation(
@@ -20,16 +20,16 @@ public sealed class MPowerKitPopupNavigation(
 {
     public IReadOnlyList<PopupPage> PopupStack => navigationPopupService.PopupStack;
 
-    public IO<PopupResult> ShowAwaitablePopup(string route, INavigationParameters? parameters = null,
+    public ValueTask<PopupResult> ShowAwaitablePopupAsync(string route, INavigationParameters? parameters = null,
         bool animated = true) =>
-        IO.liftVAsync(() => popupNavigationService.ShowAwaitablePopupAsync(route, parameters, animated));
+        popupNavigationService.ShowAwaitablePopupAsync(route, parameters, animated);
     
-    public IO<Unit> ShowPopup(PopupPage page, bool animated = true) =>
-        IO.liftVAsync(() => navigationPopupService.ShowPopupAsync(page, animated).ToUnit());
+    public ValueTask ShowPopupAsync(PopupPage page, bool animated = true) =>
+        navigationPopupService.ShowPopupAsync(page, animated);
 
-    public IO<Unit> HidePopup(bool animated = true) =>
-        IO.liftVAsync(() => navigationPopupService.HidePopupAsync(animated).ToUnit());
+    public ValueTask HidePopupAsync(bool animated = true) =>
+        navigationPopupService.HidePopupAsync(animated);
 
-    public IO<Unit> HidePopup(PopupPage page, bool animated = true) =>
-        IO.liftVAsync(() => navigationPopupService.HidePopupAsync(page, animated).ToUnit());
+    public ValueTask HidePopupAsync(PopupPage page, bool animated = true) =>
+        navigationPopupService.HidePopupAsync(page, animated);
 }

@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MPowerKit.Navigation.Awares;
+using Serilog;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
-using SmartGrowHub.Maui.Services.Extensions;
 
 namespace SmartGrowHub.Maui.Features.Login.ViewModel;
 
@@ -13,15 +13,18 @@ public sealed partial class RequestOtpToEmailPageModel : ObservableValidator, IP
     private readonly IAuthService _authService;
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
-    
+    private readonly ILogger _logger;
+
     public RequestOtpToEmailPageModel(
         IAuthService authService,
         IDialogService dialogService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        ILogger logger)
     {
         _authService = authService;
         _dialogService = dialogService;
         _navigationService = navigationService;
+        _logger = logger;
     }
 
     [ObservableProperty]
@@ -44,19 +47,33 @@ public sealed partial class RequestOtpToEmailPageModel : ObservableValidator, IP
     }
 
     [RelayCommand]
-    private Task<Fin<Unit>> SendOtpAsync(CancellationToken cancellationToken) => (
-        from _1 in _dialogService.ShowLoading()
-        from _2 in _authService
-            .RequestOtpToEmail(Email)
-            .TapOnFail(DisplayError)
-            .Finally(_dialogService.HideLoading())
-        from _3 in _navigationService
-            .CreateBuilder(Routes.VerifyOtpPage)
-            .AddRouteParameter(nameof(VerifyOtpPageModel.SentTo), Email)
-            .Navigate()
-        select _3
-    ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
+    private async Task SendOtpAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _dialogService.ShowLoadingAsync();
 
-    private IO<Unit> DisplayError(Error error) =>
-        IO.lift(() => EmailError = error.Message).ToUnit();
+            try
+            {
+                await _authService.RequestOtpToEmail(Email, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                EmailError = ex.Message;
+            }
+            finally
+            {
+                await _dialogService.HideLoadingAsync();
+            }
+
+            await _navigationService
+                .CreateBuilder(Routes.VerifyOtpPage)
+                .AddRouteParameter(nameof(VerifyOtpPageModel.SentTo), Email)
+                .NavigateAsync().ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "Failed to send OTP");
+        }
+    }
 }

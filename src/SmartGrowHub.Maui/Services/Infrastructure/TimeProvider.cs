@@ -1,14 +1,13 @@
-﻿namespace SmartGrowHub.Maui.Services.Infrastructure;
+namespace SmartGrowHub.Maui.Services.Infrastructure;
 
 public interface ITimeProvider
 {
-    IO<DateTime> UtcNow { get; }
-    IO<DateTime> Now { get; }
+    DateTime UtcNow { get; }
+    DateTime Now { get; }
 }
 
 public sealed class TimeProvider : ITimeProvider
 {
-    public IO<DateTime> UtcNow { get; } = IO.lift(() => DateTime.UtcNow);
-    
-    public IO<DateTime> Now { get; } = IO.lift(() => DateTime.Now);
+    public DateTime UtcNow => DateTime.UtcNow;
+    public DateTime Now => DateTime.Now;
 }

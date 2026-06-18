@@ -38,11 +38,10 @@ public sealed partial class MainPage
 	
 		ViewModel.CanStateChange = false;
 		
-		Task task1 = ChangeStateAsync(DevicesLayout, newState);
-		Task task2 = ChangeStateAsync(EnvironmentStackLayout, newState);
-		Task task3 = ChangeStateAsync(QuickSettingsStackLayout, newState);
-		
-		await Task.WhenAll(task1, task2, task3);
+		await Task.WhenAll(
+			ChangeStateAsync(DevicesLayout, newState),
+			ChangeStateAsync(EnvironmentStackLayout, newState),
+			ChangeStateAsync(QuickSettingsStackLayout, newState));
 		
 		ViewModel.CanStateChange = true;
 	}

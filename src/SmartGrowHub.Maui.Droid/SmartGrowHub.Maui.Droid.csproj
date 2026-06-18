@@ -13,7 +13,6 @@
         <Platforms>AnyCPU;x64;arm64;</Platforms>
         <Configurations>Debug;Release</Configurations>
         <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
-<!--        <UseMonoRuntime>false</UseMonoRuntime>-->
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Platform)'=='x64'">
@@ -25,9 +24,8 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
-<!--        <AndroidLinkTool>r8</AndroidLinkTool>-->
+        <AndroidLinkTool>r8</AndroidLinkTool>
         <UseMonoRuntime>false</UseMonoRuntime>
-        <AndroidLinkMode>None</AndroidLinkMode>
     </PropertyGroup>
 
     <ItemGroup>

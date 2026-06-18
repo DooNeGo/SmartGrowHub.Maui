@@ -8,8 +8,8 @@ public interface IMessagesService
 {
     event Action<SensorMeasurementDto>? MeasurementReceived;
     
-    IO<Unit> Start();
-    IO<Unit> Stop();
+    Task Start();
+    Task Stop();
 }
 
 public sealed class MessagesService : IMessagesService
@@ -30,45 +30,49 @@ public sealed class MessagesService : IMessagesService
     
     public event Action<SensorMeasurementDto>? MeasurementReceived;
 
-    public IO<Unit> Start() =>
-        IO.liftAsync(async env =>
+    public async Task Start()
+    {
+        try
         {
-            MqttClientOptions options = new MqttClientOptionsBuilder()
+            var options = new MqttClientOptionsBuilder()
                 .WithTcpServer("10.42.0.1", 1883)
                 .Build();
 
-            await _mqttClient.ConnectAsync(options, env.Token).ConfigureAwait(false);
+            await _mqttClient.ConnectAsync(options, CancellationToken.None).ConfigureAwait(false);
 
-            MqttClientSubscribeOptions subscribeOptions = new MqttClientSubscribeOptionsBuilder()
+            var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
                 .WithTopicFilter("clients/growHubs/+/sensors/+")
                 .Build();
 
-            await _mqttClient.SubscribeAsync(subscribeOptions, env.Token).ConfigureAwait(false);
+            await _mqttClient.SubscribeAsync(subscribeOptions, CancellationToken.None).ConfigureAwait(false);
 
             _mqttClient.ApplicationMessageReceivedAsync += OnMessageRecieved;
-
-            return Unit.Default;
-        }).Catch(error => IO.lift(() => _logger.Error(error.ToErrorException(), "Failed to start mqtt"))).As();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to start mqtt");
+        }
+    }
 
     private Task OnMessageRecieved(MqttApplicationMessageReceivedEventArgs args)
     {
         string payload = args.ApplicationMessage.ConvertPayloadToString();
-        Option<SensorMeasurementDto> measurement = _jsonSerializer.Deserialize<SensorMeasurementDto>(payload);
-        measurement.IfSome(m => MeasurementReceived?.Invoke(m));
+        var measurement = _jsonSerializer.Deserialize<SensorMeasurementDto>(payload);
+        if (measurement is not null)
+        {
+            MeasurementReceived?.Invoke(measurement);
+        }
         return Task.CompletedTask;
     }
 
-    public IO<Unit> Stop() =>
-        IO.liftAsync(async () =>
-        {
-            MqttClientDisconnectOptions options = new MqttClientDisconnectOptionsBuilder()
-                .WithReason(MqttClientDisconnectOptionsReason.NormalDisconnection)
-                .Build();
-            
-            await _mqttClient.DisconnectAsync(options).ConfigureAwait(false);
-            
-            _mqttClient.ApplicationMessageReceivedAsync -= OnMessageRecieved;
-
-            return Unit.Default;
-        });
+    public async Task Stop()
+    {
+        var options = new MqttClientDisconnectOptionsBuilder()
+            .WithReason(MqttClientDisconnectOptionsReason.NormalDisconnection)
+            .Build();
+        
+        await _mqttClient.DisconnectAsync(options).ConfigureAwait(false);
+        
+        _mqttClient.ApplicationMessageReceivedAsync -= OnMessageRecieved;
+    }
 }

@@ -1,8 +1,1 @@
-﻿global using LanguageExt;
-global using LanguageExt.Common;
-global using LanguageExt.Traits;
-global using LanguageExt.Effects;
-global using LanguageExt.Pretty;
-global using LanguageExt.Traits.Domain;
-
-global using Unit = LanguageExt.Unit;
+﻿global using Unit = SmartGrowHub.Maui.Base.Unit;

@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Shared.GrowHubs.Model;
@@ -9,7 +9,14 @@ public sealed class ScheduleToCurrentValueConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is ScheduleDto schedule
-            ? schedule.Match(MapDisabledToString, MapEnabledToString, MapDailyToString, MapWeeklyToString)
+            ? schedule switch
+            {
+                DisabledScheduleDto d => MapDisabledToString(d),
+                EnabledScheduleDto e => MapEnabledToString(e),
+                DailyScheduleDto d => MapDailyToString(d),
+                WeeklyScheduleDto w => MapWeeklyToString(w),
+                _ => value
+            }
             : value;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -34,11 +41,11 @@ public sealed class ScheduleToCurrentValueConverter : IValueConverter
     }
 
     private static string GetFormattedCurrentValue<TTime>(
-        IReadOnlyList<ScheduleUnitDto<TTime>> units, in TTime timeNow) where TTime : IComparable<TTime> =>
-        units
-            .FindByTime(timeNow)
-            .Map(unit => QuantityToString(unit.Quantity))
-            .IfNone(() => AppResources.TurnedOffShort);
+        IReadOnlyList<ScheduleUnitDto<TTime>> units, in TTime timeNow) where TTime : IComparable<TTime>
+    {
+        var unit = units.FindByTime(timeNow);
+        return unit is not null ? QuantityToString(unit.Quantity) : AppResources.TurnedOffShort;
+    }
 
     private static string QuantityToString(QuantityDto quantity) => $"{quantity.Magnitude} {quantity.Unit}";
 }

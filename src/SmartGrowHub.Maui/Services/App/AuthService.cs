@@ -7,10 +7,9 @@ namespace SmartGrowHub.Maui.Services.App;
 
 public interface IAuthService
 {
-    IO<Unit> RequestOtpToEmail(string emailAddress);
-    IO<Unit> VerifyOtp(string oneTimePassword);
-    IO<Unit> RefreshTokens();
-    IO<Unit> LogOut();
+    Task RequestOtpToEmail(string emailAddress, CancellationToken cancellationToken);
+    Task VerifyOtp(string oneTimePassword, CancellationToken cancellationToken);
+    Task RefreshTokens(CancellationToken cancellationToken);
 }
 
 internal sealed class AuthService : IAuthService
@@ -29,37 +28,46 @@ internal sealed class AuthService : IAuthService
         _logger = logger;
     }
 
-    public IO<Unit> RequestOtpToEmail(string emailAddress) =>
-        _authApi
-            .RequestOtpToEmail(emailAddress)
-            .TapOnFail(error => IO.lift(() => _logger.Error(error.ToException(), "Failed to send otp to email")));
+    public async Task RequestOtpToEmail(string emailAddress, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _authApi.RequestOtpToEmailAsync(emailAddress, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to send otp to email");
+            throw;
+        }
+    }
 
-    public IO<Unit> VerifyOtp(string oneTimePassword) => (
-        from response in _authApi.VerifyOtp(oneTimePassword)
-        from _ in _secureStorage.SetAuthTokens(response)
-        select _
-    ).TapOnFail(error => IO.lift(() => _logger.Error(error.ToException(), "Failed to check otp")));
-    
-    public IO<Unit> RefreshTokens() =>
-        from refreshToken in _secureStorage.GetRefreshToken()
-            .ToIOOrFail("No refresh token found")
-            .TapOnFail(_ => LogOut())
-        from authTokens in RefreshTokens(refreshToken)
-        from _ in _secureStorage.SetAuthTokens(authTokens)
-        select _;
+    public async Task VerifyOtp(string oneTimePassword, CancellationToken cancellationToken)
+    {
+        try
+        {
+            AuthTokensDto response = await _authApi.VerifyOtpAsync(oneTimePassword, cancellationToken).ConfigureAwait(false);
+            await _secureStorage.SetAuthTokensAsync(response).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to check otp");
+            throw;
+        }
+    }
 
-    private IO<AuthTokensDto> RefreshTokens(string refreshToken) => _authApi.RefreshTokens(refreshToken);
-            // .Retry(Schedule.Once)
-            // .TapOnFail(error => error.Code is 3 ? LogOut() : IO.pure(Unit.Default));
-    
-    public IO<Unit> LogOut() =>
-        from _1 in LogOutFromServer()
-        from _2 in _secureStorage.RemoveAllValues()
-        select _2;
-
-    private IO<Unit> LogOutFromServer() => (
-        from refreshToken in _secureStorage.GetRefreshToken()
-        from _ in _authApi.LogOut(refreshToken)
-        select _
-    ).IfNone(Unit.Default).As();
+    public async Task RefreshTokens(CancellationToken cancellationToken)
+    {
+        try
+        {
+            string? refreshToken = await _secureStorage.GetRefreshTokenAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(refreshToken)) return;
+            AuthTokensDto authTokens = await _authApi.RefreshTokensAsync(refreshToken, cancellationToken).ConfigureAwait(false);
+            await _secureStorage.SetAuthTokensAsync(authTokens).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not InvalidOperationException)
+        {
+            _logger.Error(ex, "Failed to refresh tokens");
+            throw;
+        }
+    }
 }

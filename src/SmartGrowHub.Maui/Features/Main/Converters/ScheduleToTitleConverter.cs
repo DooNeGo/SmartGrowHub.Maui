@@ -8,11 +8,14 @@ public sealed class ScheduleToTitleConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is ScheduleDto program
-            ? program.Match(
-                Disabled: _ => AppResources.DisabledSchedule,
-                Enabled: _ => AppResources.EnabledSchedule,
-                Daily: _ => AppResources.DailySchedule,
-                Weekly: _ => AppResources.WeeklySchedule)
+            ? program switch
+            {
+                DisabledScheduleDto => AppResources.DisabledSchedule,
+                EnabledScheduleDto => AppResources.EnabledSchedule,
+                DailyScheduleDto => AppResources.DailySchedule,
+                WeeklyScheduleDto => AppResources.WeeklySchedule,
+                _ => value
+            }
             : value;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

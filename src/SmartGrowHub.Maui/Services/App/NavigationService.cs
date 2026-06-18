@@ -1,4 +1,3 @@
-using LanguageExt.UnsafeValueAccess;
 using MPowerKit;
 using MPowerKit.Navigation;
 using Serilog;
@@ -7,10 +6,10 @@ namespace SmartGrowHub.Maui.Services.App;
 
 public interface INavigationService
 {
-    IO<Unit> Navigate(string route, Option<IDictionary<string, object>> parameters = default, bool modal = false,
+    Task NavigateAsync(string route, IDictionary<string, object>? parameters = null, bool modal = false,
         bool animated = true);
 
-    IO<Unit> GoBack(Option<IDictionary<string, object>> parameters = default, bool modal = false, bool animated = true);
+    Task GoBackAsync(IDictionary<string, object>? parameters = null, bool modal = false, bool animated = true);
     
     NavigationBuilder CreateBuilder(string route);
 }
@@ -28,32 +27,29 @@ public sealed class MPowerKitNavigationService : INavigationService
         _logger = logger;
     }
 
-    public IO<Unit> Navigate(string route, Option<IDictionary<string, object>> parameters = default,
-        bool modal = false, bool animated = true) =>
-        IO.liftVAsync(async () =>
-        {
-            NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
-            
-            NavigationResult result = await _navigationService
-                .NavigateAsync(route, navigationParameters, modal, animated)
-                .ConfigureAwait(false);
-            
-            if (!result.Success) _logger.Fatal(result.Exception, "Navigation failed");
-            
-            return Unit.Default;
-        });
+    public async Task NavigateAsync(string route, IDictionary<string, object>? parameters = null,
+        bool modal = false, bool animated = true)
+    {
+        NavigationParameters? navigationParameters = parameters is not null 
+            ? new NavigationParameters(parameters) 
+            : null;
 
-    public IO<Unit> GoBack(Option<IDictionary<string, object>> parameters = default, bool modal = false,
-        bool animated = true) =>
-        IO.liftVAsync(async () =>
-        {
-            NavigationParameters? navigationParameters = parameters.Map(ToNavigationParameters).ValueUnsafe();
-            await _navigationService.GoBackAsync(navigationParameters, modal, animated).ConfigureAwait(false);
-            return Unit.Default;
-        });
+        NavigationResult result = await _navigationService
+            .NavigateAsync(route, navigationParameters, modal, animated)
+            .ConfigureAwait(false);
+
+        if (!result.Success) 
+            _logger.Fatal(result.Exception, "Navigation failed");
+    }
+
+    public async Task GoBackAsync(IDictionary<string, object>? parameters = null, bool modal = false,
+        bool animated = true)
+    {
+        NavigationParameters? navigationParameters = parameters is not null 
+            ? new NavigationParameters(parameters) 
+            : null;
+        await _navigationService.GoBackAsync(navigationParameters, modal, animated).ConfigureAwait(false);
+    }
 
     public NavigationBuilder CreateBuilder(string route) => new(route, this);
-    
-    private static NavigationParameters ToNavigationParameters(IDictionary<string, object> parameters) =>
-        new(parameters);
 }

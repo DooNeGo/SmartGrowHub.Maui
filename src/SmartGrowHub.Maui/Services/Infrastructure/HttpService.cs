@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 
 namespace SmartGrowHub.Maui.Services.Infrastructure;
 
@@ -6,8 +6,8 @@ public interface IHttpService
 {
     string ClientName { get; set; }
 
-    OptionT<IO, T> SendAsJson<T, TRequest>(HttpMethod method, Uri? uri, TRequest request);
-    OptionT<IO, T> Send<T>(HttpMethod method, Uri? uri, HttpContent? content);
+    Task<T?> SendAsJsonAsync<T, TRequest>(HttpMethod method, Uri? uri, TRequest request, CancellationToken cancellationToken);
+    Task<T?> SendAsync<T>(HttpMethod method, Uri? uri, HttpContent? content, CancellationToken cancellationToken);
 }
 
 public sealed class HttpService : IHttpService
@@ -23,26 +23,24 @@ public sealed class HttpService : IHttpService
 
     public string ClientName { get; set; } = string.Empty;
 
-    public OptionT<IO, T> SendAsJson<T, TRequest>(HttpMethod method, Uri? uri, TRequest request)
+    public Task<T?> SendAsJsonAsync<T, TRequest>(HttpMethod method, Uri? uri, TRequest request, CancellationToken cancellationToken)
     {
         var content = JsonContent.Create(request);
-        return Send<T>(method, uri, content);
+        return SendAsync<T>(method, uri, content, cancellationToken);
     }
 
-    public OptionT<IO, T> Send<T>(HttpMethod method, Uri? uri, HttpContent? content) =>
-        OptionT.lift(IO.liftAsync(async env =>
-        {
-            HttpClient client = _clientFactory.CreateClient(ClientName);
-            using var request = new HttpRequestMessage(method, uri);
-            request.Content = content;
+    public async Task<T?> SendAsync<T>(HttpMethod method, Uri? uri, HttpContent? content, CancellationToken cancellationToken)
+    {
+        HttpClient client = _clientFactory.CreateClient(ClientName);
+        using var request = new HttpRequestMessage(method, uri);
+        request.Content = content;
 
-            using HttpResponseMessage response = await client
-                .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, env.Token)
-                .ConfigureAwait(false);
+        using HttpResponseMessage response = await client
+            .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+            .ConfigureAwait(false);
 
-            //string stringResponse = await response.Content.ReadAsStringAsync(env.Token);
-            await using Stream stream = await response.Content.ReadAsStreamAsync(env.Token).ConfigureAwait(false);
-            Option<T> result = await _jsonSerializer.DeserializeAsync<T>(stream, env.Token).ConfigureAwait(false);
-            return result;
-        }));
+        await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        T? result = await _jsonSerializer.DeserializeAsync<T>(stream, cancellationToken).ConfigureAwait(false);
+        return result;
+    }
 }

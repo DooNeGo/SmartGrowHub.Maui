@@ -1,4 +1,4 @@
-﻿namespace SmartGrowHub.Maui.Services.App;
+namespace SmartGrowHub.Maui.Services.App;
 
 public sealed class NavigationBuilder
 {
@@ -18,8 +18,10 @@ public sealed class NavigationBuilder
         return this;
     }
 
-    public IO<Unit> Navigate(bool modal = false, bool animated = true) =>
-        string.IsNullOrWhiteSpace(_route)
-            ? IO.fail<Unit>("Route cannot be null or whitespace")
-            : _navigationService.Navigate(_route, _parameters, modal, animated);
+    public Task NavigateAsync(bool modal = false, bool animated = true)
+    {
+        if (string.IsNullOrWhiteSpace(_route))
+            throw new InvalidOperationException("Route cannot be null or whitespace");
+        return _navigationService.NavigateAsync(_route, _parameters, modal, animated);
+    }
 }

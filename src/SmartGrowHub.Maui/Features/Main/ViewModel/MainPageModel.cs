@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,7 +18,7 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware, 
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     
-    private TaskCompletionSource<Unit> _stateChangeTcs = new(Unit.Default);
+    private TaskCompletionSource _stateChangeTcs = new();
     
     private readonly INavigationService _navigationService;
     private readonly IMessagesService _messagesService;
@@ -56,12 +56,12 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware, 
         _messagesService.MeasurementReceived += OnMeasurementReceived;
         
         Task.WhenAll(
-            Task.Run(() => _messagesService.Start().RunAsync().AsTask()),
+            _messagesService.Start(),
             RefreshAsync(CancellationToken.None)).SafeFireAndForget();
     }
     
     private void OnMeasurementReceived(SensorMeasurementDto obj) =>
-        MainThread.InvokeOnMainThreadAsync(async () =>
+        _mainThread.InvokeOnMainThreadAsync(async () =>
         {
             await _semaphore.WaitAsync(CancellationToken.None);
             
@@ -93,7 +93,7 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware, 
 
         try
         {
-            await Task.Run(() => Refresh.RunAsync(cancellationToken), cancellationToken);
+            await RefreshInternalAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (Exception e)
         {
@@ -101,77 +101,94 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware, 
         }
     }
 
-    private IO<Unit> Refresh => (
-            from _1 in WaitForStateChange
-            from _2 in _mainThread.InvokeOnMainThread(() =>
-            {
-                IsRefreshing = true;
-                CurrentState = PageStates.Loading;
-            })
-            from _3 in RefreshGrowHubs
-            from current in IO.lift(() => CurrentGrowHub)
-            from _4 in current is null
-                ? IO.pure(Unit.Default)
-                : RefreshLatestMeasurements(current.Id)
-            from _5 in WaitForStateChange
-            select _5)
-        .Catch(error => IO.lift(() => _logger.Error(error.ToErrorException(), "Failed to refresh main page")))
-        .Finally(_mainThread.InvokeOnMainThread(() =>
-        {
-            CurrentState = null;
-            IsRefreshing = false;
-        })).As();
+    private async Task RefreshInternalAsync(CancellationToken cancellationToken)
+    {
+        await WaitForStateChangeAsync().ConfigureAwait(false);
         
+        await _mainThread.InvokeOnMainThreadAsync(() =>
+        {
+            IsRefreshing = true;
+            CurrentState = PageStates.Loading;
+        }).ConfigureAwait(false);
+        
+        try
+        {
+            await RefreshGrowHubsAsync(cancellationToken).ConfigureAwait(false);
+            
+            var current = CurrentGrowHub;
+            if (current is not null)
+            {
+                await RefreshLatestMeasurementsAsync(current.Id, cancellationToken).ConfigureAwait(false);
+            }
+            
+            await WaitForStateChangeAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to refresh main page");
+        }
+        finally
+        {
+            await _mainThread.InvokeOnMainThreadAsync(() =>
+            {
+                CurrentState = null;
+                IsRefreshing = false;
+            }).ConfigureAwait(false);
+        }
+    }
 
-    private IO<Unit> RefreshLatestMeasurements(string growHubId) =>
-        from measurements in _growHubApi.GetLatestMeasurements(growHubId)
-        from _ in _mainThread.InvokeOnMainThread(() =>
+    private async Task RefreshLatestMeasurementsAsync(string growHubId, CancellationToken cancellationToken)
+    {
+        var measurements = await _growHubApi.GetLatestMeasurementsAsync(growHubId, cancellationToken).ConfigureAwait(false);
+        await _mainThread.InvokeOnMainThreadAsync(() =>
         {
             Measurements.Clear();
             Measurements.AddRange(measurements);
-        })
-        select Unit.Default;
+        }).ConfigureAwait(false);
+    }
 
-    private IO<Unit> RefreshGrowHubs =>
-        from growHubs in _growHubApi.GetGrowHubs()
-        from _ in _mainThread.InvokeOnMainThread(() =>
+    private async Task RefreshGrowHubsAsync(CancellationToken cancellationToken)
+    {
+        var growHubs = await _growHubApi.GetGrowHubsAsync(cancellationToken).ConfigureAwait(false);
+        await _mainThread.InvokeOnMainThreadAsync(() =>
         {
             GrowHubs.Clear();
             Modules.Clear();
             GrowHubs.AddRange(growHubs);
             CurrentGrowHub = GrowHubs.FirstOrDefault();
             Modules.AddRange(CurrentGrowHub?.Modules ?? []);
-        })
-        select _;
+        }).ConfigureAwait(false);
+    }
 
     [RelayCommand]
-    private Task<Unit> GoToModuleControlAsync(GrowHubModuleDto? module) =>
-        _navigationService
-            .CreateBuilder(Routes.GrowHubModuleControlPage)
-            .AddRouteParameter(GrowHubModuleControlPageModel.ModuleKey, module!)
-            .Navigate()
-            .RunAsync().AsTask();
-
-    private Task<Unit> WaitForStateChangeAsync()
+    private async Task GoToModuleControlAsync(GrowHubModuleDto? module)
     {
-        if (CanStateChange) return Task.FromResult(Unit.Default);
+        if (module is null) return;
+        await _navigationService
+            .CreateBuilder(Routes.GrowHubModuleControlPage)
+            .AddRouteParameter(GrowHubModuleControlPageModel.ModuleKey, module)
+            .NavigateAsync()
+            .ConfigureAwait(false);
+    }
+
+    private Task WaitForStateChangeAsync()
+    {
+        if (CanStateChange) return Task.CompletedTask;
         
-        _stateChangeTcs = new TaskCompletionSource<Unit>();
+        _stateChangeTcs = new TaskCompletionSource();
     
         return _stateChangeTcs.Task;
     }
 
-    private IO<Unit> WaitForStateChange => IO.liftAsync(WaitForStateChangeAsync);
-
     partial void OnCanStateChangeChanged(bool value)
     {
         if (!value) return;
-        _stateChangeTcs.TrySetResult(Unit.Default);
+        _stateChangeTcs.TrySetResult();
     }
 
     public async ValueTask DisposeAsync()
     {
-        await Task.Run(() => _messagesService.Stop().RunAsync().AsTask());
+        await _messagesService.Stop();
         _messagesService.MeasurementReceived -= OnMeasurementReceived;
     }
 }

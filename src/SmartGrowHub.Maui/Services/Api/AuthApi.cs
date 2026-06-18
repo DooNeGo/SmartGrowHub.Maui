@@ -1,4 +1,3 @@
-﻿using SmartGrowHub.Maui.Services.Extensions;
 using SmartGrowHub.Maui.Services.Infrastructure;
 using SmartGrowHub.Shared.Auth;
 using SmartGrowHub.Shared.Results;
@@ -8,10 +7,9 @@ namespace SmartGrowHub.Maui.Services.Api;
 
 public interface IAuthApi
 {
-    IO<AuthTokensDto> VerifyOtp(string otp);
-    IO<AuthTokensDto> RefreshTokens(string refreshToken);
-    IO<Unit> RequestOtpToEmail(string emailAddress);
-    IO<Unit> LogOut(string refreshToken);
+    Task<AuthTokensDto> VerifyOtpAsync(string otp, CancellationToken cancellationToken);
+    Task<AuthTokensDto> RefreshTokensAsync(string refreshToken, CancellationToken cancellationToken);
+    Task RequestOtpToEmailAsync(string emailAddress, CancellationToken cancellationToken);
 }
 
 public sealed class AuthApi : IAuthApi
@@ -24,25 +22,49 @@ public sealed class AuthApi : IAuthApi
         _httpService.ClientName = nameof(IAuthApi);
     }
 
-    public IO<Unit> RequestOtpToEmail(string emailAddress) => (
-        from response in _httpService.PostAsJson<Result, RequestOtpToEmailRequest>(
-            "/api/auth/otp/email", new RequestOtpToEmailRequest(emailAddress))
-        from _ in response.ToIO()
-        select _
-    ).ToIOOrFail("Response was null");
+    public async Task RequestOtpToEmailAsync(string emailAddress, CancellationToken cancellationToken)
+    {
+        Result? result = await _httpService
+            .SendAsJsonAsync<Result, RequestOtpToEmailRequest>(
+                HttpMethod.Post, new Uri("/api/auth/otp/email", UriKind.Relative),
+                new RequestOtpToEmailRequest(emailAddress), cancellationToken)
+            .ConfigureAwait(false);
 
-    public IO<AuthTokensDto> VerifyOtp(string otp) =>
-        _httpService.PostAsJson<Result<AuthTokensDto>, VerifyOtpRequest>(
-            "/api/auth/otp/verify", new VerifyOtpRequest(otp)
-        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
+        if (result is null)
+            throw new InvalidOperationException("Response was null");
+        if (!result.IsSuccess)
+            throw new InvalidOperationException(result.ErrorMessage ?? "Request failed");
+    }
 
-    public IO<AuthTokensDto> RefreshTokens(string refreshToken) =>
-        _httpService.PostAsJson<Result<AuthTokensDto>, RefreshTokensRequest>(
-            "/api/auth/tokens/refresh", new RefreshTokensRequest(refreshToken)
-        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
+    public async Task<AuthTokensDto> VerifyOtpAsync(string otp, CancellationToken cancellationToken)
+    {
+        Result<AuthTokensDto>? result = await _httpService
+            .SendAsJsonAsync<Result<AuthTokensDto>, VerifyOtpRequest>(
+                HttpMethod.Post, new Uri("/api/auth/otp/verify", UriKind.Relative),
+                new VerifyOtpRequest(otp), cancellationToken)
+            .ConfigureAwait(false);
 
-    public IO<Unit> LogOut(string refreshToken) =>
-        _httpService.PostAsJson<Result, LogoutRequest>(
-            "/api/auth/logout", new LogoutRequest(refreshToken)
-        ).ToIOOrFail("Response was null").Bind(result => result.ToIO());
+        if (result is null)
+            throw new InvalidOperationException("Response was null");
+        if (!result.IsSuccess || result.Data is null)
+            throw new InvalidOperationException(result.ErrorMessage ?? "OTP verification failed");
+
+        return result.Data;
+    }
+
+    public async Task<AuthTokensDto> RefreshTokensAsync(string refreshToken, CancellationToken cancellationToken)
+    {
+        Result<AuthTokensDto>? result = await _httpService
+            .SendAsJsonAsync<Result<AuthTokensDto>, RefreshTokensRequest>(
+                HttpMethod.Post, new Uri("/api/auth/tokens/refresh", UriKind.Relative),
+                new RefreshTokensRequest(refreshToken), cancellationToken)
+            .ConfigureAwait(false);
+
+        if (result is null)
+            throw new InvalidOperationException("Response was null");
+        if (!result.IsSuccess || result.Data is null)
+            throw new InvalidOperationException(result.ErrorMessage ?? "Token refresh failed");
+
+        return result.Data;
+    }
 }

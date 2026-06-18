@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGrowHub.Maui.Services.App;
 
@@ -14,8 +14,6 @@ public sealed partial class StartPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task<Unit> LogInByEmailAsync() =>
-        _navigationService
-            .Navigate(Routes.RequestOtpToEmailPage)
-            .RunAsync().AsTask();
+    private Task LogInByEmailAsync() =>
+        _navigationService.NavigateAsync(Routes.RequestOtpToEmailPage);
 }

@@ -68,7 +68,6 @@ public sealed partial class GrowHubModuleControlPageModel : ObservableObject, II
             Daily: d =>
             {
                 Entries.Clear();
-                
                 foreach (ScheduleUnitDto<TimeOnly> entry in d.Entries)
                 {
                     Entries.Add(new ScheduleEntryModel
@@ -86,7 +85,6 @@ public sealed partial class GrowHubModuleControlPageModel : ObservableObject, II
             Weekly: w =>
             {
                 Entries.Clear();
-                
                 foreach (ScheduleUnitDto<WeekTimeOnlyDto> entry in w.Entries)
                 {
                     Entries.Add(new ScheduleEntryModel
@@ -107,7 +105,7 @@ public sealed partial class GrowHubModuleControlPageModel : ObservableObject, II
     [RelayCommand]
     private async Task SelectModeAsync()
     {
-        PopupResult popupResult = await _popupNavigation.ShowAwaitablePopup(Routes.ScheduleModePopupPage).RunAsync();
+        PopupResult popupResult = await _popupNavigation.ShowAwaitablePopupAsync(Routes.ScheduleModePopupPage);
         
         if (!popupResult.Success || popupResult.Confirmation?.Confirmed is false) return;
         
@@ -123,8 +121,8 @@ public sealed partial class GrowHubModuleControlPageModel : ObservableObject, II
     {
         bool isWeekly = SelectedMode == ScheduleTypeDto.Weekly;
         var popup = new ScheduleEntryEditorPopup(_popupNavigation, isWeekly);
-        await _popupNavigation.ShowPopup(popup).RunAsync();
-        var result = await popup.WaitForResultAsync();
+        await _popupNavigation.ShowPopupAsync(popup);
+        ScheduleEntryResult? result = await popup.WaitForResultAsync();
 
         if (result is null) return;
 
@@ -146,19 +144,20 @@ public sealed partial class GrowHubModuleControlPageModel : ObservableObject, II
     private void RemoveEntry(ScheduleEntryModel entry) => Entries.Remove(entry);
 
     [RelayCommand]
-    private Task<Unit> SaveAsync(CancellationToken cancellationToken) =>
-        Task.Run(() => Save().RunAsync(cancellationToken).AsTask(), cancellationToken);
-
-    private IO<Unit> Save()
+    private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        if (Module is null) return IO.pure(Unit.Default);
+        if (Module is null) return;
 
         UpdateScheduleRequestDto request = BuildRequest(SelectedMode);
 
-        return _growHubApi
-            .UpdateSchedule(Module.Schedule.Id, request)
-            .Catch(error => IO.lift(() => _logger.Error(error.ToErrorException(), "Failed to update schedule")))
-            .As();
+        try
+        {
+            await _growHubApi.UpdateScheduleAsync(Module.Schedule.Id, request, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to update schedule");
+        }
     }
 
     private UpdateScheduleRequestDto BuildRequest(ScheduleTypeDto type) => type switch

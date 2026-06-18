@@ -3,9 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MPowerKit.Navigation.Awares;
 using MPowerKit.Navigation.Interfaces;
+using Serilog;
 using SmartGrowHub.Maui.Resources.Localization;
 using SmartGrowHub.Maui.Services.App;
-using SmartGrowHub.Maui.Services.Extensions;
 using INavigationService = SmartGrowHub.Maui.Services.App.INavigationService;
 
 namespace SmartGrowHub.Maui.Features.Login.ViewModel;
@@ -15,15 +15,18 @@ public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifec
     private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IDialogService _dialogService;
-    
+    private readonly ILogger _logger;
+
     public VerifyOtpPageModel(
         IAuthService authService,
         INavigationService navigationService,
-        IDialogService dialogService)
+        IDialogService dialogService,
+        ILogger logger)
     {
         _authService = authService;
         _navigationService = navigationService;
         _dialogService = dialogService;
+        _logger = logger;
     }
 
     [ObservableProperty] public partial string SentTo { get; set; } = string.Empty;
@@ -35,11 +38,11 @@ public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifec
     
     [ObservableProperty] public partial string CodeError { get; set; } = string.Empty;
 
-    public void Initialize(INavigationParameters parameters) =>
-        parameters
-            .TryGetValue(nameof(SentTo))
-            .Bind(obj => obj as string ?? Option<string>.None)
-            .IfSome(value => SentTo = value);
+    public void Initialize(INavigationParameters parameters)
+    {
+        var sentTo = parameters.GetValue<string?>(nameof(SentTo));
+        if (sentTo is not null) SentTo = sentTo;
+    }
     
     public void OnAppearing() => OnCodeChanged(Code);
     
@@ -53,18 +56,33 @@ public sealed partial class VerifyOtpPageModel : ObservableValidator, IPageLifec
     }
 
     [RelayCommand]
-    private Task<Unit> GoBackAsync() => _navigationService.GoBack().RunAsync().AsTask();
+    private Task GoBackAsync() => _navigationService.GoBackAsync();
 
     [RelayCommand]
-    private Task<Fin<Unit>> CheckCodeAsync(CancellationToken cancellationToken) => (
-        from _1 in _dialogService.ShowLoading()
-        from _2 in _authService
-            .VerifyOtp(Code)
-            .TapOnFail(DisplayError)
-            .Finally(_dialogService.HideLoading())
-        from _3 in _navigationService.Navigate($"/{Routes.NavigationPage}/{Routes.MainPage}")
-        select _3
-    ).RunSafeAsync(EnvIO.New(token: cancellationToken)).AsTask();
-    
-    private IO<Unit> DisplayError(Error error) => IO.lift(() => CodeError = error.Message).ToUnit();
+    private async Task CheckCodeAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _dialogService.ShowLoadingAsync();
+
+            try
+            {
+                await _authService.VerifyOtp(Code, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                CodeError = ex.Message;
+            }
+            finally
+            {
+                await _dialogService.HideLoadingAsync();
+            }
+
+            await _navigationService.NavigateAsync($"/{Routes.NavigationPage}/{Routes.MainPage}").ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "Failed to verify OTP");
+        }
+    }
 }

@@ -9,32 +9,38 @@ public static class SecureStorageExtensions
 
     extension(ISecureStorage secureStorage)
     {
-        public OptionT<IO, AuthTokensDto> GetAuthTokens() =>
-            from accessToken in secureStorage.GetAccessToken()
-            from refreshToken in secureStorage.GetRefreshToken()
-            select new AuthTokensDto(accessToken, refreshToken);
+        public async Task<AuthTokensDto?> GetAuthTokensAsync()
+        {
+            string? accessToken = await secureStorage.GetAccessTokenAsync().ConfigureAwait(false);
+            string? refreshToken = await secureStorage.GetRefreshTokenAsync().ConfigureAwait(false);
+        
+            if (accessToken is null || refreshToken is null) return null;
+        
+            return new AuthTokensDto(accessToken, refreshToken);
+        }
 
-        public IO<Unit> SetAuthTokens(AuthTokensDto authTokens) =>
-            from _1 in secureStorage.SetAccessToken(authTokens.AccessToken)
-            from _2 in secureStorage.SetRefreshToken(authTokens.RefreshToken)
-            select _2;
+        public async Task SetAuthTokensAsync(AuthTokensDto authTokens)
+        {
+            await secureStorage.SetAccessTokenAsync(authTokens.AccessToken).ConfigureAwait(false);
+            await secureStorage.SetRefreshTokenAsync(authTokens.RefreshToken).ConfigureAwait(false);
+        }
 
-        public OptionT<IO, string> GetAccessToken() => secureStorage.GetValue(AccessTokenKey);
+        public Task<string?> GetAccessTokenAsync() => 
+            secureStorage.GetAsync(AccessTokenKey);
 
-        public IO<Unit> SetAccessToken(string accessToken) => secureStorage.SetValue(AccessTokenKey, accessToken);
+        public Task SetAccessTokenAsync(string accessToken) => 
+            secureStorage.SetAsync(AccessTokenKey, accessToken);
 
-        public OptionT<IO, string> GetRefreshToken() => secureStorage.GetValue(RefreshTokenKey);
+        public Task<string?> GetRefreshTokenAsync() => 
+            secureStorage.GetAsync(RefreshTokenKey);
 
-        public IO<Unit> SetRefreshToken(string refreshToken) => secureStorage.SetValue(RefreshTokenKey, refreshToken);
+        public Task SetRefreshTokenAsync(string refreshToken) => 
+            secureStorage.SetAsync(RefreshTokenKey, refreshToken);
 
-        public OptionT<IO, string> GetValue(string key) =>
-            IO.liftAsync(() => secureStorage.GetAsync(key).Map(Prelude.Optional));
-
-        public IO<bool> RemoveValue(string key) => IO.lift(() => secureStorage.Remove(key));
-
-        public IO<Unit> RemoveAllValues() => IO.lift(secureStorage.RemoveAll);
-
-        public IO<Unit> SetValue(string key, string value) =>
-            IO.liftAsync(() => secureStorage.SetAsync(key, value).ToUnit());
+        public Task RemoveAllValuesAsync()
+        {
+            secureStorage.RemoveAll();
+            return Task.CompletedTask;
+        }
     }
 }

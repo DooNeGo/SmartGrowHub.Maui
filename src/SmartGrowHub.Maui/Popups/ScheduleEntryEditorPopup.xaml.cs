@@ -18,7 +18,7 @@ public sealed partial class ScheduleEntryEditorPopup
 
         DayPickersSection.IsVisible = isWeekly;
 
-        var days = Enum.GetValues<DayOfWeek>();
+        DayOfWeek[] days = Enum.GetValues<DayOfWeek>();
         StartDayPicker.ItemsSource = days;
         EndDayPicker.ItemsSource = days;
         StartDayPicker.SelectedIndex = 0;
@@ -42,22 +42,24 @@ public sealed partial class ScheduleEntryEditorPopup
 
     private void OnSaveClicked(object? sender, EventArgs e)
     {
-        var kind = KindPicker.SelectedIndex == 0
+        ScheduleUnitKindDto kind = KindPicker.SelectedIndex == 0
             ? ScheduleUnitKindDto.Power
             : ScheduleUnitKindDto.Prefer;
 
-        var startTime = TimeOnly.FromTimeSpan(StartTimePicker.Time ?? TimeSpan.Zero);
-        var endTime = TimeOnly.FromTimeSpan(EndTimePicker.Time ?? TimeSpan.Zero);
+        TimeOnly startTime = TimeOnly.FromTimeSpan(StartTimePicker.Time ?? TimeSpan.Zero);
+        TimeOnly endTime = TimeOnly.FromTimeSpan(EndTimePicker.Time ?? TimeSpan.Zero);
 
-        var startDay = _isWeekly
-            ? (DayOfWeek)(StartDayPicker.SelectedIndex)
+        DayOfWeek startDay = _isWeekly
+            ? (DayOfWeek)StartDayPicker.SelectedIndex
             : DayOfWeek.Monday;
-        var endDay = _isWeekly
-            ? (DayOfWeek)(EndDayPicker.SelectedIndex)
+        
+        DayOfWeek endDay = _isWeekly
+            ? (DayOfWeek)EndDayPicker.SelectedIndex
             : DayOfWeek.Monday;
 
         _tcs.TrySetResult(new ScheduleEntryResult(
             startTime, endTime, startDay, endDay, kind, (float)MagnitudeSlider.Value));
+        
         Close();
     }
 
@@ -67,9 +69,9 @@ public sealed partial class ScheduleEntryEditorPopup
         Close();
     }
 
-    private void Close()
+    private async void Close()
     {
-        _popupNavigation.HidePopup(this).RunAsync();
+        await _popupNavigation.HidePopupAsync(this).ConfigureAwait(false);
     }
 }
 

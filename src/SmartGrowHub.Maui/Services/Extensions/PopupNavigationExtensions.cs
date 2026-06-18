@@ -11,33 +11,36 @@ public static class PopupNavigationExtensions
 {
     private static readonly Dictionary<Type, Type> ViewModelToViewMappings = [];
 
-    public static IO<Unit> HidePopupAsync<TPopupViewModel>(this IPopupNavigation popupNavigation, bool animate = true)
-        where TPopupViewModel : INotifyPropertyChanged
+    extension(IPopupNavigation popupNavigation)
     {
-        Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
-            ?? throw new ViewNotFoundException();
+        public ValueTask HidePopupAsync<TPopupViewModel>(bool animate = true)
+            where TPopupViewModel : INotifyPropertyChanged
+        {
+            Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
+                            ?? throw new ViewNotFoundException();
 
-        PopupPage popupPage = popupNavigation.PopupStack.FirstOrDefault(page => page.GetType() == viewType)
-            ?? throw new ViewNotFoundException();
+            PopupPage popupPage = popupNavigation.PopupStack.FirstOrDefault(page => page.GetType() == viewType)
+                                  ?? throw new ViewNotFoundException();
 
-        return popupNavigation.HidePopup(popupPage, animate);
+            return popupNavigation.HidePopupAsync(popupPage, animate);
+        }
+
+        public ValueTask ShowPopupAsync<TPopupViewModel>(bool animate = true)
+            where TPopupViewModel : INotifyPropertyChanged
+        {
+            IServiceProvider serviceProvider = Application.Current?.Handler?.GetServiceProvider()
+                                               ?? throw new InvalidOperationException("Could not locate IServiceProvider");
+        
+            Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
+                            ?? throw new ViewNotFoundException();
+        
+            PopupPage popup = serviceProvider.GetRequiredService(viewType) as PopupPage
+                              ?? throw new ViewNotFoundException();
+
+            return popupNavigation.ShowPopupAsync(popup, animate);
+        }
     }
 
-    public static IO<Unit> ShowPopupAsync<TPopupViewModel>(this IPopupNavigation popupNavigation, bool animate = true)
-        where TPopupViewModel : INotifyPropertyChanged
-    {
-        IServiceProvider serviceProvider = Application.Current?.Handler?.GetServiceProvider()
-            ?? throw new InvalidOperationException("Could not locate IServiceProvider");
-        
-        Type viewType = ViewModelToViewMappings.GetValueOrDefault(typeof(TPopupViewModel))
-            ?? throw new ViewNotFoundException();
-        
-        PopupPage popup = serviceProvider.GetRequiredService(viewType) as PopupPage
-            ?? throw new ViewNotFoundException();
-
-        return popupNavigation.ShowPopup(popup, animate);
-    }
-    
     public static IServiceCollection AddTransientPopup<TPopupView, TPopupViewModel>(this IServiceCollection services)
         where TPopupView : PopupPage
         where TPopupViewModel : class, INotifyPropertyChanged

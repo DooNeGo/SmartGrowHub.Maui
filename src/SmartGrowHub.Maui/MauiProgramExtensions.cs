@@ -71,11 +71,10 @@ public static class MauiProgramExtensions
         var navigationService = provider.GetRequiredService<INavigationService>();
         var secureStorage = provider.GetRequiredService<ISecureStorage>();
 
-        _ = await secureStorage.GetRefreshToken()
-            .Match(
-                Some: _ => $"{Routes.NavigationPage}/{Routes.MainPage}",
-                None: () => $"{Routes.NavigationPage}/{Routes.StartPage}")
-            .Bind(route => navigationService.Navigate(route))
-            .RunAsync();
+        string? refreshToken = await secureStorage.GetRefreshTokenAsync();
+        string route = refreshToken is not null 
+            ? $"{Routes.NavigationPage}/{Routes.MainPage}" 
+            : $"{Routes.NavigationPage}/{Routes.StartPage}";
+        await navigationService.NavigateAsync(route);
     }
 }
