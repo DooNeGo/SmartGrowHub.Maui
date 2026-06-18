@@ -39,9 +39,8 @@ public static class DependencyInjection
             {
                 client.BaseAddress =
                     //new Uri("https://rants-unheard-seizing.ngrok-free.dev");
-                    //new Uri("http://10.42.0.1:8080");
-                    new Uri("http://192.168.0.4:8080");
-                client.Timeout = TimeSpan.FromSeconds(30);
+                    new Uri("http://10.42.0.1:8080");
+                    //new Uri("http://192.168.0.4:8080");
             }
         }
 

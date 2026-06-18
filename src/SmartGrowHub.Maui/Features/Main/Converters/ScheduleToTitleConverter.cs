@@ -7,15 +7,12 @@ namespace SmartGrowHub.Maui.Features.Main.Converters;
 public sealed class ScheduleToTitleConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        value is ScheduleDto program
-            ? program switch
-            {
-                DisabledScheduleDto => AppResources.DisabledSchedule,
-                EnabledScheduleDto => AppResources.EnabledSchedule,
-                DailyScheduleDto => AppResources.DailySchedule,
-                WeeklyScheduleDto => AppResources.WeeklySchedule,
-                _ => value
-            }
+        value is ScheduleDto schedule
+            ? schedule.Match(
+                _ => AppResources.DisabledSchedule,
+                _ => AppResources.EnabledSchedule,
+                _ => AppResources.DailySchedule,
+                _ => AppResources.WeeklySchedule)
             : value;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -1,1 +1,0 @@
-﻿global using Unit = SmartGrowHub.Maui.Base.Unit;
