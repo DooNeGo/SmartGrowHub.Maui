@@ -99,36 +99,6 @@ public sealed partial class MainPageModel : ObservableObject, IInitializeAware, 
         {
             _logger.Error(e, "Failed to refresh main page");
         }
-        
-        // try
-        // {
-        //     await WaitForStateChangeAsync();
-        //
-        //     IsRefreshing = true;
-        //     CurrentState = PageStates.Loading;
-        //
-        //     await Task.Run(() => RefreshGrowHubs
-        //         .RunAsync(EnvIO.New(token: cancellationToken))
-        //         .AsTask(), cancellationToken);
-        //
-        //     if (CurrentGrowHub is not null)
-        //     {
-        //         await Task.Run(
-        //             () => RefreshLatestMeasurements(CurrentGrowHub.Id).RunAsync(EnvIO.New(token: cancellationToken)),
-        //             cancellationToken);
-        //     }
-        //
-        //     await WaitForStateChangeAsync();
-        // }
-        // catch (Exception e)
-        // {
-        //     _logger.Error(e, "Failed to refresh main page");
-        // }
-        // finally
-        // {
-        //     CurrentState = null;
-        //     IsRefreshing = false;
-        // }
     }
 
     private IO<Unit> Refresh => (
