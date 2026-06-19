@@ -58,7 +58,7 @@ public sealed partial class ScheduleEntryEditorPopup
             : DayOfWeek.Monday;
 
         _tcs.TrySetResult(new ScheduleEntryResult(
-            startTime, endTime, startDay, endDay, kind, (float)MagnitudeSlider.Value));
+            startTime, endTime, startDay, endDay, kind, (decimal)MagnitudeSlider.Value));
         
         Close();
     }
@@ -81,4 +81,4 @@ public sealed record ScheduleEntryResult(
     DayOfWeek StartDay,
     DayOfWeek EndDay,
     ScheduleUnitKindDto Kind,
-    float Magnitude);
+    decimal Magnitude);

@@ -30,7 +30,7 @@ public sealed partial class ScheduleEntryModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DisplayText), nameof(TimeDisplayText))]
-    public partial float Magnitude { get; set; }
+    public partial decimal Magnitude { get; set; }
 
     public string DisplayText => $"{KindLabel} {Magnitude:F0}%";
 
